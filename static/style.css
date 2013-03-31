@@ -1,0 +1,91 @@
+/************** reset css ************* */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+	padding: 15px;
+}
+ol, ul {
+	list-style: none;
+}
+
+
+/**************  new styles ************* */
+body{
+	font-family: "brandon-grotesque",arial,san-serif;
+	background-color: #e0ebe8;
+	color: white;
+
+}
+header{
+	color:gray;
+}
+
+textarea{
+	height: 60px;	
+}
+
+/* filtering input */
+input[type="checkbox"]{
+	margin-bottom: 15px;
+} 
+
+label{
+	padding: 2px 10px;
+	border-radius: 3px;
+	display: inline-block;
+	margin-top: 4px;
+}
+
+
+/************** general styles ************* */
+	/* text hierarchy */
+h1{
+	text-transform: uppercase;
+	font-size: 42px;
+	letter-spacing: .3em;
+	font-weight: 700;
+}
+
+h2{	
+	font-family: 'adelle',serif;
+	font-size: 25px;
+	color: #314E57;
+}
+
+h4{
+	font-family: 'brandon-grotesque', san-serif;
+	color: #314E57;
+}
+
+
+#chat{
+	overflow-y: scroll;
+	height: 100px;
+	background-color: white;
+	color: gray;
+}
