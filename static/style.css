@@ -45,8 +45,11 @@ header{
 	color:gray;
 }
 
-textarea{
+textarea {
 	height: 60px;	
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 /* filtering input */
@@ -83,9 +86,38 @@ h4{
 }
 
 
-#chat{
+#gameBar{
+	background-color: #ccc;
+	border-radius: 5px;
+	text-align: center;
+	max-width: 200px;
+	float: left;
+	display: inline-block;
+	margin: 10px;
+	border: 5px
+}
+
+#chat {
 	overflow-y: scroll;
-	height: 100px;
+	height: 300px;
 	background-color: white;
 	color: gray;
 }
+
+.chatBar {
+	margin: 10px
+	float: right;
+	width: 40%;
+	display: inline-block;
+}
+
+.configSection {
+	float: left;
+	display: inline-block;	
+}
+
+
+.hidden {
+	display: none;
+}
+
