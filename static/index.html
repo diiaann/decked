@@ -6,32 +6,66 @@
     <script src="jquery-1.9.0.js"></script>
     <script src="main.js"> </script>
     <script src="http://localhost:8888/socket.io/socket.io.js"></script>
+    <script src="/logout.js"></script>
+    <script src="/login.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
 
     <body>
-        <div>
-            <h1>Welcome to the index!</h1>
-            <form action="javascript:doLogin()">
-                <div>
-                    <input id="name" class="rounded" name="myName" type="text" placeholder="your chat name">
-                </div>
-            </form>
-            <form action="javascript:doSend()">
-                <div>
-                    <textarea id="text" placeholder="type here!"></textarea>
-                </div>
-            </form>
+        <h1>Welcome to the index!</h1>
+        <div class="loginFields">
+            <div>
+                <div id="usernameField"> username: 
+                <input id="usernameInput" type="text"/> 
+            </div>
+            <div id="passwordField"> password: 
+                <input id="passwordInput" type="password"/> 
+            </div>
 
-            <div class="chat">
-                <ul id="chat"></ul>
+            <button id="loginButton"> login </button>
+            <button id="registerButton"> register </button>
+
+            </div>
+        </div>
+        <div class="hidden loginBar">
+
+            <div id="gameBar">
+                <form class="gameForm">  
+                    <h2>Host a game!</h2>
+                    <div>
+                        <input id="groupName" type="text">Group name</input>
+                    </div>
+
+                    <div>
+                        <input id="numPlayers" type="number">Number of players</input>
+                    </div>
+
+                    <div>
+                        <input id="private" type="checkbox">Private game?</input>
+                    </div>
+
+                    <div>
+                        <input id="gamePW" class="hidden" type="password"></input>
+                    </div>
+
+                </form>
+            </div>
+            <div id="chatBar">
+                <form action="javascript:doSend()">
+                    <div>
+                        <input id="text" type="text" placeholder="type here!"></input>
+                    </div>
+                </form>
+
+                <button id="logoutButton"> logout </button>
+                <button id="post"> Post! </button>
+                <div class="chat">
+                    <ul id="chat"></ul>
+                </div>
+
             </div>
         </div>
         <br />
-    
-       
-
-
     </body>
 </html>
