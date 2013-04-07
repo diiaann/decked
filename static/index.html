@@ -4,26 +4,26 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
 
     <script src="js/jquery-1.9.0.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/logout.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script src="http://localhost:8888/socket.io/socket.io.js"></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<!-- 1140px Grid styles for IE -->
-	<!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
+    
+    <!-- 1140px Grid styles for IE -->
+    <!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
 
-	<!-- The 1140px Grid - http://cssgrid.net/ -->
-	<link rel="stylesheet" href="css/1140.css" type="text/css" media="screen" />
-		
-	<!--css3-mediaqueries-js - http://code.google.com/p/css3-mediaqueries-js/ - Enables media queries in some unsupported browsers-->
-	<script type="text/javascript" src="js/css3-mediaqueries.js"></script>
-	
-	<!--Delete embedded styles, just for example.-->
-	
-    <script src="js/logout.js"></script>
-    <script src="js/login.js"></script>
+    <!-- The 1140px Grid - http://cssgrid.net/ -->
+    <link rel="stylesheet" href="css/1140.css" type="text/css" media="screen" />
+        
+    <!--css3-mediaqueries-js - http://code.google.com/p/css3-mediaqueries-js/ - Enables media queries in some unsupported browsers-->
+    <script type="text/javascript" src="js/css3-mediaqueries.js"></script>
+    
+    <!--Delete embedded styles, just for example.-->
+    
     
   </head>
 
@@ -47,8 +47,10 @@
     	</div>
     	
     	<div class="row">
-	     <div class="sixcol">
-         <form id="gameForm">  
+        	<div class="sixcol"><img src="http://placehold.it/547x400"></div>
+    	    <div class="sixcol last">
+
+                <form id="gameForm">  
                     <h2>Host a game!</h2>
                     
                     <div>
@@ -56,34 +58,35 @@
                     </div>
 
                     <div>
-                      <input id="numPlayers" type="number" placeholder="# players"></input>
+                        <input id="numPlayers" type="number" min="1" max="4" value="4">Number of players</input>
+                       <label># players</label> <input id="numPlayers" type="number"></input>
+
                     </div>
 
                     <div>
-                        <input id="private" type="checkbox"></input>
+                        <input id="private" type="checkbox" checked="checked">Private game?</input>
                     </div>
 
                     <div>
-                        <input id="gamePW" class="hidden" type="password"></input>
+                        <input id="gamePW" type="password"></input>
                     </div>
-         </form>
-         </div>
-         <div class="sixcol last"><img src="http://placehold.it/547x400"></div>
-
-         </div>
+                 </form>
+                 <button id="requestGame"> Host my game! </button>
+            </div>
+        </div>
          
-         <div id="chatBar">
-             <form action="javascript:doSend()">
-                 <div>
-                     <input id="text" type="text" placeholder="type here!"></input>
-                  </div>
-             </form>
+        <div id="chatBar">
+            <form action="javascript:doSend()">
+                <div>
+                    <input id="text" type="text" placeholder="type here!"></input>
+                </div>
+            </form>
 
-          <button id="logoutButton"> logout </button>
-          <button id="post"> Post! </button>
-          <div class="chat">
-           <ul id="chat"></ul>
-          </div>
+            <button id="logoutButton"> logout </button>
+            <button id="post"> Post! </button>
+            <div class="chat">
+                <ul id="chat"></ul>
+            </div>
 
         </div>
     </body>

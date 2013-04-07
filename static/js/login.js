@@ -3,23 +3,12 @@
 
 =============================================*/
 
-window.addEventListener('load', function(){
+$(document).ready(function(){
     (function(){
 
         var g = {
             onLoginSuccess: function(){
-                if ($(".loginBar").hasClass("hidden")) {
-                    $(".loginBar").removeClass("hidden");
-                } else {
-                    $(".loginBar").addClass("hidden");
-                }
-
-                if ($(".loginFields").hasClass("hidden")) {
-                    $(".loginFields").removeClass("hidden");
-                } else {
-                    $(".loginFields").addClass("hidden");
-                }
-                
+                window.location = '/';
             },
             onRegisterSuccess: function(){
                 var username = usernameInput.value;
@@ -146,6 +135,39 @@ window.addEventListener('load', function(){
                 request.send();
             }
         }
+
+        /* Addition to Evan Shapiro's code:
+         *
+         * Logs in using cookies when the page loads, automatically 
+         * logging in an already logged in user.
+         */
+
+        window.checkLogin = function() {
+            var cookies = document.cookie.split('; ')
+            var username;
+            var password;
+
+            for (var i = cookies.length - 1; i >= 0; i--) {
+                if (cookies[i].indexOf("username=") === 0) {
+                    var cookie = cookies[i];
+                    username = cookie.substring("username=".length, 
+                        cookie.length);
+                }
+                if (cookies[i].indexOf("password=") === 0) {
+                    var cookie = cookies[i];
+                    password = cookie.substring("password=".length, 
+                        cookie.length);
+                }
+            };
+            
+            if (username !== undefined && password !== undefined) {
+                login(username, password, handleLoginResult);
+            }
+
+        }
+
+        checkLogin();
+
     })();
 });
 
