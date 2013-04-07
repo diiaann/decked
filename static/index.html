@@ -1,44 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
 
-    <script src="jquery-1.9.0.js"></script>
-    <script src="main.js"> </script>
-    <script src="http://localhost:8888/socket.io/socket.io.js"></script>
-    <script src="/logout.js"></script>
-    <script src="/login.js"></script>
+    <script src="js/jquery-1.9.0.js"></script>
+    <script src="js/main.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script src="http://localhost:8888/socket.io/socket.io.js"></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<!-- 1140px Grid styles for IE -->
+	<!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
+
+	<!-- The 1140px Grid - http://cssgrid.net/ -->
+	<link rel="stylesheet" href="css/1140.css" type="text/css" media="screen" />
+		
+	<!--css3-mediaqueries-js - http://code.google.com/p/css3-mediaqueries-js/ - Enables media queries in some unsupported browsers-->
+	<script type="text/javascript" src="js/css3-mediaqueries.js"></script>
+	
+	<!--Delete embedded styles, just for example.-->
+	
+    <script src="js/logout.js"></script>
+    <script src="js/login.js"></script>
+    
   </head>
 
     <body>
-        <h1>Welcome to the index!</h1>
-        <div class="loginFields">
-            <div>
-                <div id="usernameField"> username: 
-                <input id="usernameInput" type="text"/> 
-            </div>
-            <div id="passwordField"> password: 
-                <input id="passwordInput" type="password"/> 
-            </div>
-
-            <button id="loginButton"> login </button>
-            <button id="registerButton"> register </button>
-
-            </div>
-        </div>
-        <div class="hidden loginBar">
-
-            <div id="gameBar">
-                <form class="gameForm">  
+    	<div id="header">
+    		<div class="row">
+    			<div class="threecol"><div id="logo"><img src="imgs/logoSmall.png"> decked</div></div>
+    			<div class="sixcol last">
+    			<div class="loginFields">
+    				<input id="usernameInput" type="text" placeholder="username"/> 
+    				<input id="passwordInput" type="password"/> 
+    				<button id="loginButton"> sign in </button>
+    				<button id="registerButton"> sign up </button>
+    			</div>
+    			</div>
+    		</div>
+    	</div>
+    	
+    	<div class="row">
+        	<h1>A way to play any card game</h1>
+    	</div>
+    	
+    	<div class="row">
+    	<div class="sixcol"><img src="http://placehold.it/547x400"></div>
+	     <div class="sixcol last">
+         <form id="gameForm">  
                     <h2>Host a game!</h2>
+                    
                     <div>
-                        <input id="groupName" type="text">Group name</input>
+                        <input id="groupName" type="text" placeholder="game name"></input>
                     </div>
 
                     <div>
-                        <input id="numPlayers" type="number">Number of players</input>
+                       <label># players</label> <input id="numPlayers" type="number"></input>
                     </div>
 
                     <div>
@@ -48,24 +67,23 @@
                     <div>
                         <input id="gamePW" class="hidden" type="password"></input>
                     </div>
+         </form>
+         </div>
+         </div>
+         
+         <div id="chatBar">
+             <form action="javascript:doSend()">
+                 <div>
+                     <input id="text" type="text" placeholder="type here!"></input>
+                  </div>
+             </form>
 
-                </form>
-            </div>
-            <div id="chatBar">
-                <form action="javascript:doSend()">
-                    <div>
-                        <input id="text" type="text" placeholder="type here!"></input>
-                    </div>
-                </form>
+          <button id="logoutButton"> logout </button>
+          <button id="post"> Post! </button>
+          <div class="chat">
+           <ul id="chat"></ul>
+          </div>
 
-                <button id="logoutButton"> logout </button>
-                <button id="post"> Post! </button>
-                <div class="chat">
-                    <ul id="chat"></ul>
-                </div>
-
-            </div>
         </div>
-        <br />
     </body>
 </html>
