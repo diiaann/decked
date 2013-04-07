@@ -121,3 +121,20 @@ h4{
 	display: none;
 }
 
+.topBar {
+	position: fixed;
+	text-align: left;
+	color: white;
+	background-color: purple;
+	padding: 5px;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	clear: both;
+	display: block;
+}
+
+#noGame {
+	padding-top: 25px;
+	display: block;
+}
