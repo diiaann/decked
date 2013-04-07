@@ -32,8 +32,13 @@ app.get("/game/:gameName", function (request, response) {
   }
 });
 
-app.listen(8889);
 
+app.use("/static/css", express.static(__dirname + '/static/css'));
+app.use("/static/js", express.static(__dirname + '/static/js'));
+app.use("/static/imgs", express.static(__dirname + '/static/imgs'));
+
+
+app.listen(8889);
 
 
 // Nonsense

@@ -27,20 +27,7 @@ $(document).ready(function(){
 });
 
 function hideLogin(){
-  if ($(".loginBar").hasClass("hidden")) {
-    $(".loginBar").removeClass("hidden");
-  } else {
-    $(".loginBar").addClass("hidden");
-  }
-
-  if ($(".loginFields").hasClass("hidden")) {
-    $(".loginFields").removeClass("hidden");
-  } else {
-    $(".loginFields").addClass("hidden");
-  }
-
   username = $("#loginButton").val();
-
 }
 
 function handleGamePW() {  

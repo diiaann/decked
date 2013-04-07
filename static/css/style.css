@@ -36,8 +36,7 @@ ol, ul {
 
 /**************  new styles ************* */
 body{
-	font-family: "brandon-grotesque",arial,san-serif;
-	background-color: #e0ebe8;
+	font-family: "freight-sans-pro",arial,san-serif;
 	color: white;
 
 }
@@ -68,20 +67,18 @@ label{
 /************** general styles ************* */
 	/* text hierarchy */
 h1{
-	text-transform: uppercase;
-	font-size: 42px;
-	letter-spacing: .3em;
-	font-weight: 700;
+	font-size: 60px;
+	color: gray;
+	line-height: 80px
 }
 
 h2{	
-	font-family: 'adelle',serif;
 	font-size: 25px;
 	color: #314E57;
 }
 
 h4{
-	font-family: 'brandon-grotesque', san-serif;
+	font-family: 'freight-sans-pro', san-serif;
 	color: #314E57;
 }
 
@@ -104,6 +101,33 @@ h4{
 	color: gray;
 }
 
+.text{
+	color: white;
+	font-family: "freight-sans-pro",arial,san-serif;
+	font-size: 165px;
+	font-weight: 300;
+	
+}
+
+.card { 
+	color: white;
+	text-align: center;
+	font-size: 50px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left; height: 280px; 
+	margin: 0 15px 15px 0; 
+	position: relative; 
+	width: 200px; 
+	z-index: 2; 
+}
+
+.diamond, .hearts{
+	background-color: #FF372F;
+}
 .chatBar {
 	margin: 10px
 	float: right;
@@ -121,20 +145,44 @@ h4{
 	display: none;
 }
 
-.topBar {
-	position: fixed;
-	text-align: left;
-	color: white;
-	background-color: purple;
-	padding: 5px;
-	width: 100%;
-	left: 0px;
-	top: 0px;
-	clear: both;
-	display: block;
+#header{
+	background-color: #dfe2e6;
+	padding: 15px;
+	margin-bottom: 20px;
 }
 
-#noGame {
-	padding-top: 25px;
-	display: block;
+#gameForm {
+	background-color: lightblue;
 }
+input {
+	font-size: 20px;
+	font-family: "freight-sans-pro",arial,san-serif;
+
+	background: #FFF;
+	width: 200px;
+	height: 30px;
+	padding: 0 10px;
+	border: none;
+	color: #0f1419;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+button{
+	border: none;
+	border-radius: 5px;
+	background: #80cf98;
+	padding: 5px;
+}
+
+#logo{
+	text-transform: uppercase;
+	letter-spacing: 15px;
+	font-size: 24px;
+}
+
+
