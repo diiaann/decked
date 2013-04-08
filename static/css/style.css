@@ -38,7 +38,9 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
-
+	color: white;
+	background-image: url("../imgs/background.png");
+	background-repeat: no-repeat;
 }
 header{
 	color:gray;
@@ -150,13 +152,32 @@ h4{
 }
 
 #header{
-	background-color: #dfe2e6;
 	padding: 15px;
-	margin-bottom: 20px;
+	color: gray;
+	background-color:rgba(0,0,0,0.2);
+
 }
 
 #gameForm {
-	background-color: lightblue;
+	width: 340px;
+	padding: 30px;
+	background-color:rgba(0,0,0,0.1);
+
+}
+
+#numPlayers {
+	width: 60px
+}
+
+#private {
+	width: 15px;
+	height: 15px;
+	margin: 5px;
+}
+
+#main{
+	padding-top: 30px; 
+	color: gray;
 }
 input {
 	font-size: 20px;
@@ -174,6 +195,7 @@ input {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	margin: 5px;
 }
 
 button{
@@ -181,6 +203,11 @@ button{
 	border-radius: 5px;
 	background: #80cf98;
 	padding: 5px;
+	color: white;
+	height: 30px;
+	font-size: 14px;
+	font-family: "freight-sans-pro",arial,san-serif;
+
 }
 
 button:hover{
@@ -192,6 +219,25 @@ button:hover{
 	text-transform: uppercase;
 	letter-spacing: 15px;
 	font-size: 24px;
+}
+.circle .image-wrap {
+	-webkit-border-radius: 50em;
+	-moz-border-radius: 50em;
+	border-radius: 50em;
+}
+.image-wrap{
+	position: relative;
+	display: inline-block;
+	background: gray;
+	width: 80px;
+	height: 80px;
+}
+
+.text{
+	font-family: "ff-tisa-web-pro",serif;
+	color: black;
+	font-size: 26px;
+	line-height: 36px;
 }
 
 #joinForm {
