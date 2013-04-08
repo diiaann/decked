@@ -8,7 +8,7 @@ $(document).ready(function(){
     $("#chat").append($("<li>").html(data.msg));
   });
 
-  socket.on("joinGame", function(data) {
+  socket.on("gotoGame", function(data) {
     var splitLoc = location.href.split("/");
     var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
                   "/game/" + data.gameName;
@@ -19,22 +19,40 @@ $(document).ready(function(){
     alert(data.msg);
   });
 
+  socket.on("joinFailed", function(data) {
+    alert(data.msg);
+  });
+
+  socket.on("joinSuccess", function(data) {
+    var splitLoc = location.href.split("/");
+    var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
+                  "/game/" + data.gameName;
+    window.location.assign(newLoc);
+  });
+
+
   $("#post").click(doSend);
   $("#private").change(handleGamePW);
+  //$("#requestGame").click(requestGame);
 
   window.LoginManager.setLoginSuccess(hideLogin);
       
 });
 
 function hideLogin(){
-  username = $("#loginButton").val();
+  var headerBar = $(".loginFields").children();
+  for (var i = headerBar.length - 1; i >= 0; i--) {
+    $(headerBar[i]).toggleClass("hidden");
+  };
+
+  $("#gameDiv").toggleClass("hidden");
 }
 
 function handleGamePW() {  
-  if ($("#gamePW").hasClass("hidden")) {
-    $("#gamePW").removeClass("hidden");
+  if ($("#gamePWDiv").hasClass("none")) {
+    $("#gamePWDiv").removeClass("none");
   } else {
-    $("#gamePW").addClass("hidden");
+    $("#gamePWDiv").addClass("none");
   }
 }
 
@@ -43,39 +61,50 @@ function doSend() {
   socket.emit('send', { msg : text});
 }
 
+function joinGame() {
+  var gameName = $("#joinGameName").val()
+  var password = $("#joinPW").val()
+
+  if (gameName === "") {
+    alert("Please enter a game name.");
+    return;
+  }
+  
+  socket.emit("joinGame",
+    {
+      username : window.username,
+      gamename : gameName,
+      password : password
+    });
+}
+
+
 function requestGame() {
-  var groupName = $("#groupName").val()
+  var gameName = $("#groupName").val()
   var numPlayers = $("#numPlayers").val()
   var privy = $("#private").is(":checked");
   var password;
 
+  if (gameName === "") {
+    alert("Please enter a game name.");
+    return;
+  }
+
   if (privy) {
     password = $("#gamePW").val();
-    console.log("Private with password" + password);
+    if (password === "") {
+      alert("Please enter a game password.");
+      return;
+    }    
   }
 
   socket.emit("requestGame", 
     { 
-      name: groupName,
+      name: gameName,
       numPlayers: numPlayers,
       private: privy,
       password: password,
-      username: username
+      username: window.username
     }
   );
-}
-
-function checkLogin() {
-  var cookies = document.cookie.split('; ')
-  for (var i = cookies.length - 1; i >= 0; i--) {
-    if (cookies[i].indexOf("username=") === 0) {
-      var cookie = cookies[i];
-      username = cookie.substring("username=".length, cookie.length);
-    }
-    if (cookies[i].indexOf("password=") === 0) {
-      var cookie = cookies[i];
-      password = cookie.substring("password=".length, cookie.length);
-    }
-
-  };
 }

@@ -37,7 +37,7 @@ ol, ul {
 /**************  new styles ************* */
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
-	color: white;
+	color: #333;
 
 }
 header{
@@ -141,8 +141,12 @@ h4{
 }
 
 
-.hidden {
+.none {
 	display: none;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 #header{
@@ -179,10 +183,18 @@ button{
 	padding: 5px;
 }
 
+button:hover{
+	background: #4682b4;
+	color: white;
+}
+
 #logo{
 	text-transform: uppercase;
 	letter-spacing: 15px;
 	font-size: 24px;
 }
 
-
+#joinForm {
+	background-color: gray;
+	padding: 5px;
+}

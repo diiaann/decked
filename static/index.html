@@ -37,6 +37,7 @@
     				<input id="passwordInput" type="password"/> 
     				<button id="loginButton"> sign in </button>
     				<button id="registerButton"> sign up </button>
+                    <button id="logoutButton" class="hidden"> log out </button>
     			</div>
     			</div>
     		</div>
@@ -48,30 +49,47 @@
     	
     	<div class="row">
         	<div class="sixcol"><img src="http://placehold.it/547x400"></div>
-    	    <div class="sixcol last">
+    	    <div class="sixcol last hidden" id="gameDiv">
 
-                <form id="gameForm">  
+                <form id="gameForm" action="javascript:requestGame()">  
                     <h2>Host a game!</h2>
                     
                     <div>
-                        <input id="groupName" type="text" placeholder="game name"></input>
+                        <input id="groupName" type="text" placeholder="game name"> game name </input>
                     </div>
 
                     <div>
-                        <input id="numPlayers" type="number" min="1" max="4" value="4">Number of players</input>
-                       <label># players</label> <input id="numPlayers" type="number"></input>
+                        <input id="numPlayers" type="number" min="1" max="4" value="4"> #players</input>
 
                     </div>
 
                     <div>
-                        <input id="private" type="checkbox" checked="checked">Private game?</input>
+                        <input id="private" type="checkbox" checked="checked"> Private game?</input>
                     </div>
 
-                    <div>
-                        <input id="gamePW" type="password"></input>
+                    <div id="gamePWDiv">
+                        <input id="gamePW" type="text"> game password</input>
                     </div>
+
+                    <button id="requestGame"> Host my game! </button>
                  </form>
-                 <button id="requestGame"> Host my game! </button>
+                 
+                <form id="joinForm" action="javascript:joinGame()">
+
+                    <h2>Join an existing one!</h2>
+
+                    <div>
+                        <input id="joinGameName" type="text"> Game Name</input>
+                    </div>
+
+                    <div>
+                        <input id="joinPW" type="text"> Game Password (if applicable)</input> 
+                    </div>
+
+                    <button id="joinGame"> Join a game!</button>
+
+                </form>
+
             </div>
         </div>
          
@@ -89,5 +107,6 @@
             </div>
 
         </div>
+
     </body>
 </html>

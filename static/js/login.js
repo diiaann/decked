@@ -8,7 +8,6 @@ $(document).ready(function(){
 
         var g = {
             onLoginSuccess: function(){
-                window.location = '/';
             },
             onRegisterSuccess: function(){
                 var username = usernameInput.value;
@@ -144,24 +143,26 @@ $(document).ready(function(){
 
         window.checkLogin = function() {
             var cookies = document.cookie.split('; ')
-            var username;
-            var password;
+            var found = false;
 
             for (var i = cookies.length - 1; i >= 0; i--) {
                 if (cookies[i].indexOf("username=") === 0) {
                     var cookie = cookies[i];
                     username = cookie.substring("username=".length, 
                         cookie.length);
+                    found = true;
                 }
                 if (cookies[i].indexOf("password=") === 0) {
                     var cookie = cookies[i];
                     password = cookie.substring("password=".length, 
                         cookie.length);
+                    found = true;
                 }
             };
-            
-            if (username !== undefined && password !== undefined) {
-                login(username, password, handleLoginResult);
+            if (found === true){
+                if (username !== undefined && password !== undefined) {
+                    login(username, password, handleLoginResult);
+                }
             }
 
         }
