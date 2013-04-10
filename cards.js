@@ -113,6 +113,10 @@ PlayerData.prototype.getSocket = function() {
   return this.socket;
 }
 
+PlayerData.prototype.setSocket = function(socket) {
+  this.socket = socket;
+}
+
 PlayerData.prototype.getHand = function() {
   return this.hand;
 }
@@ -127,9 +131,10 @@ PlayerData.prototype.addToHand = function(cards) {
 var Game = function(hostname, socket, private, password, 
                     numPlayers, gameName) {
   this.players = [];
+  this.numPlayers = 0;
   this.host = new PlayerData(hostname, socket);
-  this.players.push(this.host);
-  this.deck = new Deck(numDecks);
+  this.addPlayer(hostname, socket);
+  this.deck = new Deck(1);
   this.playerLimit = numPlayers;
   this.name = gameName;
   this.private = private || false;
@@ -140,15 +145,27 @@ var Game = function(hostname, socket, private, password,
 
 }
 
+Game.prototype.getHand = function(playerName) {
+  var hand, result;
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+        hand = this.players[i].getHand();
+        for (var j = hand.length - 1; j >= 0; j--) {
+          result.push(hand[j]);
+        };
+        return result;
+    }
+  };
+}
 
 Game.prototype.getDeck = function() {
   return this.deck;
 };
 
-Game.prototype.addPlayer = function(playerName, socket) {
-  this.players.push(new PlayerData(playerName, socket));
-
+Game.prototype.getHost = function() {
+  return this.host;
 };
+
 
 Game.prototype.drawCards = function(playerName, numCards) {
   for (var i = this.players.length - 1; i >= 0; i--) {
@@ -158,14 +175,72 @@ Game.prototype.drawCards = function(playerName, numCards) {
   };
 };
 
-Game.prototype.joinGame = function(password) {
+Game.prototype.getNumCards = function(){
+  return this.deck.length;
+}
+
+Game.prototype.addPlayer = function(playerName, socket) {
+  this.players.push(new PlayerData(playerName, socket));
+  this.numPlayers++;
+};
+
+Game.prototype.join = function(password, playerName, socket) {
+
+  console.log(this.numPlayers, this.playerLimit);
+
+  if (this.numPlayers === this.playerLimit) {
+    return false;
+  }
+
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName){ 
+      this.players[i].setSocket(socket);
+      return true;
+    }
+  };
+
   if (this.private) {
-    return (this.password === password);
+    if (this.password === password) {
+      this.addPlayer(playerName, socket);
+      return true;
+    } else {
+      return false;
+    }
   } else {
+    this.addPlayer(playerName, socket);
     return true;
   }
 }
 
+Game.prototype.updateAll = function(socketMsg, data) {
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    this.players[i].getSocket().emit(socketMsg, data);
+  };
+}
+
+Game.prototype.removePlayer = function(playerName) {
+ for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+      this.players.splice(i, 1);
+      this.numPlayers--;
+    }
+  }; 
+  console.log(this.players);
+}
+
+Game.prototype.isHost = function(playerName) {
+  console.log("Game " + this.name + "has host " + this.host.getName() );
+  return this.host.getName() === playerName;  
+}
+
+Game.prototype.getPlayers = function() {
+  var result = [];
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    result.push(this.players[i].getName());
+  };
+
+  return result;
+};
 
 exports.Card = Card;
 exports.Deck = Deck;

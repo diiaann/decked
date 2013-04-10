@@ -1,10 +1,55 @@
 // ========================
 // ==== Express server ====
 // ========================
+
+var globals = {
+  users : [],
+  games : [],
+  socketsToGames : {}
+};
 var express = require("express");
 var app = express();
 var mongoExpressAuth = require('mongo-express-auth');
-var cards = require("./cards.js")
+var cards = require("./cards.js");
+var socket = require("./socketCode.js")(globals);
+
+
+var mongo = require('mongodb');
+var host = 'localhost';
+var port = mongo.Connection.DEFAULT_PORT;
+
+var optionsWithEnableWriteAccess = { w: 1 };
+var dbName = 'deckedAccounts';
+
+var client = new mongo.Db(
+    dbName,
+    new mongo.Server(host, port),
+    optionsWithEnableWriteAccess
+);
+
+function openDb(onOpen){
+    client.open(onDbReady);
+
+    function onDbReady(error){
+        if (error)
+            throw error;
+        client.collection('deckedAccounts', onDeckedAccountsReady);
+    }
+
+    function onDeckedAccountsReady(error, testCollection){
+        if (error)
+            throw error;
+
+        onOpen(testCollection);
+    }
+}
+
+function closeDb(){
+    client.close();
+}
+
+
+
 
 mongoExpressAuth.init({
     mongo: { 
@@ -25,10 +70,14 @@ app.get("/static/:staticFilename", function (request, response) {
 });
 
 app.get("/game/:gameName", function (request, response) {
-  if (games[request.params.gameName] === undefined) {
+  if (globals.games[request.params.gameName] === undefined) {
     response.sendfile("static/404.html");  
   } else {
-  response.sendfile("static/game.html");
+    if (request.params.gameName.indexOf(".") === -1){
+      response.sendfile("static/game.html");
+    } else {
+      response.sendfile("static/" + request.params.gameName);
+    }
   }
 });
 
@@ -40,61 +89,10 @@ app.use("/static/imgs", express.static(__dirname + '/static/imgs'));
 
 app.listen(8889);
 
-
-// Nonsense
-var users = [];
-var games = [];
-
 // ========================
 // === Socket.io server ===
 // ========================
-var io = require('socket.io').listen(8888);
 
-io.sockets.on('connection', function (socket) {
-
-  // socket.emit('news', { hello: 'world'});
-
-  socket.on('login', function (data) {
-    var userName = data.userName;
-    console.log(userName);
-    if (users.indexOf(userName) === -1){
-      users.push(userName);
-      io.sockets.emit('update', {msg : userName + " has joined the chat!"});
-    }
-  });
-
-  socket.on('send', function(data) {
-    io.sockets.emit('update', data);
-  });
-
-  socket.on('requestGame', function(data) {
-    var myGame = games[data.name];
-    if (myGame !== undefined) {
-      if (myGame.joinGame(data.password)) {
-        myGame.addPlayer(data.username, socket);
-        socket.emit("joinGame", {gameName : data.name});  
-      } else {
-        socket.emit("requestGameFailed", 
-        {msg : "The password you supplied does not match."});  
-      }
-    } else {      
-      myGame = new cards.Game(data.username, socket, 
-                            data.privy, data.password, 
-                            data.numPlayers, data.name);
-      console.log("requesting game");
-      if (games[data.name] !== undefined) {
-        socket.emit("requestGameFailed", 
-          {msg : "A game with that name already exists."});
-      } else {
-        games[data.name] = myGame;
-        socket.emit("joinGame", {gameName : data.name});
-      }
-    }
-    // Have to create a Game here. Will work on it next
-  })
-
-
-});
 
 // ======================
 // = ROUTES FOR DB AUTH =
@@ -121,10 +119,14 @@ app.get('/me', function(req, res){
 
 app.post('/login', function(req, res){
     mongoExpressAuth.login(req, res, function(err){
-        if (err)
+        if (err) { 
             res.send(err);
-        else
+        }
+
+        else {
             res.send('ok');
+
+        }
     });
 });
 

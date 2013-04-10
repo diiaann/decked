@@ -37,10 +37,10 @@ ol, ul {
 /**************  new styles ************* */
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
+	color: #333;
 	color: white;
 	background-image: url("../imgs/background.png");
 	background-repeat: no-repeat;
-
 }
 header{
 	color:gray;
@@ -143,8 +143,12 @@ h4{
 }
 
 
-.hidden {
+.none {
 	display: none;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 #header{
@@ -206,6 +210,11 @@ button{
 
 }
 
+button:hover{
+	background: #4682b4;
+	color: white;
+}
+
 #logo{
 	text-transform: uppercase;
 	letter-spacing: 15px;
@@ -231,4 +240,7 @@ button{
 	line-height: 36px;
 }
 
-
+#joinForm {
+	background-color: gray;
+	padding: 5px;
+}
