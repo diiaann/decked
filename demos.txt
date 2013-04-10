@@ -33,3 +33,6 @@ Type something in the field next to the button, then click "talk!". This should 
 Host a new public game as either user. With the other user, join it using the "Join an existing one!" form on the homepage. Type the name of the game into the upper box and click "Join a game!"
 
 Now, both users should be in a game screen. Click ready as both, then start. A hand should appear for each user, and discarding cards by clicking will update both windows.
+
+OTHER
+In mobile.html we have started working on moving around cards and what a hand would look like with user. In test.html we tested working with gravatar.
