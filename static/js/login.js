@@ -148,13 +148,14 @@ $(document).ready(function(){
             for (var i = cookies.length - 1; i >= 0; i--) {
                 if (cookies[i].indexOf("username=") === 0) {
                     var cookie = cookies[i];
-                    username = cookie.substring("username=".length, 
+                    window.username = cookie.substring("username=".length, 
                         cookie.length);
+                    console.log(username);
                     found = true;
                 }
                 if (cookies[i].indexOf("password=") === 0) {
                     var cookie = cookies[i];
-                    password = cookie.substring("password=".length, 
+                    window.password = cookie.substring("password=".length, 
                         cookie.length);
                     found = true;
                 }
@@ -165,10 +166,10 @@ $(document).ready(function(){
                 }
             }
 
+
         }
 
         checkLogin();
 
     })();
 });
-

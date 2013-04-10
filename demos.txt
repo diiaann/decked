@@ -1,0 +1,35 @@
+Demos for April 9th deliverable
+
+start the server with 
+> node app 
+in the main folder.
+
+In browser, go to localhost:8889
+
+Front page:
+
+ONE USER:
+
+Register a new user with the login/register bar at the top of the page. See that the bar changes.
+
+Scroll down. See that the host and join game forms appear.
+
+Host a public game. Uncheck the private box, enter a game name, and click "Host my game!"
+
+This should take you to a new page with a rudimentary list of users in the game and a "ready" button. Click the "ready" button, then the "Start" button.
+
+See that a list of cards in your hand appears. Click one to discard it and see that the discard pile updates.
+
+In the URL, type nonsense after the name of your game. See that you reach a simple 404 page. Click the link to return to the front page. You are still logged in.
+
+MULTIPLE USER:
+
+Open another browser session (I used incognito mode), and navigate to the front page. Register with another user.
+
+Scroll down and see a small chat bar with a button that reads "talk!"
+
+Type something in the field next to the button, then click "talk!". This should update the chat list in both browser windows.
+
+Host a new public game as either user. With the other user, join it using the "Join an existing one!" form on the homepage. Type the name of the game into the upper box and click "Join a game!"
+
+Now, both users should be in a game screen. Click ready as both, then start. A hand should appear for each user, and discarding cards by clicking will update both windows.

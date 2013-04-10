@@ -38,7 +38,6 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
-	color: white;
 	background-image: url("../imgs/background.png");
 	background-repeat: no-repeat;
 }
@@ -243,4 +242,33 @@ button:hover{
 #joinForm {
 	background-color: gray;
 	padding: 5px;
+}
+
+
+.before {
+	background: #228B22;
+}
+
+.before:hover {
+	background: #5793c5;
+}
+
+.after:hover {
+	background: #228B22;
+}
+
+.after {
+	background: #5793c5;
+}
+
+.leftSide{
+	display: inline-block;
+	clear: left;
+	left: 5px;
+}
+
+.rightSide{
+	display: inline-block;
+	clear: right;
+	right: 5px;
 }

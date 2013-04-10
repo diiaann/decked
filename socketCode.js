@@ -27,6 +27,7 @@ module.exports = function(globals) {
     });
 
     socket.on('send', function(data) {
+      console.log("SENDING");
       io.sockets.emit('update', data);
     });
 
@@ -71,6 +72,52 @@ module.exports = function(globals) {
       }
     });
 
+    socket.on("toggleReady", function(data){
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        var ready = game.toggleReady(data.name);
+        game.updateAll("newPlayer", {
+          players : game.getPlayers(),
+          allReady : ready
+        });
+      }
+
+    });
+
+    socket.on("startGame", function(data) {
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        game.startGame();
+        game.updateEach("gameStart", function(player) {
+          return { cards : player.getHand() };
+        });
+      }
+    });
+
+    socket.on("drawCard", function(data) {
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        socket.emit("drewCard", { cards : game.drawCards(data.username, 1)});
+      }
+    })
+
+    socket.on("discard", function(data) {
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        var discardPile = game.discard(data.username, data.rank, data.suit);
+        game.updateEach("discard", function(player) {
+          return { cards :player.getHand(),
+          discardPile : discardPile };
+        });
+      }
+    });
+
+    socket.on('send', function(data) {
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        game.updateAll('update', data);
+      }
+    });
 
   });
 }

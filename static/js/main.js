@@ -104,7 +104,7 @@ function requestGame() {
       numPlayers: numPlayers,
       private: privy,
       password: password,
-      username: window.username
+      username: username
     }
   );
 }

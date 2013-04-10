@@ -28,11 +28,29 @@
         </div>
 
         <h1 id="gameName">Welcome to the game!</h1>
-        <div>   
+        <div class="leftSide">   
             <div id="numPlayers"></div>
             <h4>Players logged in:</h4>
+            <form action="javascript:toggleReady()">
+                <button id="readyButton" class="before"> Ready! </button>
+            </form>
+            
+            <button id="startButton" class="none"> Start! </button>
+            
             <ul id="playerList"></ul>
         </div>
+
+        <div class="rightSide">   
+            <button id="drawButton" class="none"> Draw! </button>
+            
+            <h4>Cards in hand:</h4>
+            <ul id="cardList"></ul>
+        </div>
+
+        <div>
+            <ul id="discardPile">Discard Pile</ul>
+        </div>
+
 
         <div id="chatBar">
             <form action="javascript:doSend()">
@@ -41,8 +59,7 @@
                 </div>
             </form>
 
-            <button id="logoutButton"> logout </button>
-            <button id="post"> Post! </button>
+            <button id="post"> talk! </button>
             <div class="chat">
                 <ul id="chat"></ul>
             </div>
