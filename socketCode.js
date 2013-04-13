@@ -3,8 +3,16 @@ var cards = require("./cards.js");
 
 module.exports = function(globals) {
 
+  // Connection
   io.sockets.on('connection', function (socket) {
 
+    /*
+     * On disconnect, we need to remove the given player
+     * from the game associated with that socket.
+     *
+     * Then we inform the players in that game that the player has dropped.
+     * 
+     */
     socket.on('disconnect', function (data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
@@ -17,6 +25,9 @@ module.exports = function(globals) {
     });
 
 
+    /*
+     * Login for auth
+     */
     socket.on('login', function (data) {
       var userName = data.userName;
       console.log(userName);
@@ -26,11 +37,18 @@ module.exports = function(globals) {
       }
     });
 
+    /*
+     * For chat.
+     */
     socket.on('send', function(data) {
       console.log("SENDING");
       io.sockets.emit('update', data);
     });
 
+    /*
+     * Request a new game. If we already started a game with that name,
+     * send a failure message.
+     */
     socket.on('requestGame', function(data) {
       var myGame = globals.games[data.name];
       if (myGame !== undefined) {
@@ -50,6 +68,9 @@ module.exports = function(globals) {
     });
 
 
+    /*
+     * Join an existing game.
+     */
     socket.on("joinGame", function(data) {
       var myGame = globals.games[data.gamename];
       if (myGame === undefined){
@@ -72,6 +93,9 @@ module.exports = function(globals) {
       }
     });
 
+    /*
+     * Switch a player's "Ready" state.
+     */
     socket.on("toggleReady", function(data){
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
@@ -84,6 +108,9 @@ module.exports = function(globals) {
 
     });
 
+    /*
+     * Start the game.
+     */
     socket.on("startGame", function(data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
@@ -94,6 +121,9 @@ module.exports = function(globals) {
       }
     });
 
+    /*
+     * Draw a card.
+     */
     socket.on("drawCard", function(data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
@@ -101,6 +131,9 @@ module.exports = function(globals) {
       }
     })
 
+    /*
+     * Discard a card.
+     */
     socket.on("discard", function(data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
@@ -112,7 +145,10 @@ module.exports = function(globals) {
       }
     });
 
-    socket.on('send', function(data) {
+    /*
+     * Send chat in a game.
+     */
+    socket.on('sendInGame', function(data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
         game.updateAll('update', data);

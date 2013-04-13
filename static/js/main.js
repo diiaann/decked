@@ -4,10 +4,12 @@ window.username;
 $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
 
+  // update chat message
   socket.on('update', function(data) {
     $("#chat").append($("<li>").html(data.msg));
   });
 
+  // Switch page to a game
   socket.on("gotoGame", function(data) {
     var splitLoc = location.href.split("/");
     var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
@@ -15,14 +17,17 @@ $(document).ready(function(){
     window.location.assign(newLoc);
   });
 
+  // Game request has failed
   socket.on("requestGameFailed", function(data) {
     alert(data.msg);
   });
 
+  // Game join has failed
   socket.on("joinFailed", function(data) {
     alert(data.msg);
   });
 
+  // Game join success
   socket.on("joinSuccess", function(data) {
     var splitLoc = location.href.split("/");
     var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
@@ -31,6 +36,7 @@ $(document).ready(function(){
   });
 
 
+  // Set buttons
   $("#post").click(doSend);
   $("#private").change(handleGamePW);
   //$("#requestGame").click(requestGame);
@@ -39,6 +45,7 @@ $(document).ready(function(){
       
 });
 
+// Hides login fields
 function hideLogin(){
   var headerBar = $(".loginFields").children();
   for (var i = headerBar.length - 1; i >= 0; i--) {
@@ -48,6 +55,7 @@ function hideLogin(){
   $("#gameDiv").toggleClass("hidden");
 }
 
+// Hides game password fields
 function handleGamePW() {  
   if ($("#gamePWDiv").hasClass("none")) {
     $("#gamePWDiv").removeClass("none");
@@ -56,11 +64,13 @@ function handleGamePW() {
   }
 }
 
+// Sends chat message
 function doSend() {
   var text = $('#text').val();
   socket.emit('send', { msg : text});
 }
 
+// Attempt to join a game
 function joinGame() {
   var gameName = $("#joinGameName").val()
   var password = $("#joinPW").val()
@@ -78,7 +88,7 @@ function joinGame() {
     });
 }
 
-
+// Request a new game
 function requestGame() {
   var gameName = $("#groupName").val()
   var numPlayers = $("#numPlayers").val()

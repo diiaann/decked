@@ -1,3 +1,4 @@
+// global var - is this good style?
 var c = {};
 c.ranks =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 c.suits =  ["Clubs", "Diamonds", "Hearts", "Spades"];
@@ -11,20 +12,25 @@ var Card = function(rank, suit) {
   this.suit = suit;
 }
 
+
+// Equals function 
 Card.prototype.equals = function(card) {
   console.log("Comparing" + this + card);
   return this.rank.toString() === card.rank.toString() && 
     this.suit === card.suit;
 }
 
+// Getter
 Card.prototype.getSuit = function() {
   return this.suit;
 };
 
+// Getter
 Card.prototype.getRank = function() {
   return this.rank;
 };
 
+// To a string, which will be displayed to the user.
 Card.prototype.toString = function() {
   var rank = this.rank;
 
@@ -42,18 +48,19 @@ Card.prototype.toString = function() {
 }
 
 /*
- * 
+ * Deck constructor,
  */
 var Deck = function(numDecks) {
 
   this.cards = [];
 
-  for (var i = 0; i < c.ranks.length; i++) {
-    for (var j = 0; j < c.suits.length; j++) {
-      this.cards.push(new Card(c.ranks[i], c.suits[j]));
+  for (var k = numDecks - 1; k >= 0; k--) {
+    for (var i = 0; i < c.ranks.length; i++) {
+      for (var j = 0; j < c.suits.length; j++) {
+        this.cards.push(new Card(c.ranks[i], c.suits[j]));
+      };
     };
   };
-
 
 }
 
@@ -77,6 +84,7 @@ Deck.prototype.shuffle = function(nTimes) {
 
 }
 
+// Draws some numver of cards from the top of the deck.
 Deck.prototype.draw = function(numCards) {
   var result = [];
 
@@ -88,6 +96,7 @@ Deck.prototype.draw = function(numCards) {
 
 }
 
+// Adds a list of cards to the deck.
 Deck.prototype.addToDeck = function(cardList) {
 
   for (var i = 0; i < cardList.length; i++) {
@@ -96,14 +105,19 @@ Deck.prototype.addToDeck = function(cardList) {
 
 }
 
+// Prints the deck.
 Deck.prototype.printDeck = function(){
 
+  result = "";
+
   for (var i = 0; i < this.cards.length; i++) {
-    console.log(this.cards[i].toString());
+    result = result + this.cards[i].toString();
   };
 
+  console.log(result);
 }
 
+// Struct for player data.
 var PlayerData = function(hostname, socket) {
   this.name = hostname;
   this.socket = socket;
@@ -111,28 +125,34 @@ var PlayerData = function(hostname, socket) {
   this.ready = false;
 }
 
+// Getter
 PlayerData.prototype.getName = function() {
   return this.name;
 }
 
+// Getter
 PlayerData.prototype.getSocket = function() {
   return this.socket;
 }
 
+// Getter
 PlayerData.prototype.setSocket = function(socket) {
   this.socket = socket;
 }
 
+// Getter
 PlayerData.prototype.getHand = function() {
   return this.hand;
 }
 
+// Adds cards to the players' hand
 PlayerData.prototype.addToHand = function(cards) {
   for (var i = 0; i < cards.length; i++) {;
     this.hand.push(cards[i]);
   };
 }
 
+// Discards a specific card
 PlayerData.prototype.discard = function(card) {
   for (var i = 0; i < this.hand.length; i++) {;
     if (this.hand[i].equals(card)) {
@@ -142,10 +162,10 @@ PlayerData.prototype.discard = function(card) {
 }
 
 
+// Struct for game data
 var Game = function(hostName, socket, private, password, 
                     numPlayers, gameName) {
 
-  console.log(hostname);
   this.players = [];
   this.numPlayers = 0;
   this.host = new PlayerData(hostName, socket);
@@ -160,10 +180,10 @@ var Game = function(hostName, socket, private, password,
     console.log("PRIVATE GAME");
     this.password = password;
   }
-  console.log(hostName)
 
 }
 
+// Discard a specific card from a given player's hand.
 Game.prototype.discard = function(player, rank, suit) {
   var oldCard = new Card(rank, suit);
   for (var i = this.players.length - 1; i >= 0; i--) {
@@ -176,6 +196,7 @@ Game.prototype.discard = function(player, rank, suit) {
 
 }
 
+// Starts the game.
 Game.prototype.startGame = function() {
   this.start = true;
   this.deck.shuffle(5);
@@ -184,6 +205,7 @@ Game.prototype.startGame = function() {
   };
 }
 
+// Gets the hand of a specific player
 Game.prototype.getHand = function(playerName) {
   var hand;
   var result = [];
@@ -198,15 +220,17 @@ Game.prototype.getHand = function(playerName) {
   };
 }
 
+// Getter
 Game.prototype.getDeck = function() {
   return this.deck;
 };
 
+// Getter
 Game.prototype.getHost = function() {
   return this.host;
 };
 
-
+// Draws some cards for a given player
 Game.prototype.drawCards = function(playerName, numCards) {
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName) {
@@ -216,27 +240,33 @@ Game.prototype.drawCards = function(playerName, numCards) {
   };
 };
 
+// Getter
 Game.prototype.getNumCards = function(){
   return this.deck.length;
 }
 
+// Adds a player to the game
 Game.prototype.addPlayer = function(playerName, socket) {
   this.players.push(new PlayerData(playerName, socket));
   this.numPlayers++;
 };
 
-Game.prototype.join = function(password, playerName, socket) {
 
+// Join a game.
+Game.prototype.join = function(password, playerName, socket) {
   console.log(this.numPlayers, this.playerLimit);
 
+  // Too many players
   if (this.numPlayers === this.playerLimit) {
     return false;
   }
 
+  // Game's already started.
   if (this.start === true) {
     return false;
   }
 
+  // Player is reconnecting
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName){ 
       this.players[i].setSocket(socket);
@@ -244,6 +274,7 @@ Game.prototype.join = function(password, playerName, socket) {
     }
   };
 
+  // Check passwords if the game is private
   if (this.private) {
     if (this.password === password) {
       this.addPlayer(playerName, socket);
@@ -257,12 +288,14 @@ Game.prototype.join = function(password, playerName, socket) {
   }
 }
 
+// Send a message to all sockets
 Game.prototype.updateAll = function(socketMsg, data) {
   for (var i = this.players.length - 1; i >= 0; i--) {
     this.players[i].getSocket().emit(socketMsg, data);
   };
 }
 
+// Send a palyer-specific message. Takes a callback
 Game.prototype.updateEach = function(socketMsg, callback) {
   for (var i = this.players.length - 1; i >= 0; i--) {
     this.players[i].getSocket().emit(socketMsg, 
@@ -270,6 +303,7 @@ Game.prototype.updateEach = function(socketMsg, callback) {
   };
 }
 
+// Removes a player from the game
 Game.prototype.removePlayer = function(playerName) {
   console.log("PLAYERS: " + this.players);
   for (var i = this.players.length - 1; i >= 0; i--) {
@@ -284,11 +318,13 @@ Game.prototype.removePlayer = function(playerName) {
   console.log("PLAYERS: " + this.players);
 }
 
+// Return whether or not a given user is the host.
 Game.prototype.isHost = function(playerName) {
   console.log("Game " + this.name + "has host " + this.host.getName() );
   return this.host.getName() === playerName;  
 }
 
+// Switches a player's ready state
 Game.prototype.toggleReady = function(playerName) {
 for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName) {
@@ -310,6 +346,7 @@ for (var i = this.players.length - 1; i >= 0; i--) {
 }
 
 
+// Returns a list of players
 Game.prototype.getPlayers = function() {
   var result = [];
   for (var i = this.players.length - 1; i >= 0; i--) {
