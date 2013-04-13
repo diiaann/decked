@@ -38,8 +38,13 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
+}
+
+#home{
 	background-image: url("../imgs/background.png");
 	background-repeat: no-repeat;
+
+
 }
 header{
 	color:gray;
@@ -244,6 +249,23 @@ button:hover{
 	padding: 5px;
 }
 
+#playarea{
+	background-color: rgba(0,0,0,0.1);
+	height: 700px;
+	padding: 10px;
+	position: relative;
+}
+#chat{
+	background-color: gray;
+	height: 700px;
+	padding: 10px;
+}
+#deckarea{
+	position: absolute;
+	top: 30%;
+	left: 40%;
+}
+
 
 .before {
 	background: #228B22;
@@ -271,4 +293,23 @@ button:hover{
 	display: inline-block;
 	clear: right;
 	right: 5px;
+}
+
+#player1, #player2, #player3,#player4{
+	position: absolute;
+}
+
+
+#player1, #player3{
+	left:40%;
+}
+#player2, #player4{
+	top: 30%
+}
+#player3{
+	top: 95%;
+}
+
+#player2{
+	left: 92%;
 }
