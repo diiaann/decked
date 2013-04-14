@@ -7,53 +7,51 @@
     <script src="../static/js/login.js"></script>
     <script src="../static/js/logout.js"></script>
     <script src="../static/js/game.js"></script>
-    <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
+    <script type="text/javascript" src="//use.typekit.net/lxa5ysv.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    
   </head>
 
-    <body>        
-         <div id="chat">
-    		<h1>decked</h1>
-    			<form action="javascript:doSend()">
-	    			 <input id="text" type="text" placeholder="send message"></input>
-	    		</form>
-	    	<button id="post"> talk! </button>
-	    				   
-	    	<div class="chats">
-		    	<ul id="chatText"></ul>
-		    </div>
-		    
-		    <div id="numPlayers"></div>
-            <h4>Players logged in:</h4>
-            <ul id="playerList"></ul>
-
-		  </div>
-
-		<div id="playarea">
-        	<h1 id="gameName">Welcome to the game!</h1>
-        	<div id="player1">
-	         	<div class="circle"></div>
-	            	Player 1 
-	            <form action="javascript:toggleReady()">
-                	<button id="readyButton" class="before"> Ready! </button>
-                </form>
-                	<button id="startButton" class="none"> Start! </button>
-                <ul id="player1hand" class="handHorizontal"></ul>
-        	</div>
-
-            <div id="deckarea">
-	           <div class="card">
-	            	<p>deck</p>
-	           </div>
-	           <button id="drawButton" class="none"> Draw! </button>
-	        </div>    
-
+    <body>
+        <div id="header">
+            <div class="row">
+                <div class="sixcol last">
+                <div class="loginFields">
+                    <input id="usernameInput" type="text" placeholder="username"/> 
+                    <input id="passwordInput" type="password"/> 
+                    <button id="loginButton"> sign in </button>
+                    <button id="registerButton"> sign up </button>
+                    <button id="logoutButton" class="hidden"> log out </button>
+                </div>
+                </div>
+            </div>
         </div>
+
+        <h1 id="gameName">Welcome to the game!</h1>
+        <div class="leftSide">   
+            <div id="numPlayers"></div>
+            <h4>Players logged in:</h4>
+            <form action="javascript:toggleReady()">
+                <button id="readyButton" class="before"> Ready! </button>
+            </form>
             
+            <button id="startButton" class="none"> Start! </button>
+            
+            <ul id="playerList"></ul>
+        </div>
+
+        <div class="rightSide">   
+            <button id="drawButton" class="none"> Draw! </button>
+            
+            <h4>Cards in hand:</h4>
+            <ul id="player1" class="handHorizontal"></ul>
+        </div>
+
         <div>
             <ul id="discardPile">Discard Pile</ul>
         </div>
+
+
+        
         
         <script src="http://localhost:8888/socket.io/socket.io.js"></script>
     </body>
