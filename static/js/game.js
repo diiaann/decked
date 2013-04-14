@@ -30,7 +30,7 @@ $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
 
   // New player added to game
-  socket.on("newPlayer", function() {
+  socket.on("newPlayer", function(data) {
     var playerList = $("#playerList");
     console.log(data);
     playerList.html("");
