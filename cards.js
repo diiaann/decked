@@ -351,5 +351,6 @@ Game.prototype.getPlayers = function() {
   return result;
 };
 
+exports.Game = Game;
 exports.Card = Card;
 exports.Deck = Deck;

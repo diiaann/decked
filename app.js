@@ -65,7 +65,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'M3I9H7P5GQO2PO38W667AOL6R0M998AV' }));
 
-
 // Static Content
 app.get("/static/:staticFilename", function (request, response) {
   response.sendfile("static/" + request.params.staticFilename);
@@ -73,6 +72,8 @@ app.get("/static/:staticFilename", function (request, response) {
 
 // Get a game 
 app.get("/game/:gameName", function (request, response) {
+    var moblie = checkMobile(request.headers["user-agent"]);
+    console.log(mobile);
   if (globals.games[request.params.gameName] === undefined) {
     response.sendfile("static/404.html");  
   } else {
@@ -145,3 +146,14 @@ app.post('/register', function(req, res){
 });
 
 app.use(express.static(__dirname + '/static/'));
+
+function checkMobile(userAgent) {
+    if ((userAgent.indexOf("Android") !== -1) || 
+        (userAgent.indexOf("iPad") !== -1) || 
+        (userAgent.indexOf("iPhone") !== -1) ||
+        (userAgent.indexOf("iPod Touch") !== -1)) {
+        return true;
+      } else {
+        return false;
+      }
+}
