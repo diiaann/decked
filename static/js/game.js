@@ -3,6 +3,11 @@ window.username;
 window.password;
 window.iAmHost;
 
+var heartUnicode = "&#9829";
+var spadeUnicode = "&#9824;";
+var diamondUnicode = "&#9830;";
+var clubUnicode = "&#9827;";
+
 $(document).ready(function(){
 
   // On login, try to join the game.
@@ -25,7 +30,7 @@ $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
 
   // New player added to game
-  socket.on("newPlayer", function(data) {
+  socket.on("newPlayer", function() {
     var playerList = $("#playerList");
     console.log(data);
     playerList.html("");
@@ -86,7 +91,7 @@ $(document).ready(function(){
 
   // Chat message update
   socket.on('update', function(data) {
-    $("#chat").append($("<li>").html(data.msg));
+    $("#chatText").append($("<li>").html(data.msg));
   });
 
 });
@@ -126,9 +131,9 @@ function populateHand(cards) {
   for (var i = cards.length - 1; i >= 0; i--) {
     var rank = cards[i].rank;
     var suit = cards[i].suit;
-    var res = rank + " of " + suit;
-    var newLI = $("<li>").html("<button class=\"cardInHand\" value=\""+res +"\">" + 
-                                res + "</button");
+    var res = rank + suit;
+    var newLI = $("<li>").html("<button class=\"miniCard\" value=\""+ res +"\">" + 
+                               res + "</button");
     cardList.append(newLI);
   }
   $(".cardInHand").click(function() {
@@ -138,7 +143,7 @@ function populateHand(cards) {
   });
 }
 
-// Populate teh discard pile DOM element
+// Populate the discard pile DOM element
 function populateDiscard(cards) {
   var cardList = $("#discardPile");
   cardList.html("");

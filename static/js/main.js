@@ -6,7 +6,7 @@ $(document).ready(function(){
 
   // update chat message
   socket.on('update', function(data) {
-    $("#chat").append($("<li>").html(data.msg));
+    $("#chatText").append($("<li>").html(data.msg));
   });
 
   // Switch page to a game

@@ -30,6 +30,29 @@ Card.prototype.getRank = function() {
   return this.rank;
 };
 
+//Gets the unicode value for the suit
+Card.prototype.getUnicodeSymbol = function(){
+	var heartUnicode = "&#9829";
+	var spadeUnicode = "&#9824;";
+	var diamondUnicode = "&#9830;";
+	var clubUnicode = "&#9827;";
+
+	if(this.suit==="Clubs"){
+		return clubUnicode;
+	}
+	else if(this.suit==="Spades"){
+		return spadeUnicode;
+	}
+	else if(this.suit==="Diamonds"){
+		return diamondUnicode;
+	}
+	else {
+		return heartUnicode;
+	}
+	
+}
+
+
 // To a string, which will be displayed to the user.
 Card.prototype.toString = function() {
   var rank = this.rank;

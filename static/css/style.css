@@ -101,10 +101,16 @@ h4{
 }
 
 #chat {
-	overflow-y: scroll;
-	height: 300px;
-	background-color: white;
-	color: gray;
+	width: 270px;
+	position: fixed;
+	z-index: 900;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background-color: #f7f7f7;
+	color: #464751;
+	font-size: 12px;
+	border-right: 1px solid #a9acb1;
 }
 
 .text{
@@ -124,10 +130,11 @@ h4{
 	-webkit-border-radius: 10px; 
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-	float: left; height: 280px; 
+	float: left; 
+	height: 140px; 
 	margin: 0 15px 15px 0; 
 	position: relative; 
-	width: 200px; 
+	width: 100px; 
 	z-index: 2; 
 }
 
@@ -250,16 +257,12 @@ button:hover{
 }
 
 #playarea{
-	background-color: rgba(0,0,0,0.1);
-	height: 700px;
-	padding: 10px;
-	position: relative;
+	width: 870px;
+	height: 600px;
+	position: absolute;
+	left: 271px;
 }
-#chat{
-	background-color: gray;
-	height: 700px;
-	padding: 10px;
-}
+
 #deckarea{
 	position: absolute;
 	top: 30%;
@@ -295,21 +298,73 @@ button:hover{
 	right: 5px;
 }
 
-#player1, #player2, #player3,#player4{
+.handle{
+	padding-top: -20px;
+	position: inherit;
+}
+#player1{
 	position: absolute;
-}
-
-
-#player1, #player3{
-	left:40%;
-}
-#player2, #player4{
-	top: 30%
-}
-#player3{
-	top: 95%;
+	height: 80px;
+	left: 360px
 }
 
 #player2{
-	left: 92%;
+	position: absolute;
+	height: 60px;
+	right: 5px;
+	top: 270px;
+}
+
+#player3{
+	position: absolute;
+	height: 60px;
+	left: 360px;
+	bottom: 5px;
+}
+
+#player4{
+	position: absolute;
+	left: 5px;
+	top: 270px;
+}
+.circle{
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	background-color: gray;
+	display: inline-block;
+}
+
+.miniCard { 
+	color: white;
+	text-align: center;
+	font-size: 50px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	height: 84px; 
+	margin: 0 15px 15px 0; 
+	position: relative; 
+	width: 60px; 
+	z-index: 2; 
+}
+
+.vertHand{
+	width: 60px;
+}
+.handVertical li{
+	display: inline-block;
+	margin-top: -50px;
+}
+
+.handHorizontal{
+	list-style: none;
+}
+
+.handHorizontal li{
+	display: inline-block;
+	margin-left: -30px;
 }
