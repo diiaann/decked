@@ -49,8 +49,7 @@ function closeDb(){
 }
 
 
-
-
+// Use mongo-express-auth library
 mongoExpressAuth.init({
     mongo: { 
         dbName: 'userAccounts',
@@ -61,21 +60,28 @@ mongoExpressAuth.init({
     app.listen(3000);
 });
 
+
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'M3I9H7P5GQO2PO38W667AOL6R0M998AV' }));
 
+
+// Static Content
 app.get("/static/:staticFilename", function (request, response) {
   response.sendfile("static/" + request.params.staticFilename);
 });
 
+// Get a game 
 app.get("/game/:gameName", function (request, response) {
   if (globals.games[request.params.gameName] === undefined) {
     response.sendfile("static/404.html");  
   } else {
+    // Serves game
     if (request.params.gameName.indexOf(".") === -1){
       response.sendfile("static/game.html");
-    } else {
+    } 
+    // Serves scripts and stylesheets
+    else {
       response.sendfile("static/" + request.params.gameName);
     }
   }
@@ -86,13 +92,7 @@ app.use("/static/css", express.static(__dirname + '/static/css'));
 app.use("/static/js", express.static(__dirname + '/static/js'));
 app.use("/static/imgs", express.static(__dirname + '/static/imgs'));
 
-
 app.listen(8889);
-
-// ========================
-// === Socket.io server ===
-// ========================
-
 
 // ======================
 // = ROUTES FOR DB AUTH =

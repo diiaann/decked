@@ -38,8 +38,13 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
+}
+
+#home{
 	background-image: url("../imgs/background.png");
 	background-repeat: no-repeat;
+
+
 }
 header{
 	color:gray;
@@ -96,10 +101,16 @@ h4{
 }
 
 #chat {
-	overflow-y: scroll;
-	height: 300px;
-	background-color: white;
-	color: gray;
+	width: 270px;
+	position: fixed;
+	z-index: 900;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background-color: #f7f7f7;
+	color: #464751;
+	font-size: 12px;
+	border-right: 1px solid #a9acb1;
 }
 
 .text{
@@ -119,10 +130,11 @@ h4{
 	-webkit-border-radius: 10px; 
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-	float: left; height: 280px; 
+	float: left; 
+	height: 140px; 
 	margin: 0 15px 15px 0; 
 	position: relative; 
-	width: 200px; 
+	width: 100px; 
 	z-index: 2; 
 }
 
@@ -244,6 +256,19 @@ button:hover{
 	padding: 5px;
 }
 
+#playarea{
+	width: 870px;
+	height: 600px;
+	position: absolute;
+	left: 271px;
+}
+
+#deckarea{
+	position: absolute;
+	top: 30%;
+	left: 40%;
+}
+
 
 .before {
 	background: #228B22;
@@ -271,4 +296,75 @@ button:hover{
 	display: inline-block;
 	clear: right;
 	right: 5px;
+}
+
+.handle{
+	padding-top: -20px;
+	position: inherit;
+}
+#player1{
+	position: absolute;
+	height: 80px;
+	left: 360px
+}
+
+#player2{
+	position: absolute;
+	height: 60px;
+	right: 5px;
+	top: 270px;
+}
+
+#player3{
+	position: absolute;
+	height: 60px;
+	left: 360px;
+	bottom: 5px;
+}
+
+#player4{
+	position: absolute;
+	left: 5px;
+	top: 270px;
+}
+.circle{
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	background-color: gray;
+	display: inline-block;
+}
+
+.miniCard { 
+	color: white;
+	text-align: center;
+	font-size: 50px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	height: 84px; 
+	margin: 0 15px 15px 0; 
+	position: relative; 
+	width: 60px; 
+	z-index: 2; 
+}
+
+.vertHand{
+	width: 60px;
+}
+.handVertical li{
+	display: inline-block;
+	margin-top: -50px;
+}
+
+.handHorizontal{
+	list-style: none;
+}
+
+.handHorizontal li{
+	display: inline-block;
+	margin-left: -30px;
 }

@@ -3,19 +3,31 @@ var cards = require("./cards.js");
 
 module.exports = function(globals) {
 
+  // Connection
   io.sockets.on('connection', function (socket) {
 
+    /*
+     * On disconnect, we need to remove the given player
+     * from the game associated with that socket.
+     *
+     * Then we inform the players in that game that the player has dropped.
+     * 
+     */
     socket.on('disconnect', function (data) {
-
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
-        console.log(globals.socketsToGames[socket.id].user + ' disconnected.');
-        game.removePlayer(globals.socketsToGames[socket.id].user);
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
+        console.log(globals.socketsToGames[socket].user + ' DISCONNESSO!!!');
+        game.removePlayer(globals.socketsToGames[socket].user);
         game.updateAll("newPlayer", {players : game.getPlayers()});
-        globals.socketsToGames[socket.id] = undefined;
+        globals.socketsToGames[socket] = undefined;
       }
+
     });
 
+
+    /*
+     * Login for auth
+     */
     socket.on('login', function (data) {
       var userName = data.userName;
       console.log(userName);
@@ -25,11 +37,18 @@ module.exports = function(globals) {
       }
     });
 
+    /*
+     * For chat.
+     */
     socket.on('send', function(data) {
       console.log("SENDING");
       io.sockets.emit('update', data);
     });
 
+    /*
+     * Request a new game. If we already started a game with that name,
+     * send a failure message.
+     */
     socket.on('requestGame', function(data) {
       var myGame = globals.games[data.name];
       if (myGame !== undefined) {
@@ -37,7 +56,7 @@ module.exports = function(globals) {
         {msg : "A game with that name already exists."});  
       } else {      
         myGame = new cards.Game(data.username, socket, 
-                                data.private, data.password, 
+                                data.privy, data.password, 
                                 data.numPlayers, data.name);
         globals.games[data.name] = myGame;
         socket.emit("gotoGame", 
@@ -49,6 +68,9 @@ module.exports = function(globals) {
     });
 
 
+    /*
+     * Join an existing game.
+     */
     socket.on("joinGame", function(data) {
       var myGame = globals.games[data.gamename];
       if (myGame === undefined){
@@ -60,38 +82,23 @@ module.exports = function(globals) {
             players : myGame.getPlayers(),
             gameName : data.gamename
           });
-//          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+          globals.socketsToGames[socket] = {
+            game : myGame,
+            user : data.username
+          }
+          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
         } else {
           socket.emit("joinFailed", {msg : "Unable to join game."});
         }
       }
     });
 
-    socket.on("loadGame", function(data) {
-      var myGame = globals.games[data.gamename];
-      if (myGame === undefined) {
-        socket.emit("joinFailed", {msg : "No game with that name exists"});
-      } else {
-        if (myGame.hasJoinedGame(data.username)) {
-          myGame.enterGame(data.username, socket);
-          socket.emit("joinSuccess", {
-            host: myGame.getHost().getName(),
-            players : myGame.getPlayers(),
-            gameName : data.gamename
-          });
-          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
-          globals.socketsToGames[socket.id] = {
-            game : myGame,
-            user : data.username
-          }
-        } else {
-        }
-      }
-    });
-
+    /*
+     * Switch a player's "Ready" state.
+     */
     socket.on("toggleReady", function(data){
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
         var ready = game.toggleReady(data.name);
         game.updateAll("newPlayer", {
           players : game.getPlayers(),
@@ -101,9 +108,12 @@ module.exports = function(globals) {
 
     });
 
+    /*
+     * Start the game.
+     */
     socket.on("startGame", function(data) {
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
         game.startGame();
         game.updateEach("gameStart", function(player) {
           return { cards : player.getHand() };
@@ -111,16 +121,22 @@ module.exports = function(globals) {
       }
     });
 
+    /*
+     * Draw a card.
+     */
     socket.on("drawCard", function(data) {
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
         socket.emit("drewCard", { cards : game.drawCards(data.username, 1)});
       }
     })
 
+    /*
+     * Discard a card.
+     */
     socket.on("discard", function(data) {
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
         var discardPile = game.discard(data.username, data.rank, data.suit);
         game.updateEach("discard", function(player) {
           return { cards :player.getHand(),
@@ -129,9 +145,12 @@ module.exports = function(globals) {
       }
     });
 
-    socket.on('send', function(data) {
-      if (globals.socketsToGames[socket.id] !== undefined) {
-        var game = globals.socketsToGames[socket.id].game;
+    /*
+     * Send chat in a game.
+     */
+    socket.on('sendInGame', function(data) {
+      if (globals.socketsToGames[socket] !== undefined) {
+        var game = globals.socketsToGames[socket].game;
         game.updateAll('update', data);
       }
     });
