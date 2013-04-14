@@ -36,7 +36,7 @@ $(document).ready(function(){
   //$("#requestGame").click(requestGame);
 
   window.LoginManager.setLoginSuccess(hideLogin);
-      
+
 });
 
 function hideLogin(){
@@ -45,6 +45,7 @@ function hideLogin(){
     $(headerBar[i]).toggleClass("hidden");
   };
 
+  $("#chatBar").toggleClass("hidden");
   $("#gameDiv").toggleClass("hidden");
 }
 
@@ -57,8 +58,10 @@ function handleGamePW() {
 }
 
 function doSend() {
-  var text = $('#text').val();
-  socket.emit('send', { msg : text});
+  if (username !== undefined) {
+    var text = $('#text').val();
+    socket.emit('send', { msg : text});
+  }
 }
 
 function joinGame() {

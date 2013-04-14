@@ -70,6 +70,8 @@ $(document).ready(function(){
         //==================
 
         function login(username, password, done){
+            window.username = username;
+            window.password = password;
             post(
                 '/login', 
                 {   
@@ -150,7 +152,6 @@ $(document).ready(function(){
                     var cookie = cookies[i];
                     window.username = cookie.substring("username=".length, 
                         cookie.length);
-                    console.log(username);
                     found = true;
                 }
                 if (cookies[i].indexOf("password=") === 0) {

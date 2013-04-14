@@ -8,9 +8,8 @@ $(document).ready(function(){
     function() {
       var gamename = window.location.href.split("/game/")[1];
 
-      socket.emit("joinGame", {
+      socket.emit("loadGame", {
         username: window.username,
-        password: window.password,
         gamename: gamename
       });
 

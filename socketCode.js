@@ -6,16 +6,15 @@ module.exports = function(globals) {
   io.sockets.on('connection', function (socket) {
 
     socket.on('disconnect', function (data) {
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
-        console.log(globals.socketsToGames[socket].user + ' DISCONNESSO!!!');
-        game.removePlayer(globals.socketsToGames[socket].user);
+
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
+        console.log(globals.socketsToGames[socket.id].user + ' disconnected.');
+        game.removePlayer(globals.socketsToGames[socket.id].user);
         game.updateAll("newPlayer", {players : game.getPlayers()});
-        globals.socketsToGames[socket] = undefined;
+        globals.socketsToGames[socket.id] = undefined;
       }
-
     });
-
 
     socket.on('login', function (data) {
       var userName = data.userName;
@@ -38,7 +37,7 @@ module.exports = function(globals) {
         {msg : "A game with that name already exists."});  
       } else {      
         myGame = new cards.Game(data.username, socket, 
-                                data.privy, data.password, 
+                                data.private, data.password, 
                                 data.numPlayers, data.name);
         globals.games[data.name] = myGame;
         socket.emit("gotoGame", 
@@ -61,20 +60,38 @@ module.exports = function(globals) {
             players : myGame.getPlayers(),
             gameName : data.gamename
           });
-          globals.socketsToGames[socket] = {
-            game : myGame,
-            user : data.username
-          }
-          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+//          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
         } else {
           socket.emit("joinFailed", {msg : "Unable to join game."});
         }
       }
     });
 
+    socket.on("loadGame", function(data) {
+      var myGame = globals.games[data.gamename];
+      if (myGame === undefined) {
+        socket.emit("joinFailed", {msg : "No game with that name exists"});
+      } else {
+        if (myGame.hasJoinedGame(data.username)) {
+          myGame.enterGame(data.username, socket);
+          socket.emit("joinSuccess", {
+            host: myGame.getHost().getName(),
+            players : myGame.getPlayers(),
+            gameName : data.gamename
+          });
+          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+          globals.socketsToGames[socket.id] = {
+            game : myGame,
+            user : data.username
+          }
+        } else {
+        }
+      }
+    });
+
     socket.on("toggleReady", function(data){
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
         var ready = game.toggleReady(data.name);
         game.updateAll("newPlayer", {
           players : game.getPlayers(),
@@ -85,8 +102,8 @@ module.exports = function(globals) {
     });
 
     socket.on("startGame", function(data) {
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
         game.startGame();
         game.updateEach("gameStart", function(player) {
           return { cards : player.getHand() };
@@ -95,15 +112,15 @@ module.exports = function(globals) {
     });
 
     socket.on("drawCard", function(data) {
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
         socket.emit("drewCard", { cards : game.drawCards(data.username, 1)});
       }
     })
 
     socket.on("discard", function(data) {
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
         var discardPile = game.discard(data.username, data.rank, data.suit);
         game.updateEach("discard", function(player) {
           return { cards :player.getHand(),
@@ -113,8 +130,8 @@ module.exports = function(globals) {
     });
 
     socket.on('send', function(data) {
-      if (globals.socketsToGames[socket] !== undefined) {
-        var game = globals.socketsToGames[socket].game;
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
         game.updateAll('update', data);
       }
     });

@@ -109,6 +109,15 @@ var PlayerData = function(hostname, socket) {
   this.socket = socket;
   this.hand = [];
   this.ready = false;
+  this.inGame = false;
+}
+
+PlayerData.prototype.getInGame = function() {
+  return this.inGame;
+}
+
+PlayerData.prototype.setInGame = function(bool) {
+  this.inGame = bool;
 }
 
 PlayerData.prototype.getName = function() {
@@ -142,10 +151,10 @@ PlayerData.prototype.discard = function(card) {
 }
 
 
-var Game = function(hostName, socket, private, password, 
+var Game = function(hostName, socket, privateGame, password, 
                     numPlayers, gameName) {
 
-  console.log(hostname);
+  console.log("Host" + hostName);
   this.players = [];
   this.numPlayers = 0;
   this.host = new PlayerData(hostName, socket);
@@ -155,8 +164,8 @@ var Game = function(hostName, socket, private, password,
   this.name = gameName;
   this.start = false;
   this.discardPile = [];
-  this.private = private || false;
-  if (this.private) {
+  this.privateGame = privateGame;
+  if (this.privateGame) {
     console.log("PRIVATE GAME");
     this.password = password;
   }
@@ -225,15 +234,33 @@ Game.prototype.addPlayer = function(playerName, socket) {
   this.numPlayers++;
 };
 
+Game.prototype.hasJoinedGame = function(playerName) {
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+      return true;
+    }
+  };
+  return false;
+}
+
+Game.prototype.enterGame = function(playerName, socket) {
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+      this.players[i].setInGame(true);
+      this.players[i].setSocket(socket);
+    }
+  };
+}
+
 Game.prototype.join = function(password, playerName, socket) {
 
   console.log(this.numPlayers, this.playerLimit);
 
-  if (this.numPlayers === this.playerLimit) {
+  if (this.start === true) {
     return false;
   }
 
-  if (this.start === true) {
+  if (this.numPlayers === this.playerLimit) {
     return false;
   }
 
@@ -244,7 +271,7 @@ Game.prototype.join = function(password, playerName, socket) {
     }
   };
 
-  if (this.private) {
+  if (this.privateGame) {
     if (this.password === password) {
       this.addPlayer(playerName, socket);
       return true;
@@ -259,6 +286,7 @@ Game.prototype.join = function(password, playerName, socket) {
 
 Game.prototype.updateAll = function(socketMsg, data) {
   for (var i = this.players.length - 1; i >= 0; i--) {
+    console.log(this.players[i].getName());
     this.players[i].getSocket().emit(socketMsg, data);
   };
 }
