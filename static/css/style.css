@@ -100,17 +100,31 @@ h4{
 	border: 5px
 }
 
+
+.chats {
+	overflow-y: scroll;
+	position: relative;
+}
+
 #chat {
 	width: 270px;
-	position: fixed;
+	position: relative;
 	z-index: 900;
-	left: 0;
-	top: 0;
+	top: 0px;
+	float: left;
 	height: 100%;
 	background-color: #f7f7f7;
 	color: #464751;
 	font-size: 12px;
 	border-right: 1px solid #a9acb1;
+	display: inline-block;
+}
+
+.bigDiv {
+	position: absolute;
+	top: 85px;
+	height: 600px;
+	width: 98%;
 }
 
 .text{
@@ -138,9 +152,6 @@ h4{
 	z-index: 2; 
 }
 
-.diamond, .hearts{
-	background-color: #FF372F;
-}
 .chatBar {
 	margin: 10px
 	float: right;
@@ -256,18 +267,6 @@ button:hover{
 	padding: 5px;
 }
 
-#playarea{
-	width: 870px;
-	height: 600px;
-	position: absolute;
-	left: 271px;
-}
-
-#deckarea{
-	position: absolute;
-	top: 250px;
-	left: 250px;
-}
 
 
 .before {
@@ -298,35 +297,64 @@ button:hover{
 	right: 5px;
 }
 
+
 .handle{
 	padding-top: -20px;
 	position: inherit;
 }
+
+.player {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+}
+
+.vert {
+	width: 100px;
+	height: 100%;
+	display: inline-block;
+}
+
+.horz {
+	height: 100px;
+	width: 100%;
+}
+
+.middleDiv {
+	position: relative;
+	display: block;
+	width: 640px;
+}
+
 #player1{
-	position: absolute;
-	height: 80px;
-	left: 360px
+	bottom: 10px;
 }
 
 #player2{
-	position: absolute;
-	height: 60px;
-	right: 5px;
-	top: 270px;
+	left: 5px;
+	float: left;
 }
 
 #player3{
-	position: absolute;
-	height: 60px;
-	left: 360px;
-	bottom: 5px;
+	top: 10px;
 }
 
 #player4{
-	position: absolute;
-	left: 5px;
-	top: 270px;
+	right: 15px;
+	float: right;
 }
+
+#playarea{
+	float: right;
+	position: relative;
+}
+
+#deckarea{
+	position: relative;
+	top: 120px;
+	left: 120px;
+}
+
 .circle{
 	width: 50px;
 	height: 50px;
@@ -347,8 +375,9 @@ button:hover{
 	float: left;
 	height: 84px; 
 	margin: 0 15px 15px 0; 
+	padding: 0px 5px 0px 5px;
 	position: relative; 
-	width: 60px; 
+	min-width: 60px; 
 	z-index: 2; 
 }
 
@@ -367,4 +396,8 @@ button:hover{
 .handHorizontal li{
 	display: inline-block;
 	margin-left: -30px;
+}
+
+.diamond, .hearts{
+	background-color: #FF372F;
 }

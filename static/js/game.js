@@ -3,10 +3,10 @@ window.username;
 window.password;
 window.iAmHost;
 
-var heartUnicode = "&#9829";
-var spadeUnicode = "&#9824;";
-var diamondUnicode = "&#9830;";
-var clubUnicode = "&#9827;";
+window.heartUnicode = "&#9829";
+window.spadeUnicode = "&#9824;";
+window.diamondUnicode = "&#9830;";
+window.clubUnicode = "&#9827;";
 
 $(document).ready(function(){
 
@@ -32,7 +32,6 @@ $(document).ready(function(){
   // New player added to game
   socket.on("newPlayer", function(data) {
     var playerList = $("#playerList");
-    console.log(data);
     playerList.html("");
     for (var i = data.players.length - 1; i >= 0; i--) {
       var name = data.players[i].userName;
@@ -40,7 +39,7 @@ $(document).ready(function(){
       var res = name + " " + ready;
       playerList.append($("<li>").html(res));
     };
-    if (data.allReady === true) { //&& iAmHost !== undefined) {
+    if (data.allReady === true && iAmHost !== undefined) {
       $("#startButton").removeClass("none");
       $("#startButton").click(doStart);
     }
@@ -121,12 +120,8 @@ function doStart() {
 
 
 function getUnicodeSymbol(suit){
-	var heartUnicode = "&#9829";
-	var spadeUnicode = "&#9824;";
-	var diamondUnicode = "&#9830;";
-	var clubUnicode = "&#9827;";
 
-	if(suit==="Clubs"){
+	if (suit==="Clubs"){
 		return clubUnicode;
 	}
 	else if(suit==="Spades"){
@@ -140,6 +135,24 @@ function getUnicodeSymbol(suit){
 	}
 
 }
+
+function getSuit(unicode){
+
+  if (unicode === clubUnicode){
+    return "Clubs";
+  }
+  else if(unicode === spadeUnicode){
+    return "Spades";
+  }
+  else if(unicode === diamondUnicode){
+    return "Diamonds";
+  }
+  else {
+    return "Hearts";
+  }
+
+}
+
 // Draw a card
 function drawCard() {
   socket.emit("drawCard", {username : username});
@@ -153,14 +166,23 @@ function populateHand(cards) {
     var rank = cards[i].rank;
     var suit = getUnicodeSymbol(cards[i].suit);
     var res = rank + suit;
-    var newLI = $("<li>").html("<button class=\"miniCard\" value=\""+ res +"\">" + 
-                               res + "</button");
+    var newLI = $("<li>")
+    var newButton = $("<button>");
+    newButton.addClass("miniCard");
+    if (suit === heartUnicode || suit === diamondUnicode) {
+      newButton.addClass("diamond");
+    }
+    newButton.html(res);
+    newButton.val(res);
+    newLI.append(newButton);
     cardList.append(newLI);
   }
-  $(".cardInHand").click(function() {
-    var cardData = this.value.split(" of ");
+  $(".miniCard").click(function() {
+    var cardData = this.value.split("&");
+
     var rank = cardData[0];
-    discard(rank, cardData[1]);
+    var suit = "&" + cardData[1];
+    discard(rank, getSuit(suit));
   });
 }
 
@@ -170,9 +192,7 @@ function populateDiscard(cards) {
   cardList.html("");
   for (var i = cards.length - 1; i >= 0; i--) {
     var rank = cards[i].rank;
-    var suit = cards[i].suit;
-    var res = rank + " of " + suit;
-    var newLI = $("<li>").html(res);
+    var newLI = $("<li>").html(rank + getUnicodeSymbol(cards[i].suit));
     cardList.append(newLI);
   }
 }

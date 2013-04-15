@@ -1,5 +1,5 @@
 var c = {};
-c.ranks =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+c.ranks =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', "K"];
 c.suits =  ["Clubs", "Diamonds", "Hearts", "Spades"];
 
 /*
@@ -27,16 +27,6 @@ Card.prototype.getRank = function() {
 
 Card.prototype.toString = function() {
   var rank = this.rank;
-
-  if (rank === 11) {
-    rank = "Jack";
-  } else if (rank === 12) {
-    rank = "Queen";
-  } else if (rank === 13) {
-    rank = "King";
-  } else if (rank === 1) {
-    rank = "Ace";
-  } 
 
   return rank + " of " + this.suit;
 }
@@ -157,10 +147,11 @@ var Game = function(hostName, socket, privateGame, password,
   console.log("Host" + hostName);
   this.players = [];
   this.numPlayers = 0;
+  this.numReady = 0;
   this.host = new PlayerData(hostName, socket);
   this.addPlayer(hostName, socket);
   this.deck = new Deck(1);
-  this.playerLimit = numPlayers;
+  this.playerLimit = parseInt(numPlayers);
   this.name = gameName;
   this.start = false;
   this.discardPile = [];
@@ -175,6 +166,7 @@ var Game = function(hostName, socket, privateGame, password,
 
 Game.prototype.discard = function(player, rank, suit) {
   var oldCard = new Card(rank, suit);
+  console.log(oldCard.toString);
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].name === player) {
       this.discardPile.push(oldCard);
@@ -253,16 +245,10 @@ Game.prototype.enterGame = function(playerName, socket) {
 }
 
 Game.prototype.join = function(password, playerName, socket) {
-
-  console.log(this.numPlayers, this.playerLimit);
-
   if (this.start === true) {
     return false;
   }
 
-  if (this.numPlayers === this.playerLimit) {
-    return false;
-  }
 
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName){ 
@@ -270,6 +256,10 @@ Game.prototype.join = function(password, playerName, socket) {
       return true;
     }
   };
+
+  if (this.numPlayers === this.playerLimit) {
+    return false;
+  }
 
   if (this.privateGame) {
     if (this.password === password) {
@@ -317,17 +307,24 @@ Game.prototype.isHost = function(playerName) {
   return this.host.getName() === playerName;  
 }
 
+Game.prototype.isReady = function() {
+  return (this.numReady === this.playerLimit);
+}
+
+
 Game.prototype.toggleReady = function(playerName) {
 for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName) {
       if (this.players[i].ready === true) {
         this.players[i].ready = false;
+        this.numReady--;
 
       } else {
         this.players[i].ready = true;
         this.numReady++;
+        console.log("cards" + this.numReady, this.playerLimit);
 
-        if (this.numReady = this.playerLimit){
+        if (this.numReady === this.playerLimit){
           return true;
         } else {
           return false;
