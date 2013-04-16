@@ -8,7 +8,17 @@ window.spadeUnicode = "&#9824;";
 window.diamondUnicode = "&#9830;";
 window.clubUnicode = "&#9827;";
 
+window.discardPile;
+
 $(document).ready(function(){
+
+
+  $(window).resize(function() {
+    var width = document.width;
+    $(".horz").css("width", width - $("#chat").width() - 160);
+  });
+
+  $(".horz").css("width", document.width - $("#chat").width() - 160);
 
   // On login, try to join the game.
   window.LoginManager.setLoginSuccess(
@@ -71,8 +81,8 @@ $(document).ready(function(){
   // Game starts. show my hand.
   socket.on("gameStart", function(data) {
     populateHand(data.cards);
-    $("#drawButton").removeClass("none");
-    $("#drawButton").click(drawCard);
+    $("#deck").click(drawCard);
+
   })
 
   // If login is unsuccessful, go back to the homepage
@@ -183,26 +193,53 @@ function populateHand(cards) {
     newButton.val(res);
     newLI.append(newButton);
     cardList.append(newLI);
-  }
-  $(".miniCard").click(function() {
-    var cardData = this.value.split("&");
+    newLI.mousedown(function(e) {
+      window.dragging = $(e.target);
+      var that = $(this);
+      var origOffset = that.offset();
 
+      $(document.body).on("mousemove", function(e) {
+        if (window.dragging !== undefined) {
+          window.dragging.offset({
+            top : e.pageY - that.width()/2,
+            left: e.pageX - that.height()/2
+          });
+        }
+      });
+
+      $(this).on("mouseup", function(e){
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("mousemove");
+      });
+
+    });
+  }
+
+    /*var cardData = this.value.split("&");
     var rank = cardData[0];
     var suit = "&" + cardData[1];
-    discard(rank, getSuit(suit));
-  });
+    discard(rank, getSuit(suit));*/
+
+
+  //});
 }
 
 // Populate the discard pile DOM element
 function populateDiscard(cards) {
-  var cardList = $("#discardPile");
-  cardList.html("");
-  for (var i = cards.length - 1; i >= 0; i--) {
-    var rank = cards[i].rank;
-    var newLI = $("<li>").html(rank + getUnicodeSymbol(cards[i].suit));
-    cardList.append(newLI);
-  }
+  var discard = $("#discard");
+  var index = cards.length - 1;
+  window.discardPile = cards;
+  discard.html("");
+  discard.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
+  discard.click(function() {
+    alert(this.html());
+  })
 }
+
+
+
+
 
 // discard a card
 function discard(rank, suit) {

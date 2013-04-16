@@ -131,7 +131,7 @@ h4{
 .bigDiv {
 	position: absolute;
 	top: 70px;
-	height: 570px;
+	height: 600px;
 }
 
 .text{
@@ -381,6 +381,13 @@ button:hover{
 	position: relative;
 	top: 120px;
 	left: 120px;
+}
+
+.public:hover {
+	background: #4682b4;
+}
+
+#deck:hover {
 }
 
 #discard {

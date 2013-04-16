@@ -144,7 +144,7 @@ module.exports = function(globals) {
         var game = globals.socketsToGames[socket].game;
         var discardPile = game.discard(data.username, data.rank, data.suit);
         game.updateEach("discard", function(player) {
-          return { cards :player.getHand(),
+          return { cards : player.getHand(),
           discardPile : discardPile };
         });
       }
