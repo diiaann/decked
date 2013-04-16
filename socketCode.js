@@ -100,6 +100,7 @@ module.exports = function(globals) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
         var ready = game.toggleReady(data.name);
+        console.log(game.numReady, game.numPlayers);
         game.updateAll("newPlayer", {
           players : game.getPlayers(),
           allReady : ready
@@ -114,10 +115,14 @@ module.exports = function(globals) {
     socket.on("startGame", function(data) {
       if (globals.socketsToGames[socket] !== undefined) {
         var game = globals.socketsToGames[socket].game;
-        game.startGame();
-        game.updateEach("gameStart", function(player) {
-          return { cards : player.getHand() };
-        });
+        if (game.isReady()) {
+          game.startGame();
+          game.updateEach("gameStart", function(player) {
+            return { cards : player.getHand() };
+          });
+        } else {
+          console.log("HOW DID WE GET HERE?");
+        }
       }
     });
 

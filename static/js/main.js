@@ -49,10 +49,12 @@ $(document).ready(function(){
 function hideLogin(){
   var headerBar = $(".loginFields").children();
   for (var i = headerBar.length - 1; i >= 0; i--) {
-    $(headerBar[i]).toggleClass("hidden");
+    $(headerBar[i]).toggleClass("invisible");   
   };
-
-  $("#gameDiv").toggleClass("hidden");
+  
+  $("#profileArea").html("Welcome back.");
+  $("#loggedIn").toggleClass("invisible");
+  $("#formArea").toggleClass("hidden");
 }
 
 // Hides game password fields

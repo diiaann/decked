@@ -1,0 +1,176 @@
+ol, ul {
+	list-style: none;
+}
+
+body{
+	font-family: "freight-sans-pro",arial,san-serif;
+	color: black;
+	margin: 0px;
+}
+
+#playarea{
+	width: 100%;
+	height: 100%; 
+	position: absolute;
+}
+
+#player1{
+	position: absolute;
+	bottom: 0px;
+}
+
+#logoutButton{
+	color: gray;
+	background-color: #acefff;
+	border-radius: 0;
+	width: 65px;
+	height: 100px;
+	padding-top: 60px;
+	background-position: center center;
+	background-image: url("../imgs/power.png");
+	background-repeat: no-repeat;
+	border: gray 1px solid;
+}
+
+#undo{
+	color: gray;
+	background-color: #acefff;
+	border-radius: 0;
+	border: gray 1px solid;
+	height: 100px;
+	padding-top: 60px;
+	width: 65px;
+	background-position: center center;
+	background-image: url("../imgs/undo.png");
+	background-repeat: no-repeat;
+}
+
+#chat{
+	color: gray;
+	border-radius: 0;
+	background-color: #acefff;
+	width: 65px;
+	height: 100px;
+	padding-top: 60px;
+	background-position: center center;
+	background-image: url("../imgs/chat.png");
+	background-repeat: no-repeat;
+	border: gray 1px solid;
+}
+
+#undo{
+	color: gray;
+	background-color: #acefff;
+
+	border-radius: 0;
+	border: gray 1px solid;
+	height: 100px;
+	padding-top: 60px;
+	width: 65px;
+	background-image: url("../imgs/undo.png");
+	background-repeat: no-repeat;
+}
+
+.diamond, .hearts{
+	background-color: #FF372F;
+}
+
+#bottom{
+	position: absolute;
+	padding: 10px;
+	bottom: 0px;
+	width: 100%;
+	height: 84px;
+	background-color: #d6d6d6;
+}
+
+
+#menu{
+	width: 65px;
+	position: absolute;
+	right: 0px;
+	height: 100%;
+	background-color: lightblue;
+}
+
+.handHorizontal{
+	list-style: none;
+}
+
+.handHorizontal li{
+	display: inline-block;
+	margin-left: -30px;
+}
+
+
+.circle{
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	background-color: gray;
+	display: inline-block;
+}
+
+#menu ul{
+	position: absolute;
+	right: 0px;
+	margin: 0px;
+}
+
+.miniCard { 
+	color: white;
+	text-align: center;
+	font-size: 50px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	height: 84px; 
+	padding: 0px 5px 0px 5px;
+	position: relative; 
+	min-width: 60px; 
+	z-index: 2; 
+}
+
+#readyButton, #startButton{
+	margin: 2px;
+}
+button{
+	border: none;
+	border-radius: 5px;
+	background: #80cf98;
+	padding: 5px;
+	color: white;
+	height: 30px;
+	font-size: 14px;
+	font-family: "freight-sans-pro",arial,san-serif;
+
+}
+
+.invisible{
+	display: none;
+}
+
+#p1{
+	height: 40px;
+}
+
+#p2, #p3, #p4{
+	position: absolute;
+}
+#p2{
+	left: 2%;
+}
+
+#p3{
+	left: 40%;
+}
+#p2, #p4{
+	top: 40%;
+}
+
+#p4{
+	right:10%;
+}

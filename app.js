@@ -72,20 +72,22 @@ app.get("/static/:staticFilename", function (request, response) {
 
 // Get a game 
 app.get("/game/:gameName", function (request, response) {
-    var moblie = checkMobile(request.headers["user-agent"]);
+    var mobile = checkMobile(request.headers["user-agent"]);
     console.log(mobile);
-  if (globals.games[request.params.gameName] === undefined) {
+    if (mobile !== false) {
+        response.sendfile("static/game.html");
+    } else if (globals.games[request.params.gameName] === undefined) {
     response.sendfile("static/404.html");  
-  } else {
-    // Serves game
-    if (request.params.gameName.indexOf(".") === -1){
-      response.sendfile("static/game.html");
-    } 
-    // Serves scripts and stylesheets
-    else {
-      response.sendfile("static/" + request.params.gameName);
+    } else {
+        // Serves game
+        if (request.params.gameName.indexOf(".") === -1){
+          response.sendfile("static/game2.html");
+        } 
+        // Serves scripts and stylesheets
+        else {
+          response.sendfile("static/" + request.params.gameName);
+        }
     }
-  }
 });
 
 

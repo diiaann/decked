@@ -29,93 +29,88 @@
   </head>
 
     <body id="home">
-    	<div id="header">
-    		<div class="row">
-    			<div class="threecol"><div id="logo"><img src="imgs/logoSmall.png"> decked</div></div>
-    			<div class="sixcol last">
+    	<div id="hero">
+    	<div class="row">
+    		<div class="twelvecol">
+    		
+    			<h1>Decked</h1>
+    			<h2>Play any game</h2>
+    		</div>
+    	</div>
+    	</div>
+    	<div class="row">
+    		<div class="sixcol">
+    			<h3 id="profileArea">Sign in or register to start!</h3>
+    			<hr>
+    			<div id="loggedIn" class="invisible">
+    				<div class="circle"></div> Name
+    			</div>
     			<div class="loginFields">
     				<input id="usernameInput" type="text" placeholder="username"/> 
     				<input id="passwordInput" type="password"/> 
-    				<button id="loginButton"> sign in </button>
-    				<button id="registerButton"> sign up </button>
-                    <button id="logoutButton" class="hidden"> log out </button>
-    			</div>
-    			</div>
+    				<div>
+    					<button id="loginButton"> sign in </button>
+    					<button id="registerButton"> sign up </button>
+    				</div>
+    				
+    				<button id="logoutButton" class="invisible"> log out </button>
+    		</div>
+    		</div>
+    		<div class="sixcol last">
+    			<h3>About</h3>
+    			<hr>
+    			<p class="text">
+    				We found that there were only card game specific apps or simple deck shuffling apps that couldn't support a full game. Our goals is to allow people play any card game.  			
+    			</p>
     		</div>
     	</div>
-    	<div id="main">
+    	
+    	<div id="formArea" class="hidden">
     	<div class="row">
-    		<div class="twelvecol">
-        	<h1>A way to play any card game</h1>
-    		</div>
-    	</div>
-    	<br />
-    	<div class="row">
-
-        	<div class="sixcol"><img src="http://placehold.it/547x400"></div>
-    		<div class="fourcol">
-                <div class="text">
-                    <p>Lorem ipsum dolor sit amet, consectetur elit. Donec dapibus posuere ut congue. Nulla iaculis sed quam accumsan commodo. Praesent vel leo ut magna mollis consequat. Cras commodo rhoncus tempor. Donec pharetra purus.</p>
-	    	    <button>Learn more</button>
-                </div>
-            </div>
-
-    	    <div class="sixcol last hidden" id="gameDiv">
-
+    	    <div class="sixcol">
+	    	    <div id="hostGame">
                 <form id="gameForm" action="javascript:requestGame()">  
-                    <h2>Host a game</h2>
-                    
+                    <h3>Host a game</h3>
                     <div>
-                        <input id="groupName" type="text" placeholder="game name"> game name </input>
+                        <input id="groupName" type="text" placeholder="game name"></input>
                     </div>
 
                     <div>
-                        <input id="numPlayers" type="number" min="1" max="4" value="4"> #players</input>
-
-                    </div>
-
-                    <div>
+                        <input id="numPlayers" type="number" min="1" max="4" value="1"> #players</input>
                         <input id="private" type="checkbox" checked="checked"> Private game?</input>
                     </div>
 
+
                     <div id="gamePWDiv">
-                        <input id="gamePW" type="text"> game password</input>
+                        <input id="gamePW" type="text" placeholder="game password"></input>
                     </div>
 
                     <button id="requestGame"> Host my game! </button>
                  </form>
-                 
+                 </div>
+            </div>
+            <br />
+             <div class="sixcol last">
+              	<div id="joinGame">   
                 <form id="joinForm" action="javascript:joinGame()">
 
-                    <h2>Join an existing one!</h2>
-
+                    <h3>Join an existing one!</h3>
                     <div>
-                        <input id="joinGameName" type="text"> Game Name</input>
+                        <input id="joinGameName" type="text" placeholder="game name"></input>
                     </div>
 
                     <div>
-                        <input id="joinPW" type="text"> Game Password (if applicable)</input> 
+                        <input id="joinPW" type="text" placeholder="password"></input> 
                     </div>
 
                     <button id="joinGame"> Join a game!</button>
 
                 </form>
-
-            </div>
+              </div>
+             </div> 
+        </div>
         </div>
          
-        <div id="chatBar" class="hidden">
-            <form action="javascript:doSend()">
-                <div>
-                    <input id="text" type="text" placeholder="type here!"></input>
-                    <button id="sendChat"> talk! </button>
-                    <div class="chat">
-                        <ul id="chat"></ul>
-                    </div>
-                </div>
-            </form>
-
-        </div>
 
     </body>
 </html>
