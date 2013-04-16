@@ -45,9 +45,9 @@
             		
           	<div id="playarea" class="clearfix">
 	          		<div id="gameName">Game</div>
-                    <div id="player3" class="horz player">
+                    <div id="player3" class="horz player hidden">
                       <div class="circle"></div>
-                      Player 3
+                      <span id="player3name">Player 3</span>
                       <ul class="handHorizontal">
                         <li><div class="miniCard"></div></li>
                         <li><div class="miniCard"></div></li>
@@ -57,8 +57,9 @@
                         <li><div class="miniCard"></div></li>
                       </ul>
                     </div>
+
                     <div class="middleDiv">
-                        <div id="player2" class="vert player">
+                        <div id="player2" class="vert player hidden">
                           <div class="vertHand">
                            <ul class="handVertical">
                             <li><div class="miniCard"></div></li>
@@ -68,9 +69,9 @@
                             <li><div class="miniCard"></div></li>
                             <li><div class="miniCard"></div></li>
                           </ul>
-                        </div>
                         <div class="circle"></div>
-                          <p>Player 2</p>
+                          <p id="player2name">Player 2</p>
+                        </div>
                         </div>
                         
                         <div id="deckarea">
@@ -88,7 +89,7 @@
                         
                         </div>
                         
-                        <div id="player4" class="vert player">
+                        <div id="player4" class="vert player hidden">
                           <div class="vertHand">
                            <ul class="handVertical">
                             <li><div class="miniCard"></div></li>
@@ -98,10 +99,11 @@
                             <li><div class="miniCard"></div></li>
                             <li><div class="miniCard"></div></li>
                           </ul>
-                          </div>
                           <div class="circle"></div>
-                          <p>Player 4</p>
-                        </div>                
+                            <p id="player4name">Player 4</p>
+                          </div>  
+                        </div>
+
                     </div class="middleDiv">
 
                     <div id="player1" class="horz player">
@@ -114,8 +116,8 @@
                         <li><div class="miniCard"></div></li>
                       </ul>
                       <div class="circle"></div>
-                      Player 1
-                      <button>ready</button>
+                      <span id="player1name">Player 1</span>
+                      <button id="readyButton">ready</button>
                       <button class="none" id="startButton">Start!</button>
 
                     </div>

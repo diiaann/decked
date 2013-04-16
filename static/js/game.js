@@ -1,7 +1,7 @@
 window.socket;
 window.username;
 window.password;
-window.iAmHost;
+window.iAmHost = false;
 
 window.heartUnicode = "&#9829";
 window.spadeUnicode = "&#9824;";
@@ -36,14 +36,39 @@ $(document).ready(function(){
         $(headerBar[i]).toggleClass("hidden");
       };
 
-      socket.emit("toggleReady", {name : username});
-
   });
 
   socket = io.connect("http://localhost:8888");
-
   // New player added to game
   socket.on("newPlayer", function(data) {
+    var numPlayers = data.players.length;
+    var players = data.players;
+    console.log(players.length);
+    var playerDivs = getPlayerDivs(numPlayers);
+    var myIndex = getIndexFromPlayers(username, players);
+    console.log(myIndex);
+    console.log(players);
+    console.log(playerDivs);
+    for (var i = 0; i < myIndex; i++) {
+      players.push(players.shift());
+    };
+    console.log(players);
+    if (playerDivs.length !== players.length) {
+      alert("LISTS NOT THE SAME");
+    }
+
+    for (var i = 0; i < playerDivs.length; i++) {
+      var currentDiv = playerDivs[i];
+      $(currentDiv).addClass("hidden");
+    }
+
+    for (var i = 0; i < playerDivs.length; i++) {
+      var currentDiv = playerDivs[i]
+      $(currentDiv).removeClass("hidden");
+      $(currentDiv+"name").html(players[i].userName);
+    };
+
+    /*
     var playerList = $("#playerList");
     playerList.html("");
     for (var i = data.players.length - 1; i >= 0; i--) {
@@ -51,8 +76,8 @@ $(document).ready(function(){
       var ready = data.players[i].ready;
       var res = name + " " + ready;
       playerList.append($("<li>").html(res));
-    };
-    if (data.allReady === true && iAmHost !== undefined) {
+    };*/
+    if (data.allReady === true && (iAmHost === true)) {
       $("#startButton").removeClass("none");
       $("#startButton").click(doStart);
     }
@@ -65,6 +90,28 @@ $(document).ready(function(){
 
   // Join successful. Show list of players
   socket.on("joinSuccess", function(data) {
+    var numPlayers = data.players.length;
+    var players = data.players;
+    console.log(players.length);
+    var playerDivs = getPlayerDivs(numPlayers);
+    var myIndex = getIndexFromPlayers(username, players);
+    console.log(players);
+    for (var i = 0; i < myIndex; i++) {
+      players.push(players.shift());
+    };
+    console.log(players);
+    if (playerDivs.length !== players.length) {
+      alert("LISTS NOT THE SAME");
+    }
+
+    for (var i = 0; i < playerDivs.length; i++) {
+      var currentDiv = playerDivs[i]
+      $(currentDiv).addClass("hidden");
+    }
+    for (var i = 0; i < playerDivs.length; i++) {
+      var currentDiv = playerDivs[i]
+      $(currentDiv).removeClass("hidden");
+    };/*
     var playerList = $("#playerList");
     playerList.html("");
     for (var i = data.players.length - 1; i >= 0; i--) {
@@ -72,7 +119,7 @@ $(document).ready(function(){
         var ready = data.players[i].ready;
         var res = name + " " + ready;
         playerList.append($("<li>").html(res));
-       };   
+       };   */
     if (data.host === username) {
       iAmHost = true;
     } 
@@ -110,6 +157,7 @@ $(document).ready(function(){
   $("#gameName").html(window.location.href.split("/game/")[1]);
   $("#readyButton").click(toggleReady);
   $(".chats").css("height", 600);
+  $("#player1name").html(username);
 
 });
 
@@ -117,6 +165,7 @@ $(document).ready(function(){
 function toggleReady() {
   $("#readyButton").toggleClass("before");
   $("#readyButton").toggleClass("after");
+  socket.emit("toggleReady", {name : username});
 }
 
 // Sends chat
@@ -137,7 +186,6 @@ function doStart() {
 
 
 function getUnicodeSymbol(suit){
-
 	if (suit==="Clubs"){
 		return clubUnicode;
 	}
@@ -238,9 +286,6 @@ function populateDiscard(cards) {
 }
 
 
-
-
-
 // discard a card
 function discard(rank, suit) {
   socket.emit("discard", {
@@ -249,4 +294,32 @@ function discard(rank, suit) {
     suit: suit
   });
 
+}
+
+
+function getPlayerDivs(numPlayers) {
+  switch(numPlayers) {
+    case 1:
+      return ["#player1"];
+      break;
+    case 2:
+      return ["#player1", "#player3"];
+      break;
+    case 3:
+      return ["#player1", "#player2", "#player4"];
+      break;
+    case 4: 
+      return ["#player1", "#player2", "#player3", "#player4"]; 
+      break;
+    default:
+      return [];
+  }
+}
+
+function getIndexFromPlayers(name, players) {
+  for (var i = players.length - 1; i >= 0; i--) {
+    if (players[i].userName === name) {
+      return i;
+    }
+  };
 }

@@ -134,14 +134,6 @@ h4{
 	height: 600px;
 }
 
-.text{
-	color: white;
-	font-family: "freight-sans-pro",arial,san-serif;
-	font-size: 165px;
-	font-weight: 300;
-
-}
-
 .card { 
 	color: white;
 	text-align: center;
@@ -160,7 +152,7 @@ h4{
 }
 
 .chatBar {
-	margin: 10px
+	margin: 10px;
 	float: right;
 	width: 40%;
 	display: inline-block;
@@ -226,6 +218,11 @@ h4{
 	padding-top: 30px; 
 	color: gray;
 }
+
+#text {
+	width: 260px;
+}
+
 input {
 	font-size: 20px;
 	font-family: "freight-sans-pro",arial,san-serif;
@@ -280,6 +277,14 @@ button:hover{
 }
 
 .text{
+	color: white;
+	font-family: "freight-sans-pro",arial,san-serif;
+	font-size: 165px;
+	font-weight: 300;
+
+}
+
+.text{
 	font-family: "ff-tisa-web-pro",serif;
 	color: black;
 	font-size: 26px;
@@ -330,7 +335,6 @@ button:hover{
 }
 
 .vert {
-	width: 100px;
 	height: 100%;
 	display: inline-block;
 	top: 40px;
@@ -343,7 +347,7 @@ button:hover{
 .middleDiv {
 	position: relative;
 	display: block;
-	width: 640px;
+	width: 800px;
 }
 
 #player1{
@@ -380,7 +384,7 @@ button:hover{
 #deckarea{
 	position: relative;
 	top: 120px;
-	left: 120px;
+	left: 212px;
 }
 
 .public:hover {
