@@ -25,6 +25,9 @@ $(document).ready(function(){
       for (var i = headerBar.length - 1; i >= 0; i--) {
         $(headerBar[i]).toggleClass("hidden");
       };
+
+      socket.emit("toggleReady", {name : username});
+
   });
 
   socket = io.connect("http://localhost:8888");
@@ -62,7 +65,7 @@ $(document).ready(function(){
        };   
     if (data.host === username) {
       iAmHost = true;
-    }
+    } 
   });
 
   // Game starts. show my hand.
@@ -90,8 +93,13 @@ $(document).ready(function(){
 
   // Chat message update
   socket.on('update', function(data) {
+    console.log(data.msg);
     $("#chatText").append($("<li>").html(data.msg));
   });
+
+  $("#gameName").html(window.location.href.split("/game/")[1]);
+  $("#readyButton").click(toggleReady);
+  $(".chats").css("height", 600);
 
 });
 
@@ -99,7 +107,6 @@ $(document).ready(function(){
 function toggleReady() {
   $("#readyButton").toggleClass("before");
   $("#readyButton").toggleClass("after");
-  socket.emit("toggleReady", {name : username});
 }
 
 // Sends chat
@@ -160,7 +167,7 @@ function drawCard() {
 
 // Populate the hand DOM element
 function populateHand(cards) {
-  var cardList = $("#player1");
+  var cardList = $("#playerHand");
   cardList.html("");
   for (var i = cards.length - 1; i >= 0; i--) {
     var rank = cards[i].rank;
