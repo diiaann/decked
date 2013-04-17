@@ -39,10 +39,11 @@ $(document).ready(function(){
   // Set buttons
   $("#post").click(doSend);
   $("#private").change(handleGamePW);
-  //$("#requestGame").click(requestGame);
 
   window.LoginManager.setLoginSuccess(hideLogin);
       
+  socket.emit("send", {msg:"mobile"});
+
 });
 
 // Hides login fields
@@ -110,13 +111,16 @@ function requestGame() {
     }    
   }
 
-  socket.emit("requestGame", 
+  console.log(socket);
+
+  window.socket.emit("requestGame", 
     { 
       name: gameName,
       numPlayers: numPlayers,
       private: privy,
       password: password,
-      username: username
+      username: window.username
     }
   );
+
 }

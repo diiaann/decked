@@ -391,7 +391,17 @@ button:hover{
 	background: #4682b4;
 }
 
+.public {
+	font-size: 14px;
+	text-align: bottom;
+}
+
 #deck:hover {
+}
+
+#playButtons {
+	position: absolute;
+	right: 43%;
 }
 
 #discard {

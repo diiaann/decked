@@ -90,6 +90,9 @@ app.get("/game/:gameName", function (request, response) {
     }
 });
 
+app.get("/socket.io/socket.io.js",function (request, response) {
+  response.sendfile("static/js/socket.io.js");
+});
 
 app.use("/static/css", express.static(__dirname + '/static/css'));
 app.use("/static/js", express.static(__dirname + '/static/js'));

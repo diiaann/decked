@@ -155,6 +155,7 @@ var Game = function(hostName, socket, privateGame, password,
   this.name = gameName;
   this.start = false;
   this.discardPile = [];
+  this.playedPile = [];
   this.privateGame = privateGame;
   if (this.privateGame) {
     console.log("PRIVATE GAME");
@@ -166,7 +167,6 @@ var Game = function(hostName, socket, privateGame, password,
 
 Game.prototype.discard = function(player, rank, suit) {
   var oldCard = new Card(rank, suit);
-  console.log(oldCard.toString);
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].name === player) {
       this.discardPile.push(oldCard);
@@ -176,6 +176,99 @@ Game.prototype.discard = function(player, rank, suit) {
   return this.discardPile;
 
 }
+
+Game.prototype.trashCards = function() {
+  console.log("trashing");
+  for (var i = 0; i < this.playedPile.length; i++) {
+    this.discardPile.push(this.playedPile.pop());
+  };
+
+  return this.discardPile;
+}
+
+
+Game.prototype.playCard = function(player, rank, suit) {
+  var oldCard = new Card(rank, suit);
+  console.log(player);
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    console.log("is it" + this.players[i].name);
+    if (this.players[i].name === player) {
+      console.log("playing");
+      this.playedPile.push(oldCard);
+      this.players[i].discard(oldCard);
+    }
+  };
+
+  return this.playedPile;
+}
+
+Game.prototype.getPlayedPileSize = function() {
+  return this.playedPile.length;
+}
+
+Game.prototype.getDiscardSize = function() {
+  return this.discardPile.length;
+}
+
+Game.prototype.giveDiscardToPlayer = function(playerName, numCards) {
+  var player = undefined;
+  var cardsToAdd = [];
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+      player = this,players[i];
+    }
+  };
+
+  if (player === undefined){
+    return;
+  }
+
+  for (var i = numCards - 1; i >= 0; i--) {
+    if (this.discardPile.length !== 0) {
+      cardsToAdd.push(this.discardPile.pop());
+    }
+  };
+
+  player.addToHand(cardsToAdd);
+}
+
+Game.prototype.getPlayedPile = function() {
+  return this.playedPile;
+}
+
+Game.prototype.givePlayedToPlayer = function(playerName, numCards) {
+  var player = undefined;
+  var cardsToAdd = [];
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    console.log(this.players[i].getName());
+    if (this.players[i].getName() === playerName) {
+      console.log("YUP");
+      player = this.players[i];
+    }
+  };
+
+  console.log("NOPE");
+
+  if (player === undefined){
+    return;
+  }
+
+  console.log("PLAYER");
+  for (var j = 0; j < numCards; j++) {
+    if (this.playedPile.length !== 0){
+    cardsToAdd.push(this.playedPile.pop());
+    }
+      
+  };
+    player.addToHand(cardsToAdd);
+    console.log("hand:", player.getHand());
+}
+
+
+Game.prototype.takeFromDiscard = function(player) {
+  return this.playedPile.pop();
+}
+
 
 Game.prototype.startGame = function() {
   this.start = true;

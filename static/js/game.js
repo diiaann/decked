@@ -8,7 +8,8 @@ window.spadeUnicode = "&#9824;";
 window.diamondUnicode = "&#9830;";
 window.clubUnicode = "&#9827;";
 
-window.discardPile;
+window.discardPile = [];
+window.playedPile = [];
 
 $(document).ready(function(){
 
@@ -68,15 +69,6 @@ $(document).ready(function(){
       $(currentDiv+"name").html(players[i].userName);
     };
 
-    /*
-    var playerList = $("#playerList");
-    playerList.html("");
-    for (var i = data.players.length - 1; i >= 0; i--) {
-      var name = data.players[i].userName;
-      var ready = data.players[i].ready;
-      var res = name + " " + ready;
-      playerList.append($("<li>").html(res));
-    };*/
     if (data.allReady === true && (iAmHost === true)) {
       $("#startButton").removeClass("none");
       $("#startButton").click(doStart);
@@ -111,19 +103,25 @@ $(document).ready(function(){
     for (var i = 0; i < playerDivs.length; i++) {
       var currentDiv = playerDivs[i]
       $(currentDiv).removeClass("hidden");
-    };/*
-    var playerList = $("#playerList");
-    playerList.html("");
-    for (var i = data.players.length - 1; i >= 0; i--) {
-        var name = data.players[i].userName;
-        var ready = data.players[i].ready;
-        var res = name + " " + ready;
-        playerList.append($("<li>").html(res));
-       };   */
+    };
+
     if (data.host === username) {
       iAmHost = true;
     } 
   });
+
+  socket.on("tookCard", function(data) {
+    if (data.hand !== undefined) {
+      populateHand(data.hand);
+    }
+    populatePlayed(data.cards);
+  })
+
+  socket.on("trashed", function(data) {
+    populateDiscard(data.cards);
+    populatePlayed(data.played);
+  })
+
 
   // Game starts. show my hand.
   socket.on("gameStart", function(data) {
@@ -148,6 +146,11 @@ $(document).ready(function(){
     populateDiscard(data.discardPile);
   });
 
+  socket.on("playedCard", function(data) {
+    populateHand(data.cards);
+    populatePlayed(data.playedPile);
+  });
+
   // Chat message update
   socket.on('update', function(data) {
     console.log(data.msg);
@@ -158,8 +161,33 @@ $(document).ready(function(){
   $("#readyButton").click(toggleReady);
   $(".chats").css("height", 600);
   $("#player1name").html(username);
+  $("#takeButton").click(takeCard);
+  $("#trashButton").click(trashCard);
+  $("#drawButton").click(drawCard);
 
 });
+
+function takeCard() {
+  if (window.playedPile === undefined ||
+      window.playedPile.length === 0) {
+    return;
+  }
+  socket.emit("takeCard", {
+    username: window.username
+  });
+}
+
+function trashCard() {
+  if (window.playedPile === undefined ||
+      window.playedPile.length === 0) {
+    return;
+  console.log("trashing...");
+  }
+  socket.emit("trashCard", {
+    username: window.username
+  });
+}
+
 
 // Toggles state of ready button
 function toggleReady() {
@@ -226,6 +254,10 @@ function drawCard() {
 // Populate the hand DOM element
 function populateHand(cards) {
   var cardList = $("#playerHand");
+  if (cards === null ||
+    cards.length === 0 ) {
+    return;
+  }
   cardList.html("");
   for (var i = cards.length - 1; i >= 0; i--) {
     var rank = cards[i].rank;
@@ -243,22 +275,49 @@ function populateHand(cards) {
     cardList.append(newLI);
     newLI.mousedown(function(e) {
       window.dragging = $(e.target);
-      var that = $(this);
-      var origOffset = that.offset();
+      console.log(dragging);
+      var that = $(this).children()[0];
+      console.log(that);
+      var origOffset = $(that).offset();
+      var cardData = that.value.split("&");
+      var rank = cardData[0];
+      var suit = "&" + cardData[1];
 
       $(document.body).on("mousemove", function(e) {
         if (window.dragging !== undefined) {
           window.dragging.offset({
-            top : e.pageY - that.width()/2,
-            left: e.pageX - that.height()/2
+            top : e.pageY - $(that).width()/2,
+            left: e.pageX - $(that).height()/2
           });
         }
       });
 
       $(this).on("mouseup", function(e){
+        console.log("offset", $("#discard").width(), $("#discard").height());
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        var playedXL = $("#played").offset().left;
+
+        var playedYT = $("#played").offset().top;
+        var playedXR = $("#played").offset().left + $("#played").width();
+        var playedYB = $("#played").offset().top + $("#played").height();
+
+        if (centerX >= playedXL && centerX <= playedXR && 
+            centerY >= playedYT && centerY <= playedYB) {
+          playCard(rank, getSuit(suit));
+        } else if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+          discard(rank, getSuit(suit));
+        }
+        
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("mousemove");
+        $('#deckarea #discard').unbind("mouseup");
       });
 
     });
@@ -276,6 +335,11 @@ function populateHand(cards) {
 // Populate the discard pile DOM element
 function populateDiscard(cards) {
   var discard = $("#discard");
+  if (cards === undefined || 
+    cards.length === 0 ) {
+    discard.html("<p>discard</p>");
+    return;
+  }
   var index = cards.length - 1;
   window.discardPile = cards;
   discard.html("");
@@ -284,6 +348,23 @@ function populateDiscard(cards) {
     alert(this.html());
   })
 }
+
+// Populate the discard pile DOM element
+function populatePlayed(cards) {
+  var played = $("#played");
+  var index;
+  if (cards === undefined || 
+    cards.length === 0) {
+    played.html("<p>played</p>");
+    return;
+  }
+  index = cards.length - 1;
+  console.log(cards);
+  window.playedPile = cards;
+  played.html("");
+  played.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
+}
+
 
 
 // discard a card
@@ -294,6 +375,14 @@ function discard(rank, suit) {
     suit: suit
   });
 
+}
+
+function playCard(rank, suit) {
+  socket.emit("playCard", {
+    username: username,
+    rank : rank,
+    suit: suit
+  });  
 }
 
 
