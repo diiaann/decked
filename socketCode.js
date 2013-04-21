@@ -4,7 +4,7 @@ var cards = require("./cards.js");
 module.exports = function(globals) {
 
   // Connection
-  io.sockets.on('connection', function (socket) {
+  io.sockets.on('connection', function (socket) { 
 
     /*
      * On disconnect, we need to remove the given player
@@ -23,10 +23,9 @@ module.exports = function(globals) {
               return { 
                 msg : wrapInSpan(data.username, player.getName() === data.username) + 
                 " has left the game."};
-          });
+        });
         globals.socketsToGames[socket.id] = undefined;
       }
-
     });
 
 
@@ -73,35 +72,33 @@ module.exports = function(globals) {
       }
     });
 
-
     /*
      * Join an existing game.
      */
-    socket.on("joinGame", function(data) {
+    socket.on("joinGame", function(data){
       var myGame = globals.games[data.gamename];
-      if (myGame === undefined){
+      if (myGame === undefined) {
         socket.emit("joinFailed", {msg : "No game with that name exists"});
-      } else { 
-        if (myGame.join(data.password, data.username, socket) === true) {
-          socket.emit("joinSuccess", {
-            host: myGame.getHost().getName(),
-            players : myGame.getPlayers(),
-            gameName : data.gamename
-          });
-          globals.socketsToGames[socket.id] = {
-            game : myGame,
-            user : data.username
-          }
-          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
-          game.updateEach("update", function(player){
-              return { 
-                msg : wrapInSpan(data.username, player.getName() === data.username) + 
-                " has joined the game."};
-          });
+      } 
 
-        } else {
-          socket.emit("joinFailed", {msg : "Unable to join game."});
-        }
+      else if (myGame.join(data.password, data.username, socket) === true) {
+        socket.emit("joinSuccess", {
+          host: myGame.getHost().getName(),
+          players : myGame.getPlayers(),
+          gameName : data.gamename
+        });
+        globals.socketsToGames[socket.id] = {
+          game : myGame,
+          user : data.username
+        };
+        myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+        game.updateEach("update", function(player) {
+            return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + " has joined the game."};
+        });
+      } 
+      else {
+        socket.emit("joinFailed", {msg : "Unable to join game."});
       }
     });
 
@@ -241,13 +238,13 @@ module.exports = function(globals) {
         return { 
               msg : wrapInSpan(data.username, player.getName() === data.username) + 
               " trashes a card from the pile."};
-      });
-    };
-
+        });
+      }
+    });
 
   });
-
 }
+
 
 function wrapInSpan(text, bool) {
   var spanClass = bool ? "myName" : "chatName";

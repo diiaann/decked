@@ -385,6 +385,7 @@ button:hover{
 	position: relative;
 	top: 120px;
 	left: 212px;
+	background-color: brown;
 }
 
 .public:hover {
