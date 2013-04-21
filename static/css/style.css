@@ -459,3 +459,11 @@ button:hover{
 .diamond, .hearts{
 	background-color: #FF372F;
 }
+
+.chatName {
+	color: red;
+}
+
+.myName {
+	color: blue;
+}
