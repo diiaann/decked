@@ -165,6 +165,10 @@ var Game = function(hostName, socket, privateGame, password,
 
 }
 
+Game.prototype.getHost = function() {
+  return this.host.getName();
+}
+
 Game.prototype.discard = function(player, rank, suit) {
   var oldCard = new Card(rank, suit);
   for (var i = this.players.length - 1; i >= 0; i--) {

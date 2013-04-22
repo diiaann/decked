@@ -385,6 +385,7 @@ button:hover{
 	position: relative;
 	top: 120px;
 	left: 212px;
+	background-color: brown;
 }
 
 .public:hover {
@@ -458,4 +459,12 @@ button:hover{
 
 .diamond, .hearts{
 	background-color: #FF372F;
+}
+
+.chatName {
+	color: red;
+}
+
+.myName {
+	color: blue;
 }

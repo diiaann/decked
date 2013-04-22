@@ -198,13 +198,15 @@ function trashCard() {
 function toggleReady() {
   $("#readyButton").toggleClass("before");
   $("#readyButton").toggleClass("after");
-  socket.emit("toggleReady", {name : username});
+  socket.emit("toggleReady", {username : username});
 }
 
 // Sends chat
 function doSend() {
   var text = $('#text').val();
-  socket.emit('sendInGame', { msg : text});
+  socket.emit('sendInGame', { 
+    username : window.username,
+    msg : text});
 }
 
 // Starts the game

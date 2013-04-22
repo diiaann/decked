@@ -4,7 +4,7 @@ var cards = require("./cards.js");
 module.exports = function(globals) {
 
   // Connection
-  io.sockets.on('connection', function (socket) {
+  io.sockets.on('connection', function (socket) { 
 
     /*
      * On disconnect, we need to remove the given player
@@ -19,9 +19,13 @@ module.exports = function(globals) {
         console.log(globals.socketsToGames[socket.id].user + ' DISCONNESSO!!!');
         game.removePlayer(globals.socketsToGames[socket.id].user);
         game.updateAll("newPlayer", {players : game.getPlayers()});
+        game.updateEach("update", function(player){
+              return { 
+                msg : wrapInSpan(data.username, player.getName() === data.username) + 
+                " has left the game."};
+        });
         globals.socketsToGames[socket.id] = undefined;
       }
-
     });
 
 
@@ -33,7 +37,7 @@ module.exports = function(globals) {
       console.log(userName);
       if (globals.users.indexOf(userName) === -1){
         globals.users.push(userName);
-        io.sockets.emit('update', {msg : userName + " has joined the chat!"});
+        io.sockets.emit('update', {msg : wrapInSpan(userName) + " has joined the chat!"});
       }
     });
 
@@ -44,6 +48,7 @@ module.exports = function(globals) {
       console.log("SENDING");
       io.sockets.emit('update', data);
     });
+
 
     /*
      * Request a new game. If we already started a game with that name,
@@ -67,29 +72,33 @@ module.exports = function(globals) {
       }
     });
 
-
     /*
      * Join an existing game.
      */
-    socket.on("joinGame", function(data) {
+    socket.on("joinGame", function(data){
       var myGame = globals.games[data.gamename];
-      if (myGame === undefined){
+      if (myGame === undefined) {
         socket.emit("joinFailed", {msg : "No game with that name exists"});
-      } else { 
-        if (myGame.join(data.password, data.username, socket) === true) {
-          socket.emit("joinSuccess", {
-            host: myGame.getHost().getName(),
-            players : myGame.getPlayers(),
-            gameName : data.gamename
-          });
-          globals.socketsToGames[socket.id] = {
-            game : myGame,
-            user : data.username
-          }
-          myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
-        } else {
-          socket.emit("joinFailed", {msg : "Unable to join game."});
-        }
+      } 
+
+      else if (myGame.join(data.password, data.username, socket) === true) {
+        socket.emit("joinSuccess", {
+          host: myGame.getHost().getName(),
+          players : myGame.getPlayers(),
+          gameName : data.gamename
+        });
+        globals.socketsToGames[socket.id] = {
+          game : myGame,
+          user : data.username
+        };
+        myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+        game.updateEach("update", function(player) {
+            return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + " has joined the game."};
+        });
+      } 
+      else {
+        socket.emit("joinFailed", {msg : "Unable to join game."});
       }
     });
 
@@ -99,14 +108,18 @@ module.exports = function(globals) {
     socket.on("toggleReady", function(data){
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
-        var ready = game.toggleReady(data.name);
+        var ready = game.toggleReady(data.username);
         console.log(game.numReady, game.numPlayers);
         game.updateAll("newPlayer", {
           players : game.getPlayers(),
           allReady : ready
         });
+        game.updateEach("update", function(player){
+              return { 
+                msg : wrapInSpan(data.username, player.getName() === data.username) + 
+                " is " + ((ready) ? "" : "not ") + "ready."};
+          });
       }
-
     });
 
     /*
@@ -119,6 +132,11 @@ module.exports = function(globals) {
           game.startGame();
           game.updateEach("gameStart", function(player) {
             return { cards : player.getHand() };
+          });
+          game.updateEach("update", function(player){
+              return { 
+                msg : wrapInSpan(data.username, player.getName() === data.username) + 
+                " has started the game."};
           });
         } else {
           console.log("HOW DID WE GET HERE?");
@@ -133,8 +151,13 @@ module.exports = function(globals) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
         socket.emit("drewCard", { cards : game.drawCards(data.username, 1)});
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " draws a card."};
+        });
       }
-    })
+    });
 
     /*
      * Discard a card.
@@ -147,6 +170,12 @@ module.exports = function(globals) {
           return { cards : player.getHand(),
           discardPile : discardPile };
         });
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " discards the " + data.rank + " of " + 
+                  data.suit.toLowercase() + "."};
+        });
       }
     });
 
@@ -156,7 +185,11 @@ module.exports = function(globals) {
     socket.on('sendInGame', function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
-        game.updateAll('update', data);
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username + ":", player.getName() === data.username) + 
+              " " + data.msg};
+        });
       }
     });
 
@@ -167,6 +200,11 @@ module.exports = function(globals) {
         game.updateEach("playedCard", function(player) {
           return { cards : player.getHand(),
           playedPile : playedPile };
+        });
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " plays the " + data.rank + " of " + data.suit + "."};
         });
       }
     });      
@@ -179,8 +217,13 @@ module.exports = function(globals) {
         playedPile = game.getPlayedPile();
         game.updateEach("tookCard", function(player) {
           var hand = (player.getName() === data.username) ? player.getHand() : undefined;
-          return { hand : hand, cards: playedPile };
+          return { hand : hand, cards: playedPile};
         });
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " takes a card from the pile."};
+            });
       }
     });
 
@@ -191,10 +234,19 @@ module.exports = function(globals) {
         game.updateAll("trashed", {
           played : game.getPlayedPile(),
           cards: cards});
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " trashes a card from the pile."};
+        });
       }
     });
 
-
   });
+}
 
+
+function wrapInSpan(text, bool) {
+  var spanClass = bool ? "myName" : "chatName";
+  return "<span class='"+ spanClass + "'>" + text + "</span>";
 }
