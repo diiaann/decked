@@ -44,22 +44,15 @@ $(document).ready(function(){
   socket.on("newPlayer", function(data) {
     var numPlayers = data.players.length;
     var players = data.players;
-    console.log(players.length);
+    var allPlayerDivs = getPlayerDivs(4);
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
-    console.log(myIndex);
-    console.log(players);
-    console.log(playerDivs);
     for (var i = 0; i < myIndex; i++) {
       players.push(players.shift());
     };
-    console.log(players);
-    if (playerDivs.length !== players.length) {
-      alert("LISTS NOT THE SAME");
-    }
 
-    for (var i = 0; i < playerDivs.length; i++) {
-      var currentDiv = playerDivs[i];
+    for (var i = 0; i < allPlayerDivs.length; i++) {
+      var currentDiv = allPlayerDivs[i];
       $(currentDiv).addClass("hidden");
     }
 
@@ -74,6 +67,14 @@ $(document).ready(function(){
       $("#startButton").click(doStart);
     }
   });
+
+  socket.on("youAreHost", function(data) {
+    window.iAmHost = true;
+    if (data.allReady === true) {
+      $("#startButton").removeClass("none");
+      $("#startButton").click(doStart); 
+    }
+  })
 
   // Join failed. go back to homepage.
   socket.on("joinFailed", function(data) {
@@ -153,7 +154,6 @@ $(document).ready(function(){
 
   // Chat message update
   socket.on('update', function(data) {
-    console.log(data.msg);
     $("#chatText").append($("<li>").html(data.msg));
   });
 
@@ -193,7 +193,11 @@ function trashCard() {
 function toggleReady() {
   $("#readyButton").toggleClass("before");
   $("#readyButton").toggleClass("after");
-  socket.emit("toggleReady", {username : username});
+  socket.emit("toggleReady", 
+    {
+      username : username,
+      ready: $("#readyButton").hasClass("after")
+  });
 }
 
 // Sends chat

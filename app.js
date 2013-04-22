@@ -73,7 +73,6 @@ app.get("/static/:staticFilename", function (request, response) {
 // Get a game 
 app.get("/game/:gameName", function (request, response) {
     var mobile = checkMobile(request.headers["user-agent"]);
-    console.log(mobile);
     if (mobile !== false) {
         response.sendfile("static/game.html");
     } else if (globals.games[request.params.gameName] === undefined) {

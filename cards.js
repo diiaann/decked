@@ -144,7 +144,7 @@ PlayerData.prototype.discard = function(card) {
 var Game = function(hostName, socket, privateGame, password, 
                     numPlayers, gameName) {
 
-  console.log("Host" + hostName);
+  console.log("Host for " + gameName + ": " + hostName);
   this.players = [];
   this.numPlayers = 0;
   this.numReady = 0;
@@ -158,14 +158,17 @@ var Game = function(hostName, socket, privateGame, password,
   this.playedPile = [];
   this.privateGame = privateGame;
   if (this.privateGame) {
-    console.log("PRIVATE GAME");
     this.password = password;
   }
-  console.log(hostName)
 
 }
 
-Game.prototype.getHost = function() {
+Game.prototype.getGameName = function() {
+  return this.name;
+}
+
+
+Game.prototype.getHostName = function() {
   return this.host.getName();
 }
 
@@ -387,6 +390,33 @@ Game.prototype.updateEach = function(socketMsg, callback) {
 
 Game.prototype.removePlayer = function(playerName) {
   console.log("PLAYERS: " + this.players);
+
+  if (this.isHost(playerName)) {
+    console.log("MIGRATING HOST");
+    if (this.numPlayers === 1) {
+      console.log("Game is over.");
+      return true;
+    } else {
+      // Migrating the host.
+      for (var i = this.players.length - 1; i >= 0; i--) {
+        if (this.players[i].getName() === playerName) {
+          if (this.players[i].ready === true) {
+            this.numReady--;
+          }
+          this.players.splice(i, 1);
+          this.numPlayers--;
+        }            
+      }
+      this.host = this.players[0];
+      console.log("new host is... " + this.host.getName());
+      this.host.getSocket().emit("youAreHost", {
+          allReady : this.numPlayers === this.numReady
+        });
+    }
+
+    return;
+  }
+
   for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName) {
       if (this.players[i].ready === true) {
@@ -397,6 +427,7 @@ Game.prototype.removePlayer = function(playerName) {
     }
   };
   console.log("PLAYERS: " + this.players);
+  return false;
 }
 
 Game.prototype.isHost = function(playerName) {

@@ -16,15 +16,20 @@ module.exports = function(globals) {
     socket.on('disconnect', function (data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
-        console.log(globals.socketsToGames[socket.id].user + ' DISCONNESSO!!!');
-        game.removePlayer(globals.socketsToGames[socket.id].user);
-        game.updateAll("newPlayer", {players : game.getPlayers()});
-        game.updateEach("update", function(player){
-              return { 
-                msg : wrapInSpan(data.username, player.getName() === data.username) + 
-                " has left the game."};
-        });
+        var playerName = globals.socketsToGames[socket.id].user;
+        console.log(playerName + ' DISCONNESSO!!!');
+        var over = game.removePlayer(globals.socketsToGames[socket.id].user);
         globals.socketsToGames[socket.id] = undefined;
+        if (over === true) {
+          globals.games[game.getGameName()] = undefined;
+        } else {
+          game.updateAll("newPlayer", {players : game.getPlayers()});
+          game.updateEach("update", function(player){
+                return { 
+                  msg : wrapInSpan(playerName, player.getName() === playerName) + 
+                  " has left the game."};
+          });
+        }
       }
     });
 
@@ -45,7 +50,6 @@ module.exports = function(globals) {
      * For chat.
      */
     socket.on('send', function(data) {
-      console.log("SENDING");
       io.sockets.emit('update', data);
     });
 
@@ -55,19 +59,19 @@ module.exports = function(globals) {
      * send a failure message.
      */
     socket.on('requestGame', function(data) {
-      var myGame = globals.games[data.name];
-      if (myGame !== undefined) {
+      var game = globals.games[data.name];
+      if (game !== undefined) {
         socket.emit("requestGameFailed", 
         {msg : "A game with that name already exists."});  
       } else {      
-        myGame = new cards.Game(data.username, socket, 
+        game = new cards.Game(data.username, socket, 
                                 data.privy, data.password, 
                                 data.numPlayers, data.name);
-        globals.games[data.name] = myGame;
+        globals.games[data.name] = game;
         socket.emit("gotoGame", 
           {
             gameName : data.name,
-            playerList : myGame.getPlayers()
+            playerList : game.getPlayers()
           });
       }
     });
@@ -76,22 +80,22 @@ module.exports = function(globals) {
      * Join an existing game.
      */
     socket.on("joinGame", function(data){
-      var myGame = globals.games[data.gamename];
-      if (myGame === undefined) {
+      var game = globals.games[data.gamename];
+      if (game === undefined) {
         socket.emit("joinFailed", {msg : "No game with that name exists"});
       } 
 
-      else if (myGame.join(data.password, data.username, socket) === true) {
+      else if (game.join(data.password, data.username, socket) === true) {
         socket.emit("joinSuccess", {
-          host: myGame.getHost().getName(),
-          players : myGame.getPlayers(),
+          host: game.getHost().getName(),
+          players : game.getPlayers(),
           gameName : data.gamename
         });
         globals.socketsToGames[socket.id] = {
-          game : myGame,
+          game : game,
           user : data.username
         };
-        myGame.updateAll("newPlayer", {players : myGame.getPlayers()});
+        game.updateAll("newPlayer", {players : game.getPlayers()});
         game.updateEach("update", function(player) {
             return { 
               msg : wrapInSpan(data.username, player.getName() === data.username) + " has joined the game."};
@@ -117,7 +121,7 @@ module.exports = function(globals) {
         game.updateEach("update", function(player){
               return { 
                 msg : wrapInSpan(data.username, player.getName() === data.username) + 
-                " is " + ((ready) ? "" : "not ") + "ready."};
+                " is " + ((data.ready) ? "" : "not ") + "ready."};
           });
       }
     });
