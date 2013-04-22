@@ -8,7 +8,7 @@
     <script src="../static/js/logout.js"></script>
     
     <script src="../static/js/game.js"></script>
-    <script src="http://localhost:8888/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
@@ -21,11 +21,27 @@
                     <button id="loginButton">sign in</button>
                     <button id="registerButton">sign up</button>
         </div>
+        
         <div id="playarea">
         
         	<div id="p2"><div class="circle"></div>Player 2</div>
         	<div id="p3"><div class="circle"></div>Player 3</div>
         	<div id="p4"><div class="circle"></div>Player 4</div>
+            
+            <div id="deckarea">
+	            <div class="card public" id="deck">
+		            <p>deck</p>
+		        </div>
+		        
+		        <div class="card public" id="discard">
+			        <p>discard</p>
+			    </div>
+			    
+			    <div class="card public" id="played">
+                    <p>played</p>
+                </div>
+                        
+             </div>        	
         	
         	<div id="menu">
 	        	<ul>
@@ -35,22 +51,19 @@
 
 	        	</ul>
         	</div>	
-	        	<form action="javascript:toggleReady()">
-                	<button id="readyButton" class="before"> Ready! </button>
-                </form>
-                	<button id="startButton" class="none"> Start! </button>
-
-        	    <div id="bottom">
-        	    	 <div class="circle"></div>
+        	<div id="beginButtons">
+                 <button id="readyButton">ready</button>
+                 <button class="none" id="startButton">Start!</button>        	
+        	</div>
+        	<div id="bottom">
+        	    <div class="circle"></div>
         	    <div id="p1">
         	    	 Player 1
         		</div>
         	</div>
         	
-
         		
-        		<ul id="playerHand" class="handHorizontal"></ul>
-        	</div>
+        	<ul id="playerHand" class="handHorizontal"></ul>
         </div>
          
                  
