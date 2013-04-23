@@ -3,7 +3,6 @@ window.username;
 
 $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
-
   // update chat message
   socket.on('update', function(data) {
     $("#chatText").append($("<li>").html(data.msg));

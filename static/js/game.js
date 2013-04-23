@@ -8,6 +8,8 @@ window.spadeUnicode = "&#9824;";
 window.diamondUnicode = "&#9830;";
 window.clubUnicode = "&#9827;";
 
+var gravatar = "http://www.gravatar.com/avatar/"
+
 window.discardPile = [];
 window.playedPile = [];
 
@@ -170,6 +172,9 @@ $(document).ready(function(){
   $("#takeButton").click(takeCard);
   $("#trashButton").click(trashCard);
   $("#drawButton").click(drawCard);
+  
+  var hash = hashEmailString(username);
+  $(".image-wrap").css("background", "url("+gravatar+hash+") no-repeat center center");
 
 });
 
