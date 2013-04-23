@@ -542,7 +542,7 @@ function sortHand() {
 
     cardList.append(newLI);
     
-        newLI.bind('touchstart',function(event) {
+            newLI.bind('touchstart',function(event) {
 
         
         var that = $(this).children()[0];
@@ -555,10 +555,11 @@ function sortHand() {
       // Drag it around
       $(document.body).on("touchmove", function(event) {
       	 var e = event.originalEvent;
-        if (window.dragging !== undefined) {
+      	 var touch = e.targetTouches[0];
+         if (window.dragging !== undefined) {
           window.dragging.offset({
-            top : e.pageY - $(that).width()/2,
-            left: e.pageX - $(that).height()/2
+            top : touch.pageY - $(that).width()/2,
+            left: touch.pageX - $(that).height()/2
           });
         }
       });
@@ -566,8 +567,10 @@ function sortHand() {
       // When we release, have we dragged it to a part of the board?
       $(this).on("touchend", function(event){
         var e = event.originalEvent;
-        var centerX = e.pageX;
-        var centerY = e.pageY;
+        var touch = e.targetTouches[0];
+        
+        var centerX = touch.pageX;
+        var centerY = touch.pageY;
         var discardXL = $("#discard").offset().left;
         var discardYT = $("#discard").offset().top;
         var discardXR = $("#discard").offset().left + $("#discard").width();
