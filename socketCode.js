@@ -182,7 +182,7 @@ module.exports = function(globals) {
         return { 
               msg : wrapInSpan(data.username, player.getName() === data.username) + 
               " discards the " + data.rank + " of " + 
-                  data.suit.toLowercase() + "."};
+                  data.suit.toLowerCase() + "."};
         });
       }
     });

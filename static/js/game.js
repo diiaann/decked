@@ -13,14 +13,16 @@ var gravatar = "http://www.gravatar.com/avatar/"
 window.discardPile = [];
 window.playedPile = [];
 
+
 $(document).ready(function(){
 
-
+  // Change width of main pane based on window size
   $(window).resize(function() {
     var width = document.width;
     $(".horz").css("width", width - $("#chat").width() - 160);
   });
 
+  // Set initial width
   $(".horz").css("width", document.width - $("#chat").width() - 160);
 
   // On login, try to join the game.
@@ -42,34 +44,42 @@ $(document).ready(function(){
   });
 
   socket = io.connect("http://localhost:8888");
-  // New player added to game
+
+  // Players in the game have changed.
   socket.on("newPlayer", function(data) {
     var numPlayers = data.players.length;
     var players = data.players;
     var allPlayerDivs = getPlayerDivs(4);
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
+
+
+    // Cycle player list
     for (var i = 0; i < myIndex; i++) {
       players.push(players.shift());
     };
 
+    // Hide unused divs
     for (var i = 0; i < allPlayerDivs.length; i++) {
       var currentDiv = allPlayerDivs[i];
       $(currentDiv).addClass("hidden");
     }
 
+    // Unhide used divs
     for (var i = 0; i < playerDivs.length; i++) {
       var currentDiv = playerDivs[i]
       $(currentDiv).removeClass("hidden");
       $(currentDiv+"name").html(players[i].userName);
     };
 
+    // If you're the host, reveal the start button.
     if (data.allReady === true && (iAmHost === true)) {
       $("#startButton").removeClass("none");
       $("#startButton").click(doStart);
     }
   });
 
+  // For host migration.
   socket.on("youAreHost", function(data) {
     window.iAmHost = true;
     if (data.allReady === true) {
@@ -87,18 +97,20 @@ $(document).ready(function(){
   socket.on("joinSuccess", function(data) {
     var numPlayers = data.players.length;
     var players = data.players;
-    console.log(players.length);
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
-    console.log(players);
+
+    // Cycle list
     for (var i = 0; i < myIndex; i++) {
       players.push(players.shift());
     };
-    console.log(players);
+
+    // Shouldn't happen...
     if (playerDivs.length !== players.length) {
       alert("LISTS NOT THE SAME");
     }
 
+    // Hide/unhide divs
     for (var i = 0; i < playerDivs.length; i++) {
       var currentDiv = playerDivs[i]
       $(currentDiv).addClass("hidden");
@@ -113,22 +125,26 @@ $(document).ready(function(){
     } 
   });
 
+
+  // I took a card from the public play pile
   socket.on("tookCard", function(data) {
     if (data.hand !== undefined) {
       populateHand(data.hand);
       sortHand();
     }
+
     populatePlayed(data.cards);
-    sortHand();
   })
 
+
+  // Someone discarded the played pile
   socket.on("trashed", function(data) {
     populateDiscard(data.cards);
     populatePlayed(data.played);
   })
 
 
-  // Game starts. show my hand.
+  // Game starts. Show my hand.
   socket.on("gameStart", function(data) {
     populateHand(data.cards);
     sortHand();
@@ -154,6 +170,7 @@ $(document).ready(function(){
     sortHand();
   });
 
+  // Card was put into the played pile
   socket.on("playedCard", function(data) {
     populateHand(data.cards);
     populatePlayed(data.playedPile);
@@ -165,6 +182,7 @@ $(document).ready(function(){
     $("#chatText").append($("<li>").html(data.msg));
   });
 
+  // Set DOM elements
   $("#gameName").html(window.location.href.split("/game/")[1]);
   $("#readyButton").click(toggleReady);
   $(".chats").css("height", 600);
@@ -173,11 +191,13 @@ $(document).ready(function(){
   $("#trashButton").click(trashCard);
   $("#drawButton").click(drawCard);
   
+  // Gravatar
   var hash = hashEmailString(username);
   $(".image-wrap").css("background", "url("+gravatar+hash+") no-repeat center center");
 
 });
 
+// Take a card from the played pile
 function takeCard() {
   if (window.playedPile === undefined ||
       window.playedPile.length === 0) {
@@ -188,11 +208,11 @@ function takeCard() {
   });
 }
 
+// Trash the played pile
 function trashCard() {
   if (window.playedPile === undefined ||
       window.playedPile.length === 0) {
     return;
-  console.log("trashing...");
   }
   socket.emit("trashCard", {
     username: window.username
@@ -223,21 +243,22 @@ function doSend() {
 function doStart() {
   if (iAmHost === true) {
     socket.emit("startGame", {
-      name: username,
+      username: username,
     });
     $("#startButton").addClass("none");
   }
 }
 
 
+// Maps suits to unicode symbols
 function getUnicodeSymbol(suit){
-	if (suit==="Clubs"){
+	if (suit === "Clubs"){
 		return clubUnicode;
 	}
-	else if(suit==="Spades"){
+	else if(suit === "Spades"){
 		return spadeUnicode;
 	}
-	else if(suit==="Diamonds"){
+	else if(suit === "Diamonds"){
 		return diamondUnicode;
 	}
 	else {
@@ -246,6 +267,7 @@ function getUnicodeSymbol(suit){
 
 }
 
+// Inverse mapping
 function getSuit(unicode){
 
   if (unicode === clubUnicode){
@@ -271,11 +293,14 @@ function drawCard() {
 // Populate the hand DOM element
 function populateHand(cards) {
   var cardList = $("#playerHand");
+  // Clear the list
+  cardList.html("");
+  
   if (cards === null ||
     cards.length === 0 ) {
     return;
   }
-  cardList.html("");
+
   for (var i = cards.length - 1; i >= 0; i--) {
     var rank = cards[i].rank;
     var suit = getUnicodeSymbol(cards[i].suit);
@@ -286,20 +311,22 @@ function populateHand(cards) {
     if (suit === heartUnicode || suit === diamondUnicode) {
       newButton.addClass("diamond");
     }
+
     newButton.html(res);
     newButton.val(res);
     newLI.append(newButton);
     cardList.append(newLI);
+
+    // Start dragging when clicked
     newLI.mousedown(function(e) {
-      window.dragging = $(e.target);
-      console.log(dragging);
       var that = $(this).children()[0];
-      console.log(that);
       var origOffset = $(that).offset();
       var cardData = that.value.split("&");
       var rank = cardData[0];
       var suit = "&" + cardData[1];
+      window.dragging = $(e.target);
 
+      // Drag it around
       $(document.body).on("mousemove", function(e) {
         if (window.dragging !== undefined) {
           window.dragging.offset({
@@ -309,8 +336,8 @@ function populateHand(cards) {
         }
       });
 
+      // When we release, have we dragged it to a part of the board?
       $(this).on("mouseup", function(e){
-        console.log("offset", $("#discard").width(), $("#discard").height());
         var centerX = e.pageX;
         var centerY = e.pageY;
         var discardXL = $("#discard").offset().left;
@@ -318,7 +345,6 @@ function populateHand(cards) {
         var discardXR = $("#discard").offset().left + $("#discard").width();
         var discardYB = $("#discard").offset().top + $("#discard").height();
         var playedXL = $("#played").offset().left;
-
         var playedYT = $("#played").offset().top;
         var playedXR = $("#played").offset().left + $("#played").width();
         var playedYB = $("#played").offset().top + $("#played").height();
@@ -339,24 +365,20 @@ function populateHand(cards) {
 
     });
   }
-
-    /*var cardData = this.value.split("&");
-    var rank = cardData[0];
-    var suit = "&" + cardData[1];
-    discard(rank, getSuit(suit));*/
-
-  //});
 }
 
 // Populate the discard pile DOM element
 function populateDiscard(cards) {
+  var index;
   var discard = $("#discard");
   if (cards === undefined || 
     cards.length === 0 ) {
     discard.html("<p>discard</p>");
     return;
   }
-  var index = cards.length - 1;
+  
+  index = cards.length - 1;
+
   window.discardPile = cards;
   discard.html("");
   discard.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
@@ -381,8 +403,6 @@ function populatePlayed(cards) {
   played.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
 }
 
-
-
 // discard a card
 function discard(rank, suit) {
   socket.emit("discard", {
@@ -393,6 +413,7 @@ function discard(rank, suit) {
 
 }
 
+// Plays the given card.
 function playCard(rank, suit) {
   socket.emit("playCard", {
     username: username,
@@ -401,7 +422,7 @@ function playCard(rank, suit) {
   });  
 }
 
-
+// Gets the divs we're using given the number of player in our game.
 function getPlayerDivs(numPlayers) {
   switch(numPlayers) {
     case 1:
@@ -421,6 +442,7 @@ function getPlayerDivs(numPlayers) {
   }
 }
 
+// Gets the index of a given users given a list of users.
 function getIndexFromPlayers(name, players) {
   for (var i = players.length - 1; i >= 0; i--) {
     if (players[i].userName === name) {
@@ -430,12 +452,16 @@ function getIndexFromPlayers(name, players) {
 }
 
 
+// Sorts the hand according to the user specification.
 function sortHand() {
+  // Controls how we sort.
   var type = parseInt($("#sortBy").val());
 
+  // 
   var rankSort = function(a, b) { 
-    var aVal = mapToNum(encodeURI($(a).text()).split("%")[0]);
-    var bVal = mapToNum(encodeURI($(b).text()).split("%")[0]);
+    var aVal = parseInt(mapToNum(encodeURI($(a).text()).split("%")[0]));
+    var bVal = parseInt(mapToNum(encodeURI($(b).text()).split("%")[0]));
+    console.log(aVal, bVal);
     return  aVal - bVal;
   }
 
@@ -460,16 +486,18 @@ function sortHand() {
 
   var newHand;
 
+  var finalHand = [];
+  var tempArray = [];
+  var pivots = [0];   
+
   if (type === 2) {
 
 
 // DO suitSort, then find indices of change. break into int subarray,s sort them, concat
-
-
     newHand = $("#playerHand").children().sort(suitSort);
-    var pivots = [0];
     for (var i = 0; i < newHand.length - 1; i++) {
-      if ($(newHand[i]).text().substr(1) !== $(newHand[i+1]).text().substr(1)) {
+      if ($(newHand[i]).text().substr($(newHand[i]).text().length -1)!== 
+        $(newHand[i+1]).text().substr($(newHand[i+1]).text().length -1)) {
         pivots.push(i+1);
       }
     };
@@ -477,45 +505,93 @@ function sortHand() {
     console.log(pivots);
     pivots.push(newHand.length);
 
-    var finalHand = [];
-    var tempArray = [];
-
     for (var i = 0; i < pivots.length - 1; i++) {
       tempArray = newHand.slice(pivots[i], pivots[i+1]);
-      console.log(tempArray);
       tempArray = tempArray.sort(rankSort);
-      console.log(tempArray);
       finalHand = finalHand.concat(tempArray);
-      console.log("FINAL HAND");
-      console.log(finalHand);
       tempArray = [];
     }
 
-
-    /*var clubs = newHand.filter(function(elem) { $(elem).text().indexOf("♣") !== -1 });
-    var spades = newHand.filter(function(elem) { $(elem).text().indexOf("♥") !== -1 });
-    var diamonds = newHand.filter(function(elem) { $(elem).text().indexOf("♦") !== -1 });
-    var hearts = newHand.filter(function(elem) { $(elem).text().indexOf("♣") !== -1 });
-    clubs = clubs.sort(rankSort);
-    spades = spades.sort(rankSort);
-    diamonds = diamonds.sort(rankSort);
-    hearts = hearts.sort(rankSort);
-    newHand = [].concat(clubs,spades, diamonds. hearts);*/
-    
-    console.log(finalHand);
     newHand = finalHand;
   } else {
     newHand = $("#playerHand").children().sort(rankSort);
+    for (var i = 0; i < newHand.length - 1; i++) {
+      if ($(newHand[i]).text().substr(0, $(newHand[i]).text().length - 1)!== 
+        $(newHand[i+1]).text().substr(0, $(newHand[i+1]).text().length - 1)) {
+        pivots.push(i+1);
+      }
+    };
+
+    console.log(pivots);
+    pivots.push(newHand.length);
+
+    for (var i = 0; i < pivots.length - 1; i++) {
+      tempArray = newHand.slice(pivots[i], pivots[i+1]);
+      tempArray = tempArray.sort(suitSort);
+      finalHand = finalHand.concat(tempArray);
+      tempArray = [];
+    }
+
+    newHand = finalHand;
   }
 
 
   cardList.html("");
   for (var i = 0; i < newHand.length; i++) {
-    cardList.append($(newHand[i]));
-  };
-  //Sort by rank
+    var newLI = $(newHand[i]);
 
-  //Sort by suit
+    cardList.append(newLI);
+
+    newLI.mousedown(function(e) {
+      var that = $(this).children()[0];
+      var origOffset = $(that).offset();
+      var cardData = that.value.split("&");
+      var rank = cardData[0];
+      var suit = "&" + cardData[1];
+      window.dragging = $(e.target);
+
+      // Drag it around
+      $(document.body).on("mousemove", function(e) {
+        if (window.dragging !== undefined) {
+          window.dragging.offset({
+            top : e.pageY - $(that).width()/2,
+            left: e.pageX - $(that).height()/2
+          });
+        }
+      });
+
+      // When we release, have we dragged it to a part of the board?
+      $(this).on("mouseup", function(e){
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        var playedXL = $("#played").offset().left;
+        var playedYT = $("#played").offset().top;
+        var playedXR = $("#played").offset().left + $("#played").width();
+        var playedYB = $("#played").offset().top + $("#played").height();
+
+        $(this).unbind("mouseup");
+
+        if (centerX >= playedXL && centerX <= playedXR && 
+            centerY >= playedYT && centerY <= playedYB) {
+          playCard(rank, getSuit(suit));
+        } else if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+          discard(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("mousemove");
+        $('#deckarea #discard').unbind("mouseup");
+      });
+
+    });
+
+  };
 }
 
 function mapToNum(chr) {
