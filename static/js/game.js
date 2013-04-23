@@ -541,6 +541,64 @@ function sortHand() {
     var newLI = $(newHand[i]);
 
     cardList.append(newLI);
+    
+        newLI.bind('touchstart',function(event) {
+
+        
+        var that = $(this).children()[0];
+        var origOffset = $(that).offset();
+        var cardData = that.value.split("&");
+        var rank = cardData[0];
+        var suit = "&" + cardData[1];
+        window.dragging = $(event.target);
+
+      // Drag it around
+      $(document.body).on("touchmove", function(event) {
+      	 var e = event.originalEvent;
+        if (window.dragging !== undefined) {
+          window.dragging.offset({
+            top : e.pageY - $(that).width()/2,
+            left: e.pageX - $(that).height()/2
+          });
+        }
+      });
+
+      // When we release, have we dragged it to a part of the board?
+      $(this).on("touchend", function(event){
+        var e = event.originalEvent;
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        var playedXL = $("#played").offset().left;
+        var playedYT = $("#played").offset().top;
+        var playedXR = $("#played").offset().left + $("#played").width();
+        var playedYB = $("#played").offset().top + $("#played").height();
+
+        $(this).unbind("touchend");
+
+        if (centerX >= playedXL && centerX <= playedXR && 
+            centerY >= playedYT && centerY <= playedYB) {
+          playCard(rank, getSuit(suit));
+        } else if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+          discard(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("touchmove");
+        $('#deckarea #discard').unbind("touchend");
+      });
+  		
+  		
+  	/*	if (event.targetTouches.length === 1) {
+	  		var touch = event.targetTouches[0];
+	  		console.log("left" + touch.pageX + "px");
+	}*/
+  });
 
     newLI.mousedown(function(e) {
       var that = $(this).children()[0];
