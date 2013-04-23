@@ -126,6 +126,10 @@ PlayerData.prototype.getHand = function() {
   return this.hand;
 }
 
+PlayerData.prototype.emptyHand = function() {
+  this.hand = [];
+}
+
 PlayerData.prototype.addToHand = function(cards) {
   for (var i = 0; i < cards.length; i++) {;
     this.hand.push(cards[i]);
@@ -142,7 +146,7 @@ PlayerData.prototype.discard = function(card) {
 
 
 var Game = function(hostName, socket, privateGame, password, 
-                    numPlayers, gameName) {
+                    numPlayers, gameName, numDecks, startingSize) {
 
   console.log("Host for " + gameName + ": " + hostName);
   this.players = [];
@@ -150,7 +154,7 @@ var Game = function(hostName, socket, privateGame, password,
   this.numReady = 0;
   this.host = new PlayerData(hostName, socket);
   this.addPlayer(hostName, socket);
-  this.deck = new Deck(1);
+  this.deck = new Deck(numDecks);
   this.playerLimit = parseInt(numPlayers);
   this.name = gameName;
   this.start = false;
@@ -160,12 +164,29 @@ var Game = function(hostName, socket, privateGame, password,
   if (this.privateGame) {
     this.password = password;
   }
+  this.startingSize = startingSize;
+  this.numDecks = numDecks;
 
+}
+
+Game.prototype.restartGame = function() {
+  this.discardPile = [];
+  this.playedPile = [];
+  this.deck = new Deck(this.numDecks);
+  for (var i = 0; i < this.players.length; i++) {
+    this.players[i].emptyHand();
+  };
+  this.start();
+}
+
+Game.prototype.hasBegun = function() {
+  return this.start;
 }
 
 Game.prototype.getGameName = function() {
   return this.name;
 }
+
 
 
 Game.prototype.getHostName = function() {
@@ -281,7 +302,7 @@ Game.prototype.startGame = function() {
   this.start = true;
   this.deck.shuffle(5);
   for (var i = this.players.length - 1; i >= 0; i--) {
-    this.drawCards(this.players[i].getName(), 7);
+    this.drawCards(this.players[i].getName(), this.startingSize);
   };
 }
 

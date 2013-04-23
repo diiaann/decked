@@ -66,7 +66,8 @@ module.exports = function(globals) {
       } else {      
         game = new cards.Game(data.username, socket, 
                                 data.privy, data.password, 
-                                data.numPlayers, data.name);
+                                data.numPlayers, data.name, 
+                                data.numDecks, data.startingSize);
         globals.games[data.name] = game;
         socket.emit("gotoGame", 
           {
@@ -154,6 +155,9 @@ module.exports = function(globals) {
     socket.on("drawCard", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
+        if (game.hasBegun() === false) {
+          return;
+        }
         socket.emit("drewCard", { cards : game.drawCards(data.username, 1)});
         game.updateEach("update", function(player){
         return { 

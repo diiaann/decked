@@ -208,6 +208,14 @@ h4{
 	width: 60px;
 }
 
+#numDecks {
+	width: 60px;
+}
+
+#startHand {
+	width: 60px;
+}
+
 #private {
 	width: 15px;
 	height: 15px;

@@ -114,8 +114,10 @@ $(document).ready(function(){
   socket.on("tookCard", function(data) {
     if (data.hand !== undefined) {
       populateHand(data.hand);
+      sortHand();
     }
     populatePlayed(data.cards);
+    sortHand();
   })
 
   socket.on("trashed", function(data) {
@@ -127,8 +129,9 @@ $(document).ready(function(){
   // Game starts. show my hand.
   socket.on("gameStart", function(data) {
     populateHand(data.cards);
+    sortHand();
     $("#deck").click(drawCard);
-
+    $("#sortBy").change(sortHand);
   })
 
   // If login is unsuccessful, go back to the homepage
@@ -139,17 +142,20 @@ $(document).ready(function(){
   // Add cards to hand
   socket.on("drewCard", function(data) {
     populateHand(data.cards);
+    sortHand();
   });
 
   // Grow discard pile
   socket.on("discard", function(data) {
     populateHand(data.cards);
     populateDiscard(data.discardPile);
+    sortHand();
   });
 
   socket.on("playedCard", function(data) {
     populateHand(data.cards);
     populatePlayed(data.playedPile);
+    sortHand();
   });
 
   // Chat message update
@@ -334,7 +340,6 @@ function populateHand(cards) {
     var suit = "&" + cardData[1];
     discard(rank, getSuit(suit));*/
 
-
   //});
 }
 
@@ -417,4 +422,106 @@ function getIndexFromPlayers(name, players) {
       return i;
     }
   };
+}
+
+
+function sortHand() {
+  var type = parseInt($("#sortBy").val());
+
+  var rankSort = function(a, b) { 
+    var aVal = mapToNum(encodeURI($(a).text()).split("%")[0]);
+    var bVal = mapToNum(encodeURI($(b).text()).split("%")[0]);
+    return  aVal - bVal;
+  }
+
+  var suitSort = function(a, b) { 
+    var aVal = mapToNum(encodeURI($(a).text()).split("%"));
+    var bVal = mapToNum(encodeURI($(b).text()).split("%"));
+    aVal.splice(0,1);
+    bVal.splice(0,1);
+    aVal = decodeURI(aVal.join(""));
+    bVal = decodeURI(bVal.join(""));
+    return aVal.localeCompare(bVal);
+  }
+
+  var hasSuit = function(suitChar) {
+    return function(elem) {
+      return ($(elem).text().indexOf(suitChar) !== -1);
+    };
+  }
+
+
+  var cardList = $("#playerHand");
+
+  var newHand;
+
+  if (type === 2) {
+
+
+// DO suitSort, then find indices of change. break into int subarray,s sort them, concat
+
+
+    newHand = $("#playerHand").children().sort(suitSort);
+    var pivots = [0];
+    for (var i = 0; i < newHand.length - 1; i++) {
+      if ($(newHand[i]).text().substr(1) !== $(newHand[i+1]).text().substr(1)) {
+        pivots.push(i+1);
+      }
+    };
+
+    console.log(pivots);
+    pivots.push(newHand.length);
+
+    var finalHand = [];
+    var tempArray = [];
+
+    for (var i = 0; i < pivots.length - 1; i++) {
+      tempArray = newHand.slice(pivots[i], pivots[i+1]);
+      console.log(tempArray);
+      tempArray = tempArray.sort(rankSort);
+      console.log(tempArray);
+      finalHand = finalHand.concat(tempArray);
+      console.log("FINAL HAND");
+      console.log(finalHand);
+      tempArray = [];
+    }
+
+
+    /*var clubs = newHand.filter(function(elem) { $(elem).text().indexOf("♣") !== -1 });
+    var spades = newHand.filter(function(elem) { $(elem).text().indexOf("♥") !== -1 });
+    var diamonds = newHand.filter(function(elem) { $(elem).text().indexOf("♦") !== -1 });
+    var hearts = newHand.filter(function(elem) { $(elem).text().indexOf("♣") !== -1 });
+    clubs = clubs.sort(rankSort);
+    spades = spades.sort(rankSort);
+    diamonds = diamonds.sort(rankSort);
+    hearts = hearts.sort(rankSort);
+    newHand = [].concat(clubs,spades, diamonds. hearts);*/
+    
+    console.log(finalHand);
+    newHand = finalHand;
+  } else {
+    newHand = $("#playerHand").children().sort(rankSort);
+  }
+
+
+  cardList.html("");
+  for (var i = 0; i < newHand.length; i++) {
+    cardList.append($(newHand[i]));
+  };
+  //Sort by rank
+
+  //Sort by suit
+}
+
+function mapToNum(chr) {
+  switch(chr) {
+    case "J":
+      return "11";
+    case "Q":
+      return "12";
+    case "K":
+      return "13";
+    default:
+      return chr;
+  }
 }

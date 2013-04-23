@@ -93,9 +93,11 @@ function joinGame() {
 
 // Request a new game
 function requestGame() {
-  var gameName = $("#groupName").val()
-  var numPlayers = $("#numPlayers").val()
+  var gameName = $("#groupName").val();
+  var numPlayers = $("#numPlayers").val();
   var privy = $("#private").is(":checked");
+  var numDecks = $("#numDecks").val;
+  var startingSize = $("#startingSize").val();
   var password;
 
   if (gameName === "") {
@@ -119,7 +121,9 @@ function requestGame() {
       numPlayers: numPlayers,
       private: privy,
       password: password,
-      username: window.username
+      username: window.username,
+      numDecks: numDecks,
+      startingSize: startingSize
     }
   );
 

@@ -34,7 +34,7 @@
     		<div class="twelvecol">
     		
     			<h1>Decked</h1>
-    			<h2>Play any game</h2>
+    			<h2>Play your own game</h2>
     		</div>
     	</div>
     	</div>
@@ -46,7 +46,7 @@
     				<div class="circle"></div> Name
     			</div>
     			<div class="loginFields">
-    				<input id="usernameInput" type="text" placeholder="username"/> 
+    				<input id="usernameInput" type="text" placeholder="email"/> 
     				<input id="passwordInput" type="password"/> 
     				<div>
     					<button id="loginButton"> sign in </button>
@@ -60,7 +60,7 @@
     			<h3>About</h3>
     			<hr>
     			<p class="text">
-    				We found that there were only card game specific apps or simple deck shuffling apps that couldn't support a full game. Our goals is to allow people play any card game.  			
+    				We found that there were only card game specific apps or simple deck shuffling apps that couldn't support a full game. Our goal is to allow people play any card game - even ones that don't exist yet.  			
     			</p>
     		</div>
     	</div>
@@ -76,8 +76,11 @@
                     </div>
 
                     <div>
-                        <input id="numPlayers" type="number" min="1" max="4" value="1"> #players</input>
-                        <input id="private" type="checkbox" checked="checked"> Private game?</input>
+                        <input class="numberForm" id="numPlayers" type="number" min="1" max="4" value="1"> #players </input>
+                        <input class="numberForm" id="numDecks" type="number" min="1" max="10" value="1"> #decks </input>
+                        <input class="numberForm" id="startingSize" type="number" min="1" max="52" value="7"> Cards in starting hand </input>
+                        <br>
+                        <input id="private" type="checkbox" checked="checked"> Private game? </input>
                     </div>
 
 
