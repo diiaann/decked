@@ -404,6 +404,7 @@ button:hover{
 .public {
 	font-size: 14px;
 	text-align: bottom;
+	position: relative;
 }
 
 #deck:hover {
@@ -454,6 +455,27 @@ button:hover{
 	z-index: 2; 
 }
 
+.microCard { 
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	margin: 0 15px 15px 0; 
+	padding: 0px 5px 0px 5px;
+	position: relative; 
+	height: 56px; 
+	min-width: 40px; 
+	z-index: 2; 
+}
+
+
+
+
 .vertHand{
 	width: 60px;
 }
@@ -492,6 +514,32 @@ button:hover{
 	background-color: #aaa;
 	vertical-align: middle;
 }
+
+.playDiv {
+	position: absolute;
+	text-align: center;
+}
+
+#eastDiv {
+	right: 0px;
+	top: 80px;
+}
+
+#northDiv {
+	top: 5px;
+	left: 160px;
+}
+
+#westDiv {
+	left: 40px;
+	top: 140px;
+}
+
+#southDiv {
+	bottom: 0px;
+	left: 240px;
+}
+
 
 /********************************* UNUSED *********************************/
 
