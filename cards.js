@@ -98,6 +98,7 @@ var PlayerData = function(hostname, socket) {
   this.name = hostname;
   this.socket = socket;
   this.hand = [];
+  this.played = [];
   this.ready = false;
   this.inGame = false;
 }
@@ -142,6 +143,15 @@ PlayerData.prototype.discard = function(card) {
       this.hand.splice(i, 1);  
     }
   };
+}
+
+PlayerData.prototype.discardFromPlayed = function(card) {
+  for (var i = 0; i < this.played.length; i++) {;
+    if (this.played[i].equals(card)) {
+      this.played.splice(i, 1);  
+    }
+  };
+  console.log(this.played);
 }
 
 
@@ -202,8 +212,28 @@ Game.prototype.discard = function(player, rank, suit) {
     }
   };
   return this.discardPile;
-
 }
+
+Game.prototype.discardFromPlayed = function(player, rank, suit) {
+  var oldCard = new Card(rank, suit);
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].name === player) {
+      this.discardPile.push(oldCard);
+      this.players[i].discardFromPlayed(oldCard);
+    }
+  };
+  for (var i = 0; i < this.playedPile.length; i++) {
+    if (this.playedPile[i].equals(oldCard)) {
+      this.playedPile.splice(i,1);
+    }
+  };
+
+  console.log("PLAYED " + this.playedPile);
+
+  return this.discardPile;
+}
+
+
 
 Game.prototype.trashCards = function() {
   console.log("trashing");
@@ -224,6 +254,7 @@ Game.prototype.playCard = function(player, rank, suit) {
       console.log("playing");
       this.playedPile.push(oldCard);
       this.players[i].discard(oldCard);
+      this.players[i].played.push(oldCard);
     }
   };
 

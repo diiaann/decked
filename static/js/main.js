@@ -42,9 +42,6 @@ $(document).ready(function(){
   $("#private").change(handleGamePW);
 
   window.LoginManager.setLoginSuccess(hideLogin);
-      
-  socket.emit("send", {msg:"mobile"});
-
 });
 
 // Hides login fields

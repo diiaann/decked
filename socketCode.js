@@ -188,6 +188,27 @@ module.exports = function(globals) {
     });
 
     /*
+     * Discard a card.
+     */
+    socket.on("discardFromPlayed", function(data) {
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
+        var discardPile = game.discardFromPlayed(data.username, data.rank, data.suit);
+        game.updateEach("discardFromPlayed", function(player) {
+          return { cards : player.getHand(),
+          discardPile : discardPile,
+          playedPile : game.playedPile };
+        });
+        game.updateEach("update", function(player){
+        return { 
+              msg : wrapInSpan(data.username, player.getName() === data.username) + 
+              " discards the " + data.rank + " of " + 
+                  data.suit.toLowerCase() + "."};
+        });
+      }
+    });
+
+    /*
      * Send chat in a game.
      */
     socket.on('sendInGame', function(data) {
