@@ -19,11 +19,11 @@ $(document).ready(function(){
   // Change width of main pane based on window size
   $(window).resize(function() {
     var width = document.width;
-    $(".horz").css("width", width - $("#chat").width() - 160);
+    $("#playarea").css("width", width - $("#chat").width() - 160);
   });
 
   // Set initial width
-  $(".horz").css("width", document.width - $("#chat").width() - 160);
+  $("#playarea").css("width", document.width - $("#chat").width() - 160);
 
   // On login, try to join the game.
   window.LoginManager.setLoginSuccess(
@@ -179,17 +179,19 @@ $(document).ready(function(){
 
   // Chat message update
   socket.on('update', function(data) {
-    $("#chatText").append($("<li>").html(data.msg));
+    var newLI = $("<li>").html(data.msg);
+    newLI.addClass("chatLi");
+    $("#chatText").append(newLI);
+    $('.chats').scrollTop($('#chatText').height());
   });
 
   // Set DOM elements
   $("#gameName").html(window.location.href.split("/game/")[1]);
   $("#readyButton").click(toggleReady);
-  $(".chats").css("height", 600);
+  $(".chats").css("height", document.height - 46 - 70);
   $("#player1name").html(username);
   $("#takeButton").click(takeCard);
   $("#trashButton").click(trashCard);
-  $("#drawButton").click(drawCard);
  
   // Gravatar
   var dMM = "?d=mm";
@@ -394,18 +396,84 @@ function populateDiscard(cards) {
 
 // Populate the discard pile DOM element
 function populatePlayed(cards) {
-  var played = $("#played");
-  var index;
-  if (cards === undefined || 
-    cards.length === 0) {
-    played.html("<p>played</p>");
+  var cardList = $("#playedPile");
+  // Clear the list
+  cardList.html("");
+  
+  if (cards === null ||
+    cards.length === 0 ) {
     return;
   }
-  index = cards.length - 1;
-  //console.log(cards);
-  window.playedPile = cards;
-  played.html("");
-  played.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
+
+  for (var i = cards.length - 1; i >= 0; i--) {
+    var rank = cards[i].rank;
+    var suit = getUnicodeSymbol(cards[i].suit);
+    var res = rank + suit;
+    var newLI = $("<li>")
+    var newButton = $("<button>");
+    newButton.addClass("miniCard");
+    if (suit === heartUnicode || suit === diamondUnicode) {
+      newButton.addClass("diamond");
+    }
+
+    newButton.html(res);
+    newButton.val(res);
+    newLI.append(newButton);
+    cardList.append(newLI);
+
+    // Start dragging when clicked
+    newLI.mousedown(function(e) {
+      var that = $(this).children()[0];
+      var origOffset = $(that).offset();
+      var cardData = that.value.split("&");
+      var rank = cardData[0];
+      var suit = "&" + cardData[1];
+      window.dragging = $(e.target);
+
+      // Drag it around
+      $(document.body).on("mousemove", function(e) {
+        if (window.dragging !== undefined) {
+          window.dragging.offset({
+            top : e.pageY - $(that).width()/2,
+            left: e.pageX - $(that).height()/2
+          });
+        }
+      });
+
+      // When we release, have we dragged it to a part of the board?
+      $(this).on("mouseup", function(e){
+        $("#played").css("background-color","gray");
+
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        var playedXL = $("#played").offset().left;
+        var playedYT = $("#played").offset().top;
+        var playedXR = $("#played").offset().left + $("#played").width();
+        var playedYB = $("#played").offset().top + $("#played").height();
+
+        $(this).unbind("mouseup");
+
+        if (centerX >= playedXL && centerX <= playedXR && 
+            centerY >= playedYT && centerY <= playedYB) {
+        //playCard(rank, getSuit(suit));
+        } else if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+          discardFromPlayed(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("mousemove");
+        $('#deckarea #discard').unbind("mouseup");
+      });
+
+    });
+
+  };
 }
 
 // discard a card
@@ -415,7 +483,14 @@ function discard(rank, suit) {
     rank : rank,
     suit: suit
   });
+}
 
+function discardFromPlayed(rank, suit) {
+  socket.emit("discardFromPlayed", {
+    username: username,
+    rank : rank,
+    suit: suit
+  });
 }
 
 // Plays the given card.

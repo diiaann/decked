@@ -103,14 +103,18 @@ h4{
 	border: 5px
 }
 
-
-.chats {
-	overflow-y: scroll;
-	height: 100%;
-}
-
 #chatText {
 	display: block;
+}
+
+.chats {
+	overflow-y: auto;
+}
+
+.chatLi {
+	width: 100%;
+	font-size: 12px;
+	word-wrap: break-word;
 }
 
 #chat {
@@ -143,12 +147,6 @@ h4{
 	z-index: 2; 
 }
 
-.chatBar {
-	margin: 10px;
-	float: right;
-	width: 40%;
-	display: inline-block;
-}
 
 .configSection {
 	float: left;
@@ -291,9 +289,6 @@ button:hover{
 	line-height: 36px;
 }
 
-
-
-
 .before {
 	background: #228B22;
 }
@@ -330,7 +325,7 @@ button:hover{
 
 .player {
 	position: relative;
-	display: inline-block;
+	/*display: inline-block;*/
 	text-align: center;
 }
 
@@ -374,11 +369,19 @@ button:hover{
 }
 
 #played{
-	width: 300px;
+	width: 450px;
 	height: 300px;
 	background-color: gray;
 	float: right;
 }
+
+#playedPile {
+	left: 10px;
+	top: 190px;
+	position: relative;
+}
+
+
 .clearfix:after {
     visibility: hidden;
     display: block;
@@ -388,7 +391,7 @@ button:hover{
     }
 
 #deckarea{
-	width: 420px;
+	width: 600px;
 	height: 300px;
 	margin-left: auto;
 	margin-right: auto;
@@ -415,12 +418,15 @@ button:hover{
 }
 
 #discard {
-
+	background-color: rgba(255, 255, 255, 0);
+	border-style: solid;
+	border-width: 5px;
+	color: #333;
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px; 
 }
 
-#played{
-
-}
 
 #chatText li{
 	display: inline-block;
@@ -460,6 +466,7 @@ button:hover{
 
 .handHorizontal{
 	list-style: none;
+	text-align: center;
 }
 
 .handHorizontal li{
@@ -481,3 +488,21 @@ button:hover{
 
 .loginFields{
 }
+
+.gameLogins {
+	background-color: #aaa;
+	vertical-align: middle;
+}
+
+/********************************* UNUSED *********************************/
+
+
+
+
+/*
+.chatBar {
+	margin: 10px;
+	float: right;
+	width: 40%;
+	display: inline-block;
+}*/
