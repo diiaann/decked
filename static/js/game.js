@@ -170,6 +170,13 @@ $(document).ready(function(){
     sortHand();
   });
 
+  socket.on("discardFromPlayed", function(data) {
+    populateHand(data.cards);
+    populateDiscard(data.discardPile);
+    populatePlayed(data.playedPile);
+    sortHand();
+  });
+
   // Card was put into the played pile
   socket.on("playedCard", function(data) {
     populateHand(data.cards);
