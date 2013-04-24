@@ -364,6 +364,7 @@ button:hover{
 #playarea {
 	width: 800px;
 	float: left;
+	background-color: #bfbfbf;
 
 }
 
@@ -372,6 +373,8 @@ button:hover{
 	height: 300px;
 	background-color: gray;
 	float: right;
+	margin-right: 20px;
+
 }
 
 #playedPile {
@@ -390,11 +393,15 @@ button:hover{
     }
 
 #deckarea{
-	width: 600px;
+	width: 700px;
 	height: 300px;
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 10px;
+}
+
+#playerList{
+	float:right;
 }
 
 .public:hover {
