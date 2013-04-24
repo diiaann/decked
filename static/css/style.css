@@ -106,7 +106,6 @@ h4{
 
 .chats {
 	overflow-y: scroll;
-	position: relative;
 	height: 100%;
 }
 
@@ -116,7 +115,6 @@ h4{
 
 #chat {
 	width: 270px;
-	position: relative;
 	z-index: 900;
 	top: 0px;
 	float: left;
@@ -128,11 +126,6 @@ h4{
 	display: inline-block;
 }
 
-.bigDiv {
-	position: absolute;
-	top: 70px;
-	height: 600px;
-}
 
 .card { 
 	color: white;
@@ -146,7 +139,6 @@ h4{
 	float: left; 
 	height: 140px; 
 	margin: 0 15px 15px 0; 
-	position: relative; 
 	width: 100px; 
 	z-index: 2; 
 }
@@ -353,13 +345,11 @@ button:hover{
 }
 
 .middleDiv {
-	position: relative;
 	display: block;
 	width: 800px;
 }
 
 #player1{
-	bottom: 60px;
 }
 
 #player2{
@@ -377,10 +367,17 @@ button:hover{
 }
 
 #playarea {
-	float: right;
-	position: relative;
+	width: 800px;
+	float: left;
+
 }
 
+#played{
+	width: 300px;
+	height: 300px;
+	background-color: gray;
+	float: right;
+}
 .clearfix:after {
     visibility: hidden;
     display: block;
@@ -390,10 +387,11 @@ button:hover{
     }
 
 #deckarea{
-	position: relative;
-	top: 120px;
-	left: 212px;
-	background-color: brown;
+	width: 420px;
+	height: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 10px;
 }
 
 .public:hover {
@@ -409,8 +407,10 @@ button:hover{
 }
 
 #playButtons {
-	position: absolute;
-	right: 43%;
+	margin-left: auto;
+	text-align: center;
+	margin-right: auto;
+	margin-bottom: 10px
 }
 
 #discard {
@@ -421,12 +421,13 @@ button:hover{
 
 }
 
-.circle{
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
-	background-color: gray;
+#chatText li{
 	display: inline-block;
+	background-color: white;
+	width: 100%;
+	border-top: 1px solid #afafaf;
+	border-bottom: 1px solid #afafaf;
+	padding: 3px;
 }
 
 .miniCard { 
@@ -475,4 +476,7 @@ button:hover{
 
 .myName {
 	color: blue;
+}
+
+.loginFields{
 }

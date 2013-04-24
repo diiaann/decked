@@ -1,6 +1,8 @@
 window.socket;
 window.username;
 
+var gravatar = "http://www.gravatar.com/avatar/";
+
 $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
   // update chat message
@@ -55,6 +57,12 @@ function hideLogin(){
   $("#profileArea").html("Welcome back.");
   $("#loggedIn").toggleClass("invisible");
   $("#formArea").toggleClass("hidden");
+  $("#nameSpace").html(window.username);
+  
+  var hash = hashEmailString(username);
+  var dMM = "?d=mm";
+  $(".image-wrap").css("background", "url("+gravatar+hash+dMM+") no-repeat center center");
+
 }
 
 // Hides game password fields

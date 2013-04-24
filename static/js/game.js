@@ -8,7 +8,7 @@ window.spadeUnicode = "&#9824;";
 window.diamondUnicode = "&#9830;";
 window.clubUnicode = "&#9827;";
 
-var gravatar = "http://www.gravatar.com/avatar/"
+var gravatar = "http://www.gravatar.com/avatar/";
 
 window.discardPile = [];
 window.playedPile = [];
@@ -190,10 +190,11 @@ $(document).ready(function(){
   $("#takeButton").click(takeCard);
   $("#trashButton").click(trashCard);
   $("#drawButton").click(drawCard);
-  
+ 
   // Gravatar
+  var dMM = "?d=mm";
   var hash = hashEmailString(username);
-  $(".image-wrap").css("background", "url("+gravatar+hash+") no-repeat center center");
+  $(".image-wrap").css("background", "url("+gravatar+hash+dMM+") no-repeat center center");
 
 });
 
@@ -234,6 +235,7 @@ function toggleReady() {
 // Sends chat
 function doSend() {
   var text = $('#text').val();
+  $('#text').val("");
   socket.emit('sendInGame', { 
     username : window.username,
     msg : text});
@@ -324,10 +326,12 @@ function populateHand(cards) {
       var cardData = that.value.split("&");
       var rank = cardData[0];
       var suit = "&" + cardData[1];
-      window.dragging = $(e.target);
+      
+
 
       // Drag it around
       $(document.body).on("mousemove", function(e) {
+      	$("#played").css("background-color","purple");
         if (window.dragging !== undefined) {
           window.dragging.offset({
             top : e.pageY - $(that).width()/2,
@@ -338,6 +342,7 @@ function populateHand(cards) {
 
       // When we release, have we dragged it to a part of the board?
       $(this).on("mouseup", function(e){
+      	$("#played").css("background-color","gray");
         var centerX = e.pageX;
         var centerY = e.pageY;
         var discardXL = $("#discard").offset().left;
@@ -397,7 +402,7 @@ function populatePlayed(cards) {
     return;
   }
   index = cards.length - 1;
-  console.log(cards);
+  //console.log(cards);
   window.playedPile = cards;
   played.html("");
   played.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
@@ -461,7 +466,7 @@ function sortHand() {
   var rankSort = function(a, b) { 
     var aVal = parseInt(mapToNum(encodeURI($(a).text()).split("%")[0]));
     var bVal = parseInt(mapToNum(encodeURI($(b).text()).split("%")[0]));
-    console.log(aVal, bVal);
+    //console.log(aVal, bVal);
     return  aVal - bVal;
   }
 
@@ -502,7 +507,7 @@ function sortHand() {
       }
     };
 
-    console.log(pivots);
+    //console.log(pivots);
     pivots.push(newHand.length);
 
     for (var i = 0; i < pivots.length - 1; i++) {
@@ -522,7 +527,7 @@ function sortHand() {
       }
     };
 
-    console.log(pivots);
+    //console.log(pivots);
     pivots.push(newHand.length);
 
     for (var i = 0; i < pivots.length - 1; i++) {
@@ -542,7 +547,7 @@ function sortHand() {
 
     cardList.append(newLI);
     
-            newLI.bind('touchstart',function(event) {
+    newLI.bind('touchstart',function(event) {
 
         
         var that = $(this).children()[0];
@@ -554,6 +559,7 @@ function sortHand() {
 
       // Drag it around
       $(document.body).on("touchmove", function(event) {
+         event.preventDefault();
       	 var e = event.originalEvent;
       	 var touch = e.targetTouches[0];
          if (window.dragging !== undefined) {
@@ -567,7 +573,7 @@ function sortHand() {
       // When we release, have we dragged it to a part of the board?
       $(this).on("touchend", function(event){
         var e = event.originalEvent;
-        var touch = e.targetTouches[0];
+        var touch = e.changedTouches[0];
         
         var centerX = touch.pageX;
         var centerY = touch.pageY;
@@ -603,6 +609,7 @@ function sortHand() {
 	}*/
   });
 
+
     newLI.mousedown(function(e) {
       var that = $(this).children()[0];
       var origOffset = $(that).offset();
@@ -610,6 +617,8 @@ function sortHand() {
       var rank = cardData[0];
       var suit = "&" + cardData[1];
       window.dragging = $(e.target);
+     $("#played").css("background-color","#afafaf");
+
 
       // Drag it around
       $(document.body).on("mousemove", function(e) {
@@ -623,6 +632,8 @@ function sortHand() {
 
       // When we release, have we dragged it to a part of the board?
       $(this).on("mouseup", function(e){
+        $("#played").css("background-color","gray");
+
         var centerX = e.pageX;
         var centerY = e.pageY;
         var discardXL = $("#discard").offset().left;

@@ -18,104 +18,44 @@
 
   </head>
 
-    <body>
-
-    		<div id="header">
-            <div class="row">
-                <div class="sixcol last">
-                <div class="loginFields">
-                    <input id="usernameInput" type="text" placeholder="username"/> 
-                    <input id="passwordInput" type="password"/> 
-                    <button id="loginButton"> sign in </button>
-                    <button id="registerButton"> sign up </button>
-                    <button id="logoutButton" class="hidden"> log out </button>
-                </div>
-                </div>
-            </div>
-        </div>
-    		<div class="bigDiv">
-    				<div id="chat">
-    						<form action="javascript:doSend()">
-                    <input id="text" type="text" placeholder="send message"></input>
-	    				  		<button id="post"> talk! </button>
+    
+   <body>
+	   <div class="loginFields">
+	   	   <div><a href="http://localhost:8889">home</a></div>
+           <button id="logoutButton" class="hidden"> log out </button>
+           <button id="registerButton"> sign up </button>
+           <button id="loginButton">sign in</button>
+       </div>
+	   <div id="chat">
+	    		<form action="javascript:doSend()">
+                	<input id="text" type="text" placeholder="send message"></input>
+	    			<button id="post"> talk! </button>
                 </form>
-	    				      <div class="chats">
-		    				 		 	 <ul id="chatText"></ul>
-		    						</div>
-        		</div>
-            		
-          	<div id="playarea" class="clearfix">
-	          		<div id="gameName">Game</div>
-                    <div id="player3" class="horz player hidden">
-                      <div class="circle"></div>
-                      <span id="player3name">Player 3</span>
-                      <ul class="handHorizontal">
-                        <li><div class="miniCard"></div></li>
-                        <li><div class="miniCard"></div></li>
-                        <li><div class="miniCard"></div></li>
-                        <li><div class="miniCard"></div></li>
-                        <li><div class="miniCard"></div></li>
-                        <li><div class="miniCard"></div></li>
-                      </ul>
-                    </div>
-
-                    <div class="middleDiv">
-                        <div id="player2" class="vert player hidden">
-                          <div class="vertHand">
-                           <ul class="handVertical">
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                          </ul>
-                        <div class="circle"></div>
-                          <p id="player2name">Player 2</p>
-                        </div>
-                        </div>
-                        
-                        <div id="deckarea">
-                          <div class="card public" id="deck">
+          
+            <div class="chats">
+		    	<ul id="chatText"></ul>
+		    </div>  
+		   </div>          		
+       <div id="playarea">
+	        <h2 id="gameName">Game</h2>                        
+            <div id="deckarea">
+                     <div class="card public" id="deck">
                             <p>deck</p>
-                          </div>
-                        
-                          <div class="card public" id="discard">
-                            <p>discard</p>
-                          </div>
-                          
-
-                              <div class="card public" id="played">
-                                  <p>played</p>
-                              </div>
-                              <div id="playButtons">
-                                <button id="takeButton">Take!</button>
-                                <br>
-                                <button id="trashButton">Discard!</button>
-                                <br>
-                                <button id="drawButton">Draw!</button>
-                              </div>
-                        </div>
-                        
-                        <div id="player4" class="vert player hidden">
-                          <div class="vertHand">
-                           <ul class="handVertical">
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                            <li><div class="miniCard"></div></li>
-                          </ul>
-                          <div class="circle"></div>
-                            <p id="player4name">Player 4</p>
-                          </div>  
-                        </div>
-
-                    </div class="middleDiv">
-
-                    <div id="player1" class="horz player">
-                      <ul class="handHorizontal" id="playerHand">
+                          </div>   
+                     <div class="public" id="played">
+                               <p>played</p>
+                            </div>
+                     <div class="card public" id="discard">
+                           	<p>discard</p>
+                           </div>
+                 </div>
+            <div id="playButtons">
+                     <button id="takeButton">Take!</button>
+                     <button id="trashButton">Discard!</button>
+                     <button id="drawButton">Draw!</button>
+                  </div>     
+         	<div id="player1" class="horz player">
+                <ul class="handHorizontal" id="playerHand">
                         <li><div class="miniCard"></div></li>
                         <li><div class="miniCard"></div></li>
                         <li><div class="miniCard"></div></li>
@@ -123,25 +63,18 @@
                         <li><div class="miniCard"></div></li>
                         <li><div class="miniCard"></div></li>
                       </ul>
-                      <div class="circle"><span class="image-wrap"></span></div>
-                      <span id="player1name">Player 1</span>
-                      <button id="readyButton">ready</button>
-                      <button class="none" id="startButton">Start!</button>
-                      <div>
+                <div class="circle"><span class="image-wrap"></span></div>
+                <span id="player1name">Player 1</span>
+                <button id="readyButton">ready</button>
+                <button class="none" id="startButton">Start!</button>
+                <div>
                           Sort by:
                           <select id="sortBy">
                             <option value="1">Rank</option>
                             <option value="2">Suit</option>
                           </select>
                       </div>
-
-                    </div>
-              
-       			</div>
-
-       			
-   			</div>
-            		
-            	
+            </div>   			
+       </div>            	
     </body>
 </html>
