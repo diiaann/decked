@@ -10,7 +10,7 @@ body{
 }
 
 #playarea{
-	width: 800px;
+	padding-top: 10px;
 	float: left;
 	position: static;
 }
@@ -120,7 +120,9 @@ body{
 	display: inline-block;
 	margin-left: -30px;
 }
-
+#chatText{
+	padding: 0px;
+}
 
 .circle{
 	width: 50px;
@@ -209,6 +211,7 @@ button{
 
 #playerList{
 	float:right;
+	width: 150px;
 }
 
 #played{
@@ -217,5 +220,67 @@ button{
 	background-color: gray;
 	float: right;
 	margin-right: 20px;
+	position: relative;
 
+}
+
+.chats {
+	overflow-y: auto;
+}
+
+#playedPile {
+	left: 10px;
+	top: 190px;
+	position: relative;
+}
+
+.playDiv {
+	position: absolute;
+	text-align: center;
+}
+
+#eastPlayed {
+	right: 0px;
+	top: 80px;
+}
+
+#northPlayed {
+	top: 5px;
+	left: 160px;
+}
+
+#westPlayed {
+	left: 40px;
+	top: 140px;
+}
+
+#southPlayed {
+	bottom: 0px;
+	left: 240px;
+}
+.hidden{
+	visibility: hidden;
+}
+
+
+.inline {
+	display: inline-block;
+}
+
+.microCard { 
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	margin: 0 15px 15px 0; 
+	padding: 0px 5px 0px 5px;
+	position: relative; 
+	height: 56px; 
+	min-width: 40px; 
+	z-index: 2; 
 }

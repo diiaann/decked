@@ -23,25 +23,35 @@
         </div>
         
         <div id="playarea">
-        	<h2 id="gameName">Game</h2>                        
               <div id="deckarea">
               
                   <div id="playerList">
-                  	<div>
+                  	<h2 id="gameName">Game</h2>                        
+                  	<div id="beginButtons">
+	                	<button id="readyButton">ready</button>
+	                	<button class="none" id="startButton">Start!</button>        	
+	                </div>
+                  	<div class="hidden westDiv">
                   		<div class="circle"><span class="image-wrap"></span></div>
                   		<span id="westName">player 2 name</span>
                   	</div>
                   	
-                  	<div>
+                  	<div class="hidden northDiv">
                   		<div class="circle"><span class="image-wrap"></span></div>
                   		<span id="northName">player 3 name</span>
                   	</div>
                   	
-                  	<div>
+                  	<div class="hidden eastDiv">
                   		<div class="circle"></d<span class="image-wrap"></span></div> 
                   		<span id="eastName">player 4 name</span>
                   	</div>
-                  
+                  	
+                  	<form action="javascript:doSend()">
+	                  	<input id="text" type="text" placeholder="send message"></input>
+	                </form>
+	                <div class="chats">
+		                <ul id="chatText"></ul>
+		            </div> 
                   </div>
                             
                   <div class="card public" id="deck">
@@ -50,7 +60,44 @@
                     
                   <div class="public" id="played">
                       <p>Played cards</p>
-                      <ul class="handHorizontal" id="playedPile"></ul>    
+                      
+                      <div class="playDiv hidden westDiv">
+                          <span class="westName"> west </span>
+                          <ul class="handHorizontal" id="westPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+
+                      <div class="playDiv hidden northDiv" id="northPlayed">
+                          <span class="northName"> north </span>
+                          <ul class="handHorizontal" id="northPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden eastDiv" id="eastPlayed">
+                          <span class="eastName"> east </span>
+                          <ul class="handHorizontal" id="eastPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden southDiv" id="southPlayed">
+                          <span class="southName"> south </span>
+                          <ul class="handHorizontal" id="southPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+    
                   </div>
            
                   <div class="card public" id="discard">
@@ -65,15 +112,13 @@
 
 	        	</ul>
         	</div>	
-        	<div id="beginButtons">
-                 <button id="readyButton">ready</button>
-                 <button class="none" id="startButton">Start!</button>        	
-        	</div>
+        	
         	<div id="bottom">
         	    <div class="circle"></div>
-        	    <div id="player1name">
+        	    <span id="player1name">
         	    	Player 1
-        		</div>
+        		</span>
+        		
         	</div>
         	
         		
