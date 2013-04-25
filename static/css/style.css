@@ -361,7 +361,7 @@ button:hover{
 	width: 800px;
 	float: left;
 	background-color: #bfbfbf;
-
+	padding-bottom: 20px;
 }
 
 #played{
@@ -544,6 +544,9 @@ button:hover{
 	left: 240px;
 }
 
+#playerHand {
+	margin-left: 35px;
+}
 
 .inline {
 	display: inline-block;
