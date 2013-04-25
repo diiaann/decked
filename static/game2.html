@@ -31,7 +31,6 @@
           <div id="chat">
               <form action="javascript:doSend()">
                   <input id="text" type="text" placeholder="send message"></input>
-                  <button id="post"> talk! </button>
               </form>
 
               <div class="chats">
@@ -43,18 +42,55 @@
               <h2 id="gameName">Game</h2>                        
               <div id="deckarea">
                   <div id="playerList">
-                  	<div><div class="circle"><span class="image-wrap"></div> <span id="westName">player 2 name</span> </div>
-                  	<div><div class="circle"><span class="image-wrap"></div> <span id="northName">player 3 name</span> </div>
-                  	<div><div class="circle"><span class="image-wrap"></div> <span id="eastName">player 4 name</span> </div>
+                  	<div class="hidden westDiv" ><div class="circle"><span class="image-wrap"></div> <span class="westName"></span> </div>
+                  	<div class="hidden northDiv" ><div class="circle"><span class="image-wrap"></div> <span class="northName"></span> </div>
+                  	<div class="hidden eastDiv" ><div class="circle"><span class="image-wrap"></div> <span class="eastName"></span> </div>
                   </div>
                             
                   <div class="card public" id="deck">
                       <p>deck</p>
                   </div>   
                   <div class="public" id="played">
+
                       <p>Played cards</p>
-                      <ul class="handHorizontal" id="playedPile">
-                  </ul>    
+                      
+                      <div class="playDiv hidden westDiv">
+                          <span class="westName"> west </span>
+                          <ul class="handHorizontal" id="westPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+
+                      <div class="playDiv hidden northDiv" id="northPlayed">
+                          <span class="northName"> north </span>
+                          <ul class="handHorizontal" id="northPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden eastDiv" id="eastPlayed">
+                          <span class="eastName"> east </span>
+                          <ul class="handHorizontal" id="eastPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden southDiv" id="southPlayed">
+                          <span class="southName"> south </span>
+                          <ul class="handHorizontal" id="southPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
                   </div>
                   
                   <div class="card public" id="discard">
@@ -67,7 +103,20 @@
                   <button id="trashButton">Discard!</button>
               </div>     
               <div id="player1" class="horz player">
-                  <ul class="handHorizontal" id="playerHand">
+                  <div class="circle inline"><span class="image-wrap"></span></div>
+                  <div class="inline">
+                      <p id="southName">Player 1</p>
+                      <button id="readyButton">ready</button> <br>
+                      <button class="none" id="startButton">Start!</button> <br>
+                      <div class="inline">
+                          Sortby: <br> 
+                          <select id="sortBy">
+                          <option value="1">Rank</option>
+                          <option value="2">Suit</option>
+                          </select>
+                      </div>
+                  </div>
+                  <ul class="handHorizontal inline" id="playerHand">
                       <li><div class="miniCard"></div></li>
                       <li><div class="miniCard"></div></li>
                       <li><div class="miniCard"></div></li>
@@ -75,17 +124,6 @@
                       <li><div class="miniCard"></div></li>
                       <li><div class="miniCard"></div></li>
                   </ul>
-                  <div class="circle"><span class="image-wrap"></span></div>
-                  <span id="southName">Player 1</span>
-                  <button id="readyButton">ready</button>
-                  <button class="none" id="startButton">Start!</button>
-                  <div>
-                      Sort by:
-                      <select id="sortBy">
-                      <option value="1">Rank</option>
-                      <option value="2">Suit</option>
-                      </select>
-                  </div>
               </div>   			
           </div>            	
       </body>

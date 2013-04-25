@@ -37,6 +37,7 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
+	min-width: 1070px;
 }
 
 #home{
@@ -111,11 +112,6 @@ h4{
 	overflow-y: auto;
 }
 
-.chatLi {
-	width: 100%;
-	font-size: 12px;
-	word-wrap: break-word;
-}
 
 #chat {
 	width: 270px;
@@ -411,6 +407,7 @@ button:hover{
 .public {
 	font-size: 14px;
 	text-align: bottom;
+	position: relative;
 }
 
 #deck:hover {
@@ -437,10 +434,11 @@ button:hover{
 #chatText li{
 	display: inline-block;
 	background-color: white;
-	width: 100%;
+	width: 264px;
 	border-top: 1px solid #afafaf;
 	border-bottom: 1px solid #afafaf;
 	padding: 3px;
+	word-wrap: break-word;
 }
 
 .miniCard { 
@@ -460,6 +458,27 @@ button:hover{
 	min-width: 60px; 
 	z-index: 2; 
 }
+
+.microCard { 
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	background-color: #262F33; 
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left;
+	margin: 0 15px 15px 0; 
+	padding: 0px 5px 0px 5px;
+	position: relative; 
+	height: 56px; 
+	min-width: 40px; 
+	z-index: 2; 
+}
+
+
+
 
 .vertHand{
 	width: 60px;
@@ -499,6 +518,37 @@ button:hover{
 	background-color: #aaa;
 	vertical-align: middle;
 }
+
+.playDiv {
+	position: absolute;
+	text-align: center;
+}
+
+#eastPlayed {
+	right: 0px;
+	top: 80px;
+}
+
+#northPlayed {
+	top: 5px;
+	left: 160px;
+}
+
+#westPlayed {
+	left: 40px;
+	top: 140px;
+}
+
+#southPlayed {
+	bottom: 0px;
+	left: 240px;
+}
+
+
+.inline {
+	display: inline-block;
+}
+
 
 /********************************* UNUSED *********************************/
 
