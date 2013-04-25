@@ -52,7 +52,7 @@ $(document).ready(function(){
     var allPlayerDivs = getPlayerDivs(4);
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
-
+    var currentDiv;
 
     // Cycle player list
     for (var i = 0; i < myIndex; i++) {
@@ -61,15 +61,17 @@ $(document).ready(function(){
 
     // Hide unused divs
     for (var i = 0; i < allPlayerDivs.length; i++) {
-      var currentDiv = allPlayerDivs[i];
+      currentDiv = allPlayerDivs[i] + "Div";
       $(currentDiv).addClass("hidden");
+      console.log(currentDiv);
     }
 
     // Unhide used divs
     for (var i = 0; i < playerDivs.length; i++) {
-      var currentDiv = playerDivs[i]
-      $(currentDiv).removeClass("hidden");
-      $(currentDiv+"name").html(players[i].userName);
+      currentDiv = playerDivs[i];
+      $(currentDiv + "Div").removeClass("hidden");
+      $(currentDiv + "Name").html(players[i].userName);
+      console.log(currentDiv);
     };
 
     // If you're the host, reveal the start button.
@@ -78,6 +80,7 @@ $(document).ready(function(){
       $("#startButton").click(doStart);
     }
   });
+
 
   // For host migration.
   socket.on("youAreHost", function(data) {
@@ -171,24 +174,54 @@ $(document).ready(function(){
   });
 
   socket.on("discardFromPlayed", function(data) {
-    populateHand(data.cards);
+    var numPlayers = data.players.length;
+    var players = data.players;
+    var playerDivs = getPlayerDivs(numPlayers);
+    var myIndex = getIndexFromPlayers(username, players);
+
+    console.log(data.players);
+    // Cycle player list
+    for (var i = 0; i < myIndex; i++) {
+      players.push(players.shift());
+    };
+
+    // Unhide used divs
+    for (var i = 0; i < playerDivs.length; i++) {
+      populatePlayed(players[i].playedPile, 
+                    $("#" + playerDivs[i].substr(1) + "PlayedUL"));
+    };
+
     populateDiscard(data.discardPile);
-    populatePlayed(data.playedPile);
     sortHand();
   });
 
   // Card was put into the played pile
   socket.on("playedCard", function(data) {
+    var numPlayers = data.players.length;
+    var players = data.players;
+    var playerDivs = getPlayerDivs(numPlayers);
+    var myIndex = getIndexFromPlayers(username, players);
+
+    console.log(data.players);
+
+    // Cycle player list
+    for (var i = 0; i < myIndex; i++) {
+      players.push(players.shift());
+    };
+
+    // Unhide used divs
+    for (var i = 0; i < playerDivs.length; i++) {
+      populatePlayed(players[i].playedPile, 
+                    $("#" + playerDivs[i].substr(1) + "PlayedUL"));
+    };
+
     populateHand(data.cards);
-    populatePlayed(data.playedPile);
     sortHand();
   });
 
   // Chat message update
   socket.on('update', function(data) {
-    var newLI = $("<li>").html(data.msg);
-    newLI.addClass("chatLi");
-    $("#chatText").append(newLI);
+    $("#chatText").append($("<li>").html(data.msg));
     $('.chats').scrollTop($('#chatText').height());
   });
 
@@ -396,18 +429,13 @@ function populateDiscard(cards) {
   window.discardPile = cards;
   discard.html("");
   discard.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
-  discard.click(function() {
-    alert(this.html());
-  })
 }
 
 // Populate the discard pile DOM element
-function populatePlayed(cards) {
-  var cardList = $("#playedPile");
-  // Clear the list
+function populatePlayed(cards, cardList) {
   cardList.html("");
   
-  if (cards === null ||
+  if (cards === undefined ||
     cards.length === 0 ) {
     return;
   }
@@ -435,6 +463,8 @@ function populatePlayed(cards) {
       var cardData = that.value.split("&");
       var rank = cardData[0];
       var suit = "&" + cardData[1];
+
+      $(this).css("z-index", 999);
       window.dragging = $(e.target);
 
       // Drag it around
@@ -448,6 +478,34 @@ function populatePlayed(cards) {
       });
 
       // When we release, have we dragged it to a part of the board?
+      $("#discard").on("mouseup", function(e){
+        $("#played").css("background-color","gray");
+
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        
+
+        $(this).unbind("mouseup");
+        console.log("MOUSEUP");
+        console.log("me", centerX, centerY);
+        console.log("it", discardXL, discardXR, discardYT, discardYB);
+        
+        if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+            console.log('discard!');
+            discardFromPlayed(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("mousemove");
+        $('#deckarea #discard').unbind("mouseup");
+      });
+
       $(this).on("mouseup", function(e){
         $("#played").css("background-color","gray");
 
@@ -457,19 +515,17 @@ function populatePlayed(cards) {
         var discardYT = $("#discard").offset().top;
         var discardXR = $("#discard").offset().left + $("#discard").width();
         var discardYB = $("#discard").offset().top + $("#discard").height();
-        var playedXL = $("#played").offset().left;
-        var playedYT = $("#played").offset().top;
-        var playedXR = $("#played").offset().left + $("#played").width();
-        var playedYB = $("#played").offset().top + $("#played").height();
+        
 
         $(this).unbind("mouseup");
-
-        if (centerX >= playedXL && centerX <= playedXR && 
-            centerY >= playedYT && centerY <= playedYB) {
-        //playCard(rank, getSuit(suit));
-        } else if (centerX >= discardXL && centerX <= discardXR && 
+        console.log("MOUSEUP");
+        console.log("me", centerX, centerY);
+        console.log("it", discardXL, discardXR, discardYT, discardYB);
+        
+        if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
-          discardFromPlayed(rank, getSuit(suit));
+            console.log('discard!');
+            discardFromPlayed(rank, getSuit(suit));
         }
         
         window.dragging.offset(origOffset);
@@ -513,16 +569,16 @@ function playCard(rank, suit) {
 function getPlayerDivs(numPlayers) {
   switch(numPlayers) {
     case 1:
-      return ["#player1"];
+      return [".south"];
       break;
     case 2:
-      return ["#player1", "#player3"];
+      return [".south", ".north"];
       break;
     case 3:
-      return ["#player1", "#player2", "#player4"];
+      return [".south", ".west", ".east"];
       break;
     case 4: 
-      return ["#player1", "#player2", "#player3", "#player4"]; 
+      return [".south", ".west", ".north", ".east"]; 
       break;
     default:
       return [];

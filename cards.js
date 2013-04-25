@@ -521,7 +521,8 @@ Game.prototype.getPlayers = function() {
     result.push(
     {
         userName : this.players[i].getName(), 
-        ready : this.players[i].ready
+        ready : this.players[i].ready,
+        playedPile : this.players[i].played
     });
   };
 

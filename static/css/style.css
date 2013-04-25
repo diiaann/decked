@@ -37,6 +37,7 @@ ol, ul {
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
+	min-width: 1070px;
 }
 
 #home{
@@ -111,11 +112,6 @@ h4{
 	overflow-y: auto;
 }
 
-.chatLi {
-	width: 100%;
-	font-size: 12px;
-	word-wrap: break-word;
-}
 
 #chat {
 	width: 270px;
@@ -438,10 +434,11 @@ button:hover{
 #chatText li{
 	display: inline-block;
 	background-color: white;
-	width: 100%;
+	width: 264px;
 	border-top: 1px solid #afafaf;
 	border-bottom: 1px solid #afafaf;
 	padding: 3px;
+	word-wrap: break-word;
 }
 
 .miniCard { 
@@ -527,24 +524,29 @@ button:hover{
 	text-align: center;
 }
 
-#eastDiv {
+#eastPlayed {
 	right: 0px;
 	top: 80px;
 }
 
-#northDiv {
+#northPlayed {
 	top: 5px;
 	left: 160px;
 }
 
-#westDiv {
+#westPlayed {
 	left: 40px;
 	top: 140px;
 }
 
-#southDiv {
+#southPlayed {
 	bottom: 0px;
 	left: 240px;
+}
+
+
+.inline {
+	display: inline-block;
 }
 
 

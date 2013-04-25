@@ -197,6 +197,7 @@ module.exports = function(globals) {
         game.updateEach("discardFromPlayed", function(player) {
           return { cards : player.getHand(),
           discardPile : discardPile,
+          players : game.getPlayers(),
           playedPile : game.playedPile };
         });
         game.updateEach("update", function(player){
@@ -228,7 +229,8 @@ module.exports = function(globals) {
         var playedPile = game.playCard(data.username, data.rank, data.suit);
         game.updateEach("playedCard", function(player) {
           return { cards : player.getHand(),
-          playedPile : playedPile };
+            players : game.getPlayers()
+          };
         });
         game.updateEach("update", function(player){
         return { 
