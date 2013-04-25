@@ -23,51 +23,109 @@
         </div>
         
         <div id="playarea">
-        
-        	<div id="p2"><div class="circle"></div>Player 2</div>
-        	<div id="p3"><div class="circle"></div>Player 3</div>
-        	<div id="p4"><div class="circle"></div>Player 4</div>
-            
-            <div id="deckarea">
-	            <div class="card public" id="deck">
-		            <p>deck</p>
-		        </div>
-		        
-		        <div class="card public" id="discard">
-			        <p>discard</p>
-			    </div>
-			    
-			    <div class="card public" id="played">
-                    <p>played</p>
-                </div>
-                        
-             </div>        	
-        	
+              <div id="deckarea">
+              
+                  <div id="playerList">
+                  	<h2 id="gameName">Game</h2>                        
+                  	<div id="beginButtons">
+	                	<button id="readyButton">ready</button>
+	                	<button class="none" id="startButton">Start!</button>        	
+	                </div>
+                  	<div class="hidden westDiv">
+                  		<div class="circle"><span class="image-wrap"></span></div>
+                  		<span id="westName">player 2 name</span>
+                  	</div>
+                  	
+                  	<div class="hidden northDiv">
+                  		<div class="circle"><span class="image-wrap"></span></div>
+                  		<span id="northName">player 3 name</span>
+                  	</div>
+                  	
+                  	<div class="hidden eastDiv">
+                  		<div class="circle"></d<span class="image-wrap"></span></div> 
+                  		<span id="eastName">player 4 name</span>
+                  	</div>
+                  	
+                  	<form action="javascript:doSend()">
+	                  	<input id="text" type="text" placeholder="send message"></input>
+	                </form>
+	                <div class="chats">
+		                <ul id="chatText"></ul>
+		            </div> 
+                  </div>
+                            
+                  <div class="card public" id="deck">
+                      <p>deck</p>
+                  </div> 
+                    
+                  <div class="public" id="played">
+                      <p>Played cards</p>
+                      
+                      <div class="playDiv hidden westDiv">
+                          <span class="westName"> west </span>
+                          <ul class="handHorizontal" id="westPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+
+                      <div class="playDiv hidden northDiv" id="northPlayed">
+                          <span class="northName"> north </span>
+                          <ul class="handHorizontal" id="northPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden eastDiv" id="eastPlayed">
+                          <span class="eastName"> east </span>
+                          <ul class="handHorizontal" id="eastPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+
+                      <div class="playDiv hidden southDiv" id="southPlayed">
+                          <span class="southName"> south </span>
+                          <ul class="handHorizontal" id="southPlayedUL">
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                              <li><div class="microCard"></div></li>
+                          </ul>
+                      </div>
+    
+                  </div>
+           
+                  <div class="card public" id="discard">
+                      <p>discard</p>
+                  </div>
+            </div>   
+       
         	<div id="menu">
 	        	<ul>
 	        		<li><button id="logoutButton">logout</button></li>
-	        		<li><button id="undo">undo</button></li>
 	        		<li><button id="chat">chat</button></li>
 
 	        	</ul>
         	</div>	
-        	<div id="beginButtons">
-                 <button id="readyButton">ready</button>
-                 <button class="none" id="startButton">Start!</button>        	
-        	</div>
+        	
         	<div id="bottom">
         	    <div class="circle"></div>
-        	    <div id="p1">
-        	    	 Player 1
-        		</div>
+        	    <span id="player1name">
+        	    	Player 1
+        		</span>
+        		
         	</div>
         	
         		
         	<ul id="playerHand" class="handHorizontal"></ul>
-        </div>
          
                  
-
+       </div>
         
         
     </body>

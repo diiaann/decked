@@ -370,6 +370,7 @@ button:hover{
 	background-color: gray;
 	float: right;
 	margin-right: 20px;
+	position: relative;
 
 }
 
@@ -407,7 +408,6 @@ button:hover{
 .public {
 	font-size: 14px;
 	text-align: bottom;
-	position: relative;
 }
 
 #deck:hover {

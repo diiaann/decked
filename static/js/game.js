@@ -535,6 +535,92 @@ function populatePlayed(cards, cardList) {
       });
 
     });
+    
+    newLI.bind('touchstart',function(event) {
+    
+      var that = $(this).children()[0];
+      var origOffset = $(that).offset();
+      var cardData = that.value.split("&");
+      var rank = cardData[0];
+      var suit = "&" + cardData[1];
+
+      $(this).css("z-index", 999);
+      window.dragging = $(event.target);
+
+      // Drag it around
+      $(document.body).on("touchmove", function(event) {
+      	event.preventDefault();
+      	var e = event.originalEvent;
+      	var touch = e.targetTouches[0];
+        if (window.dragging !== undefined) {
+          window.dragging.offset({
+            top : touch.pageY - $(that).width()/2,
+            left: touch.pageX - $(that).height()/2
+          });
+        }
+      });
+
+      // When we release, have we dragged it to a part of the board?
+      $("#discard").on("touchend", function(event){
+        $("#played").css("background-color","gray");
+        var e = event.originalEvent;
+        var touch = e.changedTouches[0];
+        
+        var centerX = touch.pageX;
+        var centerY = touch.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        
+
+        $(this).unbind("touchend");
+        console.log("MOUSEUP");
+        console.log("me", centerX, centerY);
+        console.log("it", discardXL, discardXR, discardYT, discardYB);
+        
+        if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+            console.log('discard!');
+            discardFromPlayed(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("touchmove");
+        $('#deckarea #discard').unbind("touchend");
+      });
+
+      $(this).on("touchend", function(event){
+        $("#played").css("background-color","gray");
+        var e = event.originalEvent;
+        var touch = e.changedTouches[0];
+        var centerX = touch.pageX;
+        var centerY = touch.pageY;
+        var discardXL = $("#discard").offset().left;
+        var discardYT = $("#discard").offset().top;
+        var discardXR = $("#discard").offset().left + $("#discard").width();
+        var discardYB = $("#discard").offset().top + $("#discard").height();
+        
+
+        $(this).unbind("touchend");
+        console.log("MOUSEUP");
+        console.log("me", centerX, centerY);
+        console.log("it", discardXL, discardXR, discardYT, discardYB);
+        
+        if (centerX >= discardXL && centerX <= discardXR && 
+            centerY >= discardYT && centerY <= discardYB) {
+            console.log('discard!');
+            discardFromPlayed(rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("touchmove");
+        $('#deckarea #discard').unbind("touchend");
+      });
+
+    });
 
   };
 }
