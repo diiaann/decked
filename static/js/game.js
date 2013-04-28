@@ -151,6 +151,8 @@ $(document).ready(function(){
   socket.on("gameStart", function(data) {
     populateHand(data.cards);
     sortHand();
+    $("#readyButton").addClass("none");
+    $("#startButton").addClass("none");
     $("#deck").click(drawCard);
     $("#sortBy").change(sortHand);
   })
@@ -201,8 +203,6 @@ $(document).ready(function(){
     var players = data.players;
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
-
-    console.log(data.players);
 
     // Cycle player list
     for (var i = 0; i < myIndex; i++) {
@@ -416,23 +416,36 @@ function populateHand(cards) {
 
 // Populate the discard pile DOM element
 function populateDiscard(cards) {
-  var index;
+  var index, suit;
   var discard = $("#discard");
   if (cards === undefined || 
     cards.length === 0 ) {
     discard.html("<p>discard</p>");
+    discard.addClass("disClass");
+    discard.css("font-size", "20px");
     return;
   }
   
   index = cards.length - 1;
 
+  suit = getUnicodeSymbol(cards[index].suit);
+
   window.discardPile = cards;
   discard.html("");
-  discard.html(cards[index].rank + getUnicodeSymbol(cards[index].suit));
+  discard.html(cards[index].rank + suit);
+  discard.removeClass("disClass");
+  discard.addClass("whiteText");
+  discard.css("font-size", "50px");
+  if (suit === heartUnicode || suit === diamondUnicode) {
+    discard.addClass("diamond");
+  } else {
+    discard.removeClass("diamond");
+  }
 }
 
 // Populate the discard pile DOM element
 function populatePlayed(cards, cardList) {
+  console.log($($(cardList.parent().children()[0]).children()[0]).html());
   cardList.html("");
   
   if (cards === undefined ||
@@ -446,7 +459,7 @@ function populatePlayed(cards, cardList) {
     var res = rank + suit;
     var newLI = $("<li>")
     var newButton = $("<button>");
-    newButton.addClass("miniCard");
+    newButton.addClass("microCard");
     if (suit === heartUnicode || suit === diamondUnicode) {
       newButton.addClass("diamond");
     }
@@ -464,7 +477,7 @@ function populatePlayed(cards, cardList) {
       var rank = cardData[0];
       var suit = "&" + cardData[1];
 
-      $(this).css("z-index", 999);
+      $(this).css("z-index", 9);
       window.dragging = $(e.target);
 
       // Drag it around
@@ -490,10 +503,6 @@ function populatePlayed(cards, cardList) {
         
 
         $(this).unbind("mouseup");
-        console.log("MOUSEUP");
-        console.log("me", centerX, centerY);
-        console.log("it", discardXL, discardXR, discardYT, discardYB);
-        
         if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
             console.log('discard!');
@@ -503,10 +512,39 @@ function populatePlayed(cards, cardList) {
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("mousemove");
-        $('#deckarea #discard').unbind("mouseup");
+        $('#deckarea #discard #playerHand').unbind("mouseup");
       });
 
-      $(this).on("mouseup", function(e){
+
+    $("#playerHand").on("mouseup", function(e){
+        $("#played").css("background-color","gray");
+
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var playerHandXL = $("#playerHand").offset().left;
+        var playerHandYT = $("#playerHand").offset().top;
+        var playerHandXR = $("#playerHand").offset().left + $("#playerHand").width();
+        var playerHandYB = $("#playerHand").offset().top + $("#playerHand").height();
+        
+
+        $(this).unbind("mouseup");
+        console.log(cardList);
+        window.cl = cardList;
+        
+        if (centerX >= playerHandXL && centerX <= playerHandXR && 
+            centerY >= playerHandYT && centerY <= playerHandYB) {
+          takeFromPlayed(
+            $(cardList.parent().children()[0]).html(),
+            rank, getSuit(suit));
+        }
+        
+        window.dragging.offset(origOffset);
+        window.dragging = null;
+        $(document.body).unbind("mousemove");
+        $('#deckarea #discard #playerHand').unbind("mouseup");
+      });
+
+    $(this).on("mouseup", function(e){
         $("#played").css("background-color","gray");
 
         var centerX = e.pageX;
@@ -518,9 +556,6 @@ function populatePlayed(cards, cardList) {
         
 
         $(this).unbind("mouseup");
-        console.log("MOUSEUP");
-        console.log("me", centerX, centerY);
-        console.log("it", discardXL, discardXR, discardYT, discardYB);
         
         if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
@@ -531,11 +566,12 @@ function populatePlayed(cards, cardList) {
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("mousemove");
-        $('#deckarea #discard').unbind("mouseup");
+        $('#deckarea #discard #playerHand').unbind("mouseup");
       });
 
     });
-    
+
+
     newLI.bind('touchstart',function(event) {
     
       var that = $(this).children()[0];
@@ -901,4 +937,15 @@ function mapToNum(chr) {
     default:
       return chr;
   }
+}
+
+
+function takeFromPlayed(playerName, rank, suit) {
+  console.log("Took " + rank + " of " + suit +" from " + playerName);
+  socket.emit("takeFromPlayed", {
+    from: playerName,
+    to: username,
+    rank: rank,
+    suit: suit
+  });
 }

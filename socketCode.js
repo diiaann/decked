@@ -69,6 +69,10 @@ module.exports = function(globals) {
                                 data.numPlayers, data.name, 
                                 data.numDecks, data.startingSize);
         globals.games[data.name] = game;
+        if (data.privy === false) {
+          globals.publicGames.push(game);
+          console.log(globals.publicGames);
+        }
         socket.emit("gotoGame", 
           {
             gameName : data.name,

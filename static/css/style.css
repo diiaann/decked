@@ -130,7 +130,7 @@ h4{
 .card { 
 	color: white;
 	text-align: center;
-	font-size: 50px;
+	font-size: 32px;
 	background-color: #262F33; 
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px; 
@@ -367,7 +367,8 @@ button:hover{
 #played{
 	width: 450px;
 	height: 300px;
-	background-color: gray;
+	background-color: #689576;
+	border-radius: 5px;
 	float: right;
 	margin-right: 20px;
 	position: relative;
@@ -406,11 +407,17 @@ button:hover{
 }
 
 .public {
-	font-size: 14px;
 	text-align: bottom;
 }
 
-#deck:hover {
+
+#deck {
+	border-style: solid;
+	border-width: 5px;
+	/*color: #333;*/
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px;
 }
 
 #playButtons {
@@ -420,14 +427,18 @@ button:hover{
 	margin-bottom: 10px
 }
 
-#discard {
+
+.disClass {
 	background-color: rgba(255, 255, 255, 0);
+}
+
+#discard {
 	border-style: solid;
 	border-width: 5px;
-	color: #333;
 	height: 130px; 
 	margin: 0 15px 15px 0; 
 	width: 90px; 
+	font-size: 20px;
 }
 
 
@@ -503,6 +514,10 @@ button:hover{
 	background-color: #FF372F;
 }
 
+.whiteText {
+	color: white;
+}
+
 .chatName {
 	color: red;
 }
@@ -541,7 +556,7 @@ button:hover{
 
 #southPlayed {
 	bottom: 0px;
-	left: 240px;
+	right: 0px;
 }
 
 #playerHand {
