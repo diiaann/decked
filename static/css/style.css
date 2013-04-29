@@ -419,7 +419,8 @@ button:hover{
 	height: 300px;
 	margin-left: auto;
 	margin-right: auto;
-	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 #playerList{
@@ -556,12 +557,14 @@ button:hover{
 	color: white;
 }
 
-.chatName {
-	color: red;
+.chatName, .northName, .westName, .eastName {
+	color: #A12819;
+	font-style: italic;
 }
 
-.myName {
-	color: blue;
+.myName, .southName {
+	color: #36CAD4;
+	font-style: italic;
 }
 
 .loginFields{
@@ -617,8 +620,11 @@ button:hover{
 .backPattern{
 	background-color: #e74c3c;
 }
-
 .backPattern:hover{
+	background-color: #e74c3c;
+}
+
+#deck.backPattern:hover{
 	background-color: #e47160;
 }
 
@@ -643,7 +649,7 @@ button:hover{
   position: relative;
   z-index: 2;
   float: left;
-  width: 50px;
+  width: 58px;
   line-height: 26px;
   font-size: 11px;
   text-align: center;
@@ -747,6 +753,7 @@ table {
 .chatLabel{
 	margin-left: 5px;
 }
+
 
 
 /********************************* UNUSED *********************************/

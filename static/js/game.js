@@ -168,6 +168,7 @@ $(document).ready(function(){
     $("#sortBy").change(sortHand);
     $("#takeAll").removeClass("hidden");
     $("#takeAll").click(takeAll);
+    $(".toggleBox").removeClass("hidden");
   })
 
   // If login is unsuccessful, go back to the homepage

@@ -1,3 +1,36 @@
+/************** reset css ************* */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
 ol, ul {
 	list-style: none;
 	margin: 0px;
@@ -28,7 +61,7 @@ body{
 	height: 100px;
 	padding-top: 60px;
 	background-position: center center;
-	background-image: url("../imgs/power.png");
+	background-image: url("../imgs/logout.png");
 	background-repeat: no-repeat;
 	border: gray 1px solid;
 }
@@ -46,7 +79,7 @@ body{
 	background-repeat: no-repeat;
 }
 
-#chat{
+#home{
 	color: gray;
 	border-radius: 0;
 	background-color: #acefff;
@@ -54,7 +87,7 @@ body{
 	height: 100px;
 	padding-top: 60px;
 	background-position: center center;
-	background-image: url("../imgs/chat.png");
+	background-image: url("../imgs/house.png");
 	background-repeat: no-repeat;
 	border: gray 1px solid;
 }
@@ -109,7 +142,7 @@ body{
 	right: 0px;
 	top: 0px;
 	height: 100%;
-	background-color: lightblue;
+	background-color: #76d1dd;
 }
 
 .handHorizontal{
@@ -201,6 +234,16 @@ button{
 	right:10%;
 }
 
+
+#deck {
+	border-style: solid;
+	border-width: 5px;
+	/*color: #333;*/
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px;
+}
+
 #deckarea{
 	width: 750px;
 	height: 300px;
@@ -272,8 +315,8 @@ button{
 .microCard { 
 	color: white;
 	text-align: center;
+	background-color: white;
 	font-size: 30px;
-	background-color: #262F33; 
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px; 
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -287,6 +330,19 @@ button{
 	z-index: 2; 
 }
 
+#discard {	
+	border-color: gray;
+	background-color: gray;
+	border-style: solid;
+	border-width: 5px;
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px; 
+	font-size: 20px;
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
 #backPattern{
 	background-color: #e74c3c;
 
@@ -297,4 +353,25 @@ button{
 	color: gray;
 	font-weight: 500;
 	font-size: 16px;
+}
+
+.backPattern{
+	background-color: #e74c3c;
+}
+.backPattern:hover{
+	background-color: #e74c3c;
+}
+
+#deck.backPattern:hover{
+	background-color: #e47160;
+}
+
+.chatName, .northName, .westName, .eastName {
+	color: #A12819;
+	font-style: italic;
+}
+
+.myName, .southName {
+	color: #36CAD4;
+	font-style: italic;
 }
