@@ -28,7 +28,8 @@ $(document).ready(function(){
   $("#home").click(function(){
      window.location=$(this).find("a").attr("href"); 
      return false;
-});
+  });
+
   // Set initial width
   $("#playarea").css("width", document.width - $("#chat").width() - 160);
   $("#player1").css("width", document.width - $("#chat").width() - 160);
@@ -81,21 +82,15 @@ $(document).ready(function(){
       console.log(players[i].numInHand);
       if (players[i].ready === true) {
         console.log("DO WHATEVER!");
-
       }
     };
 
-    if (iAmHost === true) {
-      $("#startButton").removeClass("hidden");
-    }
-
-
     // If you're the host, reveal the start button.
     if (data.allReady === true && (iAmHost === true)) {
-      $("#startButton").html("Start");
+      $("#startButton").removeClass("hidden");
       $("#startButton").click(doStart);
     } else if (data.allReady === false && (iAmHost === true)) {
-      $("#waiting").html("Waiting for players");
+      $("#waiting").html("Waiting...");
       $("startButton").toggleClass("hidden");
       $("#startButton").unbind("click");
     }
@@ -127,11 +122,6 @@ $(document).ready(function(){
     for (var i = 0; i < myIndex; i++) {
       players.push(players.shift());
     };
-
-    // Shouldn't happen...
-    if (playerDivs.length !== players.length) {
-      alert("LISTS NOT THE SAME");
-    }
 
     // Hide/unhide divs
     for (var i = 0; i < playerDivs.length; i++) {
@@ -174,7 +164,7 @@ $(document).ready(function(){
     $("#waiting").addClass("none");
     $("#readyButton").addClass("none");
     $("#startButton").addClass("none");
-    $("#deck").click(drawCard);
+    $("#deck").on("mousedown", drawCard);
     $("#sortBy").change(sortHand);
     $("#takeAll").removeClass("hidden");
     $("#takeAll").click(takeAll);
@@ -249,6 +239,11 @@ $(document).ready(function(){
     $('.chats').scrollTop($('#chatText').height());
   });
 
+  if (window.username === undefined) {
+    var splitLoc = location.href.split("/");
+    window.location.assign(splitLoc[0] + "//" + splitLoc[2]);
+  }
+
   // Set DOM elements
   $("#gameName").html(window.location.href.split("/game/")[1]);
   $("#readyButton").click(toggleReady);
@@ -266,6 +261,7 @@ $(document).ready(function(){
   var dMM = "?d=mm";
   var hash = hashEmailString(username);
   $(".image-wrap").css("background", "url("+gravatar+hash+dMM+") no-repeat center center");
+
 
 });
 
@@ -359,7 +355,7 @@ function getSuit(unicode){
 }
 
 // Draw a card
-function drawCard() {
+function drawCard(e) {
   socket.emit("drawCard", {username : username});
 }
 
@@ -392,6 +388,7 @@ function populateHand(cards) {
 
     // Start dragging when clicked
     newLI.mousedown(function(e) {
+
       var that = $(this).children()[0];
       var origOffset = $(that).offset();
       var cardData = that.value.split("&");
@@ -469,11 +466,14 @@ function populateDiscard(cards) {
   } else {
     discard.removeClass("diamond");
   }
+  discard.click(pickupDiscard);
 }
+
+
+
 
 // Populate the discard pile DOM element
 function populatePlayed(cards, cardList) {
-  console.log($($(cardList.parent().children()[0]).children()[0]).html());
   cardList.html("");
   
   if (cards === undefined ||
@@ -1052,6 +1052,12 @@ function takeInPlayed(playerName, rank, suit) {
     to: playerName,
     rank: rank,
     suit: suit
+  });
+}
+
+function pickupDiscard() {
+  socket.emit("pickupDiscard",{
+    username: username
   });
 }
 

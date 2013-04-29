@@ -311,8 +311,16 @@ Game.prototype.takeAll = function(playerName) {
 }
 
 
-Game.prototype.takeFromDiscard = function(player) {
-  return this.playedPile.pop();
+Game.prototype.takeFromDiscard = function(playerName) {
+  var result;
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    if (this.players[i].getName() === playerName) {
+      result = this.discardPile.pop()
+      this.players[i].hand.push(result);
+    }
+  };  
+
+  return result;
 }
 
 

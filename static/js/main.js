@@ -17,12 +17,12 @@ $(document).ready(function(){
 
   // Game request has failed
   socket.on("requestGameFailed", function(data) {
-    alert(data.msg);
+    $("#hostError").html(data.msg);
   });
 
   // Game join has failed
   socket.on("joinFailed", function(data) {
-    alert(data.msg);
+    $("#joinError").html(data.msg);
   });
 
   // Game join success
@@ -35,25 +35,39 @@ $(document).ready(function(){
 
 
   socket.on("gameUpdate", function(data) {
-    console.log(data.games);
-    var table = $(".gameList");
+    var table = $(".table");
     var newTR;
+    var button;
+
     
     table.html("");
 
     table.append($("<th>").html("Name"));
     table.append($("<th>").html("Host"));
     table.append($("<th>").html("# Players"));
-    table.append($("<th>").html("Starting Hand"));
+    table.append($("<th>").html(" "));
 
-    for (var i = 0; i < data.games.length; i++) {
-      newTR = $("<tr>");
-      newTR.append($("<td>").html(data.games[i].name));
-      newTR.append($("<td>").html(data.games[i].host));
-      newTR.append($("<td>").html(data.games[i].numPlayers));
-      newTR.append($("<td>").html(data.games[i].startingSize));
-      data.games[i]
-      table.append(newTR);
+    for (var key in data.games) {
+      if (data.games.hasOwnProperty(key)) {
+        
+        newTR = $("<tr>");
+        newTR.append($("<td>").html(data.games[key].name));
+        newTR.append($("<td>").html(data.games[key].host));
+        newTR.append($("<td>").html(data.games[key].numPlayers + "/" + data.games[key].maxPlayers));
+
+        if (data.games[key].numPlayers < data.games[key].maxPlayers) {
+          button = $("<button>").html("Join");
+          button.click(function() {
+            var splitLoc = location.href.split("/");
+            var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
+                    "/game/" + data.games[key].name;
+            window.location.assign(newLoc);
+          });
+
+          newTR.append($("<td>").append(button));
+        }
+        table.append(newTR);
+      }
     };
 
   });
@@ -64,7 +78,27 @@ $(document).ready(function(){
   $("#private").change(handleGamePW);
 
   window.LoginManager.setLoginSuccess(hideLogin);
+  window.LoginManager.setLoginFail(loginFail);
+  window.LoginManager.setRegisterFail(registerFail);
+
+
 });
+
+function registerFail(msg) {
+  if (msg.indexOf("username") !== -1) {
+    $("#authError").html("The username that you provided is already taken.");
+  } else { 
+  $("#authError").html("Registration failed. Please reenter your " + 
+                      "username and password, making sure to " + 
+                      "fill both fields.");
+  }
+}
+
+function loginFail(msg) {
+  $("#authError").html("Login failed. Please reenter your " + 
+                      "username and password, making sure to " + 
+                      "fill both fields.");
+}
 
 // Hides login fields
 function hideLogin(){
@@ -106,7 +140,7 @@ function joinGame() {
   var password = $("#joinPW").val()
 
   if (gameName === "") {
-    alert("Please enter a game name.");
+    $("#joinError").html("Please enter a game name.");
     return;
   }
   
@@ -120,22 +154,16 @@ function joinGame() {
 
 // Request a new game
 function requestGame() {
-  var gameName = $("#groupName").val();
   var numPlayers = $("#numPlayers").val();
   var privy = $("#private").is(":checked");
   var numDecks = $("#numDecks").val;
   var startingSize = $("#startingSize").val();
   var password;
 
-  if (gameName === "") {
-    alert("Please enter a game name.");
-    return;
-  }
-
   if (privy) {
     password = $("#gamePW").val();
     if (password === "") {
-      alert("Please enter a game password.");
+      $("#hostError").html("Please enter a game password.");
       return;
     }    
   }
@@ -144,7 +172,6 @@ function requestGame() {
 
   window.socket.emit("requestGame", 
     { 
-      name: gameName,
       numPlayers: numPlayers,
       private: privy,
       password: password,

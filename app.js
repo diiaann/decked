@@ -5,7 +5,7 @@
 var globals = {
   users : [],
   games : [],
-  publicGames : [],
+  publicGames : {},
   socketsToGames : {}
 };
 var express = require("express");
