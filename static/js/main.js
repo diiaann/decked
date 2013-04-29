@@ -76,6 +76,7 @@ function hideLogin(){
   $("#profileArea").html("Welcome back.");
   $("#loggedIn").toggleClass("invisible");
   $("#formArea").toggleClass("hidden");
+  $(".table").toggleClass("hidden");
   $("#nameSpace").html(window.username);
   
   var hash = hashEmailString(username);

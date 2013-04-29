@@ -62,12 +62,6 @@ input[type="checkbox"]{
 	margin-bottom: 15px;
 } 
 
-label{
-	padding: 0px 5px;
-	border-radius: 3px;
-	display: inline-block;
-}
-
 
 /************** general styles ************* */
 	/* text hierarchy */
@@ -86,6 +80,7 @@ h2{
 }
 h3{
 	font-size: 30px;
+	line-height: 40px;
 }
 
 h4{
@@ -124,6 +119,7 @@ a:hover{
 
 
 #chat {
+	padding-top: 20px;
 	width: 270px;
 	z-index: 900;
 	top: 0px;
@@ -195,7 +191,7 @@ a:hover{
 
 #formArea{
 	margin-top: 20px;
-	background-color: rgba(0,20,100,0.2);
+	background-color: #76d1dd;
 	padding: 20px;
 
 }
@@ -214,7 +210,7 @@ a:hover{
 	width: 60px;
 }
 
-#numDecks {
+#numDecks,#startingSize {
 	width: 60px;
 }
 
@@ -615,6 +611,7 @@ button:hover{
 	text-transform: uppercase;
 	color: gray;
 	font-weight: 500;
+	font-size: 16px;
 }
 
 .backPattern{
@@ -719,6 +716,34 @@ button:hover{
 	background-color: purple;
 }
 
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+.table th {
+  font-weight: bold;
+}
+.table thead th {
+  vertical-align: bottom;
+}
+
+.chatLabel{
+	margin-left: 5px;
+}
 
 
 /********************************* UNUSED *********************************/
