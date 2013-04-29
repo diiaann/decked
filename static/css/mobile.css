@@ -172,7 +172,8 @@ body{
 }
 
 .miniCard { 
-	color: white;
+	background-color: white; 
+	color: black;
 	text-align: center;
 	font-size: 50px;
 	background-color: #262F33; 
@@ -204,9 +205,12 @@ button{
 }
 
 #playerHand{
-	position: absolute;
+	position: static;
 	left: 80px;
 	bottom: 0px;
+	float: right;
+	margin-right: 30px;
+	display: inline-block;
 }
 .invisible{
 	display: none;
@@ -313,9 +317,9 @@ button{
 }
 
 .microCard { 
-	color: white;
+	background-color: white; 
+	color: black;
 	text-align: center;
-	background-color: white;
 	font-size: 30px;
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px; 
