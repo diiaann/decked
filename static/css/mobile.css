@@ -73,7 +73,7 @@ body{
 }
 
 .diamond, .hearts{
-	background-color: #FF372F;
+	color: #FF372F;
 }
 
 #bottom{
@@ -217,7 +217,7 @@ button{
 #played{
 	width: 450px;
 	height: 300px;
-	background-color: gray;
+	background-color: rgb(200, 247, 202);
 	float: right;
 	margin-right: 20px;
 	position: relative;
@@ -285,4 +285,16 @@ button{
 	height: 56px; 
 	min-width: 40px; 
 	z-index: 2; 
+}
+
+#backPattern{
+	background-color: #e74c3c;
+
+}
+
+.label{
+	text-transform: uppercase;
+	color: gray;
+	font-weight: 500;
+	font-size: 16px;
 }

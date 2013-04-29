@@ -27,6 +27,7 @@
                   <button id="loginButton" class="hidden">sign in</button>
           </div>
           <div id="chat">
+          	  <p class="label chatLabel">Chat</p>
               <form action="javascript:doSend()">
                   <input id="text" type="text" placeholder="send message"></input>
               </form>
@@ -37,6 +38,7 @@
           </div>          		
 
           <div id="playarea">
+          	  <p class="label">Game Name</p>
               <h2 id="gameName">Game</h2>                        
               <div id="deckarea">
                   <div id="playerList">
@@ -56,7 +58,8 @@
                   	</div>
 
                     <button id="readyButton">I'm ready!</button> <br>
-                    <button class="hidden" id="startButton">waiting...</button> <br>
+                    <button id="startButton" class="hidden">Start</button>
+                    <p id="waiting"><p/>
                   	
                   </div>
                   <p class="label">deck</p> 
@@ -65,8 +68,6 @@
 
                   <div class="public" id="played">
 	                  <p class="label">Played cards</p>
-
-                      <p>Played cards</p>
                       <button id="takeAll" class="hidden"> Take all cards </button>
                       
                       <div class="playDiv hidden westDiv">

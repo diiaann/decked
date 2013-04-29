@@ -77,9 +77,15 @@
                     </div>
 
                     <div>
-                        <input class="numberForm" id="numPlayers" type="number" min="1" max="4" value="1"> #players </input>
-                        <input class="numberForm" id="numDecks" type="number" min="1" max="10" value="1"> #decks </input>
-                        <input class="numberForm" id="startingSize" type="number" min="1" max="52" value="7"> Cards in starting hand </input>
+                        <input class="numberForm" id="numPlayers" type="number" min="1" max="4" value="1"> 
+                        	<span class="label">#players </span>
+                        </input>
+                        <input class="numberForm" id="numDecks" type="number" min="1" max="10" value="1">
+                        <span class="label">#decks</span><br />
+                        </input>
+                        <input class="numberForm" id="startingSize" type="number" min="1" max="52" value="7">
+                        <span class="label">Cards in starting hand</span>
+                        </input>
                         <br>
                         <input id="private" type="checkbox" checked="checked"> Private game? </input>
                     </div>
@@ -112,16 +118,18 @@
                 </form>
               </div>
              </div> 
-
-            <table class="gameList">
+        </div>
+        </div>
+        <div class="row">
+           <div class="twelvecol">
+	       <table class="table hidden">
                 <th>Name</th>
                 <th>Host</th>
                 <th># Players</th>
                 <th>Starting Hand</th>
-            </table>  
+            </table>   
+           </div>
         </div>
-        </div>
-         
 
     </body>
 </html>

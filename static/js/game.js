@@ -23,7 +23,12 @@ $(document).ready(function(){
      $("#player1").css("width", width - $("#chat").width() - 160);
 
   });
-
+  
+  // Make home div clickable
+  $("#home").click(function(){
+     window.location=$(this).find("a").attr("href"); 
+     return false;
+});
   // Set initial width
   $("#playarea").css("width", document.width - $("#chat").width() - 160);
   $("#player1").css("width", document.width - $("#chat").width() - 160);
@@ -87,10 +92,11 @@ $(document).ready(function(){
 
     // If you're the host, reveal the start button.
     if (data.allReady === true && (iAmHost === true)) {
-      $("#startButton").html("Start the game!");
+      $("#startButton").html("Start");
       $("#startButton").click(doStart);
     } else if (data.allReady === false && (iAmHost === true)) {
-      $("#startButton").html("Waiting for players...");
+      $("#waiting").html("Waiting for players");
+      $("startButton").toggleClass("hidden");
       $("#startButton").unbind("click");
     }
   });
@@ -100,7 +106,7 @@ $(document).ready(function(){
   socket.on("youAreHost", function(data) {
     window.iAmHost = true;
     if (data.allReady === true) {
-      $("#startButton").html("Start the game!");
+      $("#startButton").html("Start");
       $("#startButton").click(doStart); 
     }
   })
@@ -165,6 +171,7 @@ $(document).ready(function(){
   socket.on("gameStart", function(data) {
     populateHand(data.cards);
     sortHand();
+    $("#waiting").addClass("none");
     $("#readyButton").addClass("none");
     $("#startButton").addClass("none");
     $("#deck").click(drawCard);
