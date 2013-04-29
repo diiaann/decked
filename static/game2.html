@@ -21,12 +21,10 @@
     
       <body>
           <div class="gameLogins">
-              <div>
-                  <a href="http://localhost:8889">home</a>
-              </div>
-                  <button id="logoutButton" class="hidden"> log out </button>
-                  <button id="registerButton"> sign up </button>
-                  <button id="loginButton">sign in</button>
+                  <div id="home" class="inline"><a href="http://localhost:8889">decked</a></div>
+                  <button id="logoutButton"> log out </button>
+                  <button id="registerButton" class="hidden"> sign up </button>
+                  <button id="loginButton" class="hidden">sign in</button>
           </div>
           <div id="chat">
               <form action="javascript:doSend()">
@@ -58,13 +56,12 @@
                   	</div>
                   	
                   </div>
-                            
-                  <div class="card public" id="deck">
-                      <p>deck</p>
+                  <p class="label">deck</p> 
+                  <div class="card public backPattern" id="deck">
                   </div>   
-                  <div class="public" id="played">
 
-                      <p>Played cards</p>
+                  <div class="public" id="played">
+	                  <p class="label">Played cards</p>
                       
                       <div class="playDiv hidden westDiv">
                           <span class="westName"> west </span>
@@ -104,34 +101,34 @@
                       </div>
 
                   </div>
-                  
-                  <div class="card public disClass" id="discard">
-                      <p>discard</p>
+                  <p class="label">discard</p>
+                  <div class="public disClass" id="discard">
                   </div>
               </div>
                  
               <div id="player1" class="horz player">
                   <div class="circle inline"><span class="image-wrap"></span></div>
-                  <div class="inline">
-                      <p id="southName">Player 1</p>
-                      <button id="readyButton">ready</button> <br>
-                      <button class="none" id="startButton">Start!</button> <br>
-                      <div class="inline">
-                          Sort by: <br> 
-                          <select id="sortBy">
-                          <option value="1">Rank</option>
-                          <option value="2">Suit</option>
-                          </select>
-                      </div>
-                  </div>
+                      <span id="southName">Player 1</span>
+                      <button id="readyButton">ready</button>
+                      <button class="none" id="startButton">Start!</button>
                   <ul class="handHorizontal inline" id="playerHand">
-                      <li><div class="miniCard"></div></li>
-                      <li><div class="miniCard"></div></li>
-                      <li><div class="miniCard"></div></li>
-                      <li><div class="miniCard"></div></li>
-                      <li><div class="miniCard"></div></li>
-                      <li><div class="miniCard"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
+                      <li><div class="miniCard backPattern"></div></li>
                   </ul>
+                  
+                  <div class="toggleBox">
+                      <div id="sortBy" class="switch">
+	                      	  	<input type="radio" class="switch-input" name="view" value="1" id="rank" checked>
+	                      	  	<label for="rank" class="switch-label switch-label-off">Rank</label>
+	                      	  	<input type="radio" class="switch-input" name="view" value="2" id="suit">
+	                      	  	<label for="suit" class="switch-label switch-label-on">Suit</label>
+	                      	  	<span class="switch-selection"></span>
+	                      	  </div>
+                  </div>
               </div>   			
           </div>            	
       </body>

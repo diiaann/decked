@@ -20,10 +20,13 @@ $(document).ready(function(){
   $(window).resize(function() {
     var width = document.width;
     $("#playarea").css("width", width - $("#chat").width() - 160);
+     $("#player1").css("width", width - $("#chat").width() - 160);
+
   });
 
   // Set initial width
   $("#playarea").css("width", document.width - $("#chat").width() - 160);
+  $("#player1").css("width", document.width - $("#chat").width() - 160);
 
   // On login, try to join the game.
   window.LoginManager.setLoginSuccess(
@@ -720,7 +723,7 @@ function getIndexFromPlayers(name, players) {
 // Sorts the hand according to the user specification.
 function sortHand() {
   // Controls how we sort.
-  var type = parseInt($("#sortBy").val());
+  var type = parseInt($("input[type='radio'][name='view']:checked").val());
 
   // 
   var rankSort = function(a, b) { 
