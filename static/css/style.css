@@ -561,11 +561,19 @@ button:hover{
 
 #playerHand {
 	margin-left: 35px;
+	min-width: 50px;
 }
 
 .inline {
 	display: inline-block;
 }
+
+
+.gameList {
+	clear: both;
+	background-color: purple;
+}
+
 
 
 /********************************* UNUSED *********************************/

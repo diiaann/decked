@@ -12,7 +12,6 @@ var Card = function(rank, suit) {
 }
 
 Card.prototype.equals = function(card) {
-  console.log("Comparing" + this + card);
   return this.rank.toString() === card.rank.toString() && 
     this.suit === card.suit;
 }
@@ -151,14 +150,12 @@ PlayerData.prototype.discardFromPlayed = function(card) {
       this.played.splice(i, 1);  
     }
   };
-  console.log(this.played);
 }
 
 
 var Game = function(hostName, socket, privateGame, password, 
                     numPlayers, gameName, numDecks, startingSize) {
 
-  console.log("Host for " + gameName + ": " + hostName);
   this.players = [];
   this.numPlayers = 0;
   this.numReady = 0;
@@ -228,15 +225,12 @@ Game.prototype.discardFromPlayed = function(player, rank, suit) {
     }
   };
 
-  console.log("PLAYED " + this.playedPile);
-
   return this.discardPile;
 }
 
 
 
 Game.prototype.trashCards = function() {
-  console.log("trashing");
   for (var i = 0; i < this.playedPile.length; i++) {
     this.discardPile.push(this.playedPile.pop());
   };
@@ -247,11 +241,8 @@ Game.prototype.trashCards = function() {
 
 Game.prototype.playCard = function(player, rank, suit) {
   var oldCard = new Card(rank, suit);
-  console.log(player);
   for (var i = this.players.length - 1; i >= 0; i--) {
-    console.log("is it" + this.players[i].name);
     if (this.players[i].name === player) {
-      console.log("playing");
       this.playedPile.push(oldCard);
       this.players[i].discard(oldCard);
       this.players[i].played.push(oldCard);
@@ -295,32 +286,28 @@ Game.prototype.getPlayedPile = function() {
   return this.playedPile;
 }
 
-Game.prototype.givePlayedToPlayer = function(playerName, numCards) {
+Game.prototype.takeAll = function(playerName) {
   var player = undefined;
   var cardsToAdd = [];
+  
   for (var i = this.players.length - 1; i >= 0; i--) {
-    console.log(this.players[i].getName());
     if (this.players[i].getName() === playerName) {
-      console.log("YUP");
       player = this.players[i];
     }
   };
 
-  console.log("NOPE");
 
   if (player === undefined){
     return;
   }
 
-  console.log("PLAYER");
-  for (var j = 0; j < numCards; j++) {
-    if (this.playedPile.length !== 0){
-    cardsToAdd.push(this.playedPile.pop());
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    while (this.players[i].played.length !== 0) {
+      cardsToAdd.push(this.players[i].played.pop());
     }
-      
   };
-    player.addToHand(cardsToAdd);
-    console.log("hand:", player.getHand());
+
+  player.addToHand(cardsToAdd);
 }
 
 
@@ -428,7 +415,6 @@ Game.prototype.join = function(password, playerName, socket) {
 
 Game.prototype.updateAll = function(socketMsg, data) {
   for (var i = this.players.length - 1; i >= 0; i--) {
-    console.log(this.players[i].getName());
     this.players[i].getSocket().emit(socketMsg, data);
   };
 }
@@ -441,12 +427,9 @@ Game.prototype.updateEach = function(socketMsg, callback) {
 }
 
 Game.prototype.removePlayer = function(playerName) {
-  console.log("PLAYERS: " + this.players);
 
   if (this.isHost(playerName)) {
-    console.log("MIGRATING HOST");
     if (this.numPlayers === 1) {
-      console.log("Game is over.");
       return true;
     } else {
       // Migrating the host.
@@ -460,7 +443,6 @@ Game.prototype.removePlayer = function(playerName) {
         }            
       }
       this.host = this.players[0];
-      console.log("new host is... " + this.host.getName());
       this.host.getSocket().emit("youAreHost", {
           allReady : this.numPlayers === this.numReady
         });
@@ -478,12 +460,10 @@ Game.prototype.removePlayer = function(playerName) {
       this.numPlayers--;
     }
   };
-  console.log("PLAYERS: " + this.players);
   return false;
 }
 
 Game.prototype.isHost = function(playerName) {
-  console.log("Game " + this.name + "has host " + this.host.getName() );
   return this.host.getName() === playerName;  
 }
 
@@ -502,7 +482,6 @@ for (var i = this.players.length - 1; i >= 0; i--) {
       } else {
         this.players[i].ready = true;
         this.numReady++;
-        console.log("cards" + this.numReady, this.playerLimit);
 
         if (this.numReady === this.playerLimit){
           return true;
@@ -514,6 +493,46 @@ for (var i = this.players.length - 1; i >= 0; i--) {
   }; 
 }
 
+Game.prototype.takeFromPlayed = function(to, from, rank, suit) {
+  var movedCard = new Card(rank, suit);
+  for (var i = 0; i < this.players.length; i++) {
+    if (this.players[i].getName() === from) {
+      this.players[i].discardFromPlayed(movedCard);
+    }
+    if (this.players[i].getName() === to) {
+      this.players[i].hand.push(movedCard);
+    }
+  };
+}
+
+Game.prototype.takeInPlayed = function(to, from, rank, suit) {
+  var movedCard = new Card(rank, suit);
+  var inTheGame = 0;
+
+  for (var i = 0; i < this.players.length; i++) {
+    if (this.players[i].getName() === from) {
+      inTheGame++;
+    }
+    if (this.players[i].getName() === to) {
+      inTheGame++;
+    }
+  };
+
+  if (inTheGame !== 2) {
+    return false;
+  }
+
+  for (var i = 0; i < this.players.length; i++) {
+    if (this.players[i].getName() === from) {
+      this.players[i].discardFromPlayed(movedCard);
+    }
+    if (this.players[i].getName() === to) {
+      this.players[i].played.push(movedCard);
+    }
+  };
+
+  return true;
+}
 
 Game.prototype.getPlayers = function() {
   var result = [];
@@ -522,7 +541,8 @@ Game.prototype.getPlayers = function() {
     {
         userName : this.players[i].getName(), 
         ready : this.players[i].ready,
-        playedPile : this.players[i].played
+        playedPile : this.players[i].played,
+        numInHand : this.players[i].hand.length
     });
   };
 

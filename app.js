@@ -14,42 +14,6 @@ var mongoExpressAuth = require('mongo-express-auth');
 var cards = require("./cards.js");
 var socket = require("./socketCode.js")(globals);
 
-
-var mongo = require('mongodb');
-var host = 'localhost';
-var port = mongo.Connection.DEFAULT_PORT;
-
-var optionsWithEnableWriteAccess = { w: 1 };
-var dbName = 'deckedAccounts';
-
-var client = new mongo.Db(
-    dbName,
-    new mongo.Server(host, port),
-    optionsWithEnableWriteAccess
-);
-
-function openDb(onOpen){
-    client.open(onDbReady);
-
-    function onDbReady(error){
-        if (error)
-            throw error;
-        client.collection('deckedAccounts', onDeckedAccountsReady);
-    }
-
-    function onDeckedAccountsReady(error, testCollection){
-        if (error)
-            throw error;
-
-        onOpen(testCollection);
-    }
-}
-
-function closeDb(){
-    client.close();
-}
-
-
 // Use mongo-express-auth library
 mongoExpressAuth.init({
     mongo: { 
@@ -57,7 +21,6 @@ mongoExpressAuth.init({
         collectionName: 'accounts'
     }
 }, function(){
-    console.log('mongo ready!');
     app.listen(3000);
 });
 
@@ -156,7 +119,8 @@ function checkMobile(userAgent) {
     if ((userAgent.indexOf("Android") !== -1) || 
         (userAgent.indexOf("iPad") !== -1) || 
         (userAgent.indexOf("iPhone") !== -1) ||
-        (userAgent.indexOf("iPod Touch") !== -1)) {
+        (userAgent.indexOf("iPod Touch") !== -1) ||
+        (userAgent.indexOf("Windows Phone") !== -1)) {
         return true;
       } else {
         return false;

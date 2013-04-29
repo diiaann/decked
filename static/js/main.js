@@ -6,9 +6,6 @@ var gravatar = "http://www.gravatar.com/avatar/";
 $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
   // update chat message
-  socket.on('update', function(data) {
-    $("#chatText").append($("<li>").html(data.msg));
-  });
 
   // Switch page to a game
   socket.on("gotoGame", function(data) {
@@ -34,6 +31,31 @@ $(document).ready(function(){
     var newLoc = splitLoc[0] + "//" + splitLoc[2] + 
                   "/game/" + data.gameName;
     window.location.assign(newLoc);
+  });
+
+
+  socket.on("gameUpdate", function(data) {
+    console.log(data.games);
+    var table = $(".gameList");
+    var newTR;
+    
+    table.html("");
+
+    table.append($("<th>").html("Name"));
+    table.append($("<th>").html("Host"));
+    table.append($("<th>").html("# Players"));
+    table.append($("<th>").html("Starting Hand"));
+
+    for (var i = 0; i < data.games.length; i++) {
+      newTR = $("<tr>");
+      newTR.append($("<td>").html(data.games[i].name));
+      newTR.append($("<td>").html(data.games[i].host));
+      newTR.append($("<td>").html(data.games[i].numPlayers));
+      newTR.append($("<td>").html(data.games[i].startingSize));
+      data.games[i]
+      table.append(newTR);
+    };
+
   });
 
 

@@ -63,7 +63,6 @@ $(document).ready(function(){
     for (var i = 0; i < allPlayerDivs.length; i++) {
       currentDiv = allPlayerDivs[i] + "Div";
       $(currentDiv).addClass("hidden");
-      console.log(currentDiv);
     }
 
     // Unhide used divs
@@ -71,13 +70,25 @@ $(document).ready(function(){
       currentDiv = playerDivs[i];
       $(currentDiv + "Div").removeClass("hidden");
       $(currentDiv + "Name").html(players[i].userName);
-      console.log(currentDiv);
+      console.log(players[i].numInHand);
+      if (players[i].ready === true) {
+        console.log("DO WHATEVER!");
+
+      }
     };
+
+    if (iAmHost === true) {
+      $("#startButton").removeClass("hidden");
+    }
+
 
     // If you're the host, reveal the start button.
     if (data.allReady === true && (iAmHost === true)) {
-      $("#startButton").removeClass("none");
+      $("#startButton").html("Start the game!");
       $("#startButton").click(doStart);
+    } else if (data.allReady === false && (iAmHost === true)) {
+      $("#startButton").html("Waiting for players...");
+      $("#startButton").unbind("click");
     }
   });
 
@@ -86,7 +97,7 @@ $(document).ready(function(){
   socket.on("youAreHost", function(data) {
     window.iAmHost = true;
     if (data.allReady === true) {
-      $("#startButton").removeClass("none");
+      $("#startButton").html("Start the game!");
       $("#startButton").click(doStart); 
     }
   })
@@ -155,6 +166,8 @@ $(document).ready(function(){
     $("#startButton").addClass("none");
     $("#deck").click(drawCard);
     $("#sortBy").change(sortHand);
+    $("#takeAll").removeClass("hidden");
+    $("#takeAll").click(takeAll);
   })
 
   // If login is unsuccessful, go back to the homepage
@@ -232,6 +245,11 @@ $(document).ready(function(){
   $("#player1name").html(username);
   $("#takeButton").click(takeCard);
   $("#trashButton").click(trashCard);
+  $("#southName").html(username);
+  if (iAmHost === true) {
+    console.log("unhide");
+    $("#startButton").removeClass("hidden");
+  }
  
   // Gravatar
   var dMM = "?d=mm";
@@ -384,7 +402,6 @@ function populateHand(cards) {
 
       // When we release, have we dragged it to a part of the board?
       $(this).on("mouseup", function(e){
-      	$("#played").css("background-color","gray");
         var centerX = e.pageX;
         var centerY = e.pageY;
         var discardXL = $("#discard").offset().left;
@@ -492,7 +509,6 @@ function populatePlayed(cards, cardList) {
 
       // When we release, have we dragged it to a part of the board?
       $("#discard").on("mouseup", function(e){
-        $("#played").css("background-color","gray");
 
         var centerX = e.pageX;
         var centerY = e.pageY;
@@ -503,6 +519,10 @@ function populatePlayed(cards, cardList) {
         
 
         $(this).unbind("mouseup");
+        $('#deckarea').unbind("mouseup");
+        $('#discard').unbind("mouseup");
+        $('#player1').unbind("mouseup");
+
         if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
             console.log('discard!');
@@ -512,27 +532,26 @@ function populatePlayed(cards, cardList) {
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("mousemove");
-        $('#deckarea #discard #playerHand').unbind("mouseup");
       });
 
 
-    $("#playerHand").on("mouseup", function(e){
-        $("#played").css("background-color","gray");
-
+    $("#player1").on("mouseup", function(e){
         var centerX = e.pageX;
         var centerY = e.pageY;
-        var playerHandXL = $("#playerHand").offset().left;
-        var playerHandYT = $("#playerHand").offset().top;
-        var playerHandXR = $("#playerHand").offset().left + $("#playerHand").width();
-        var playerHandYB = $("#playerHand").offset().top + $("#playerHand").height();
-        
+        var player1XL = $("#player1").offset().left;
+        var player1YT = $("#player1").offset().top;
+        var player1XR = $("#player1").offset().left + $("#player1").width();
+        var player1YB = $("#player1").offset().top + $("#player1").height();
 
         $(this).unbind("mouseup");
+        $('#deckarea').unbind("mouseup");
+        $('#discard').unbind("mouseup");
+        $('#player1').unbind("mouseup");
         console.log(cardList);
         window.cl = cardList;
         
-        if (centerX >= playerHandXL && centerX <= playerHandXR && 
-            centerY >= playerHandYT && centerY <= playerHandYB) {
+        if (centerX >= player1XL && centerX <= player1XR && 
+            centerY >= player1YT && centerY <= player1YB) {
           takeFromPlayed(
             $(cardList.parent().children()[0]).html(),
             rank, getSuit(suit));
@@ -540,33 +559,69 @@ function populatePlayed(cards, cardList) {
         
         window.dragging.offset(origOffset);
         window.dragging = null;
+
         $(document.body).unbind("mousemove");
-        $('#deckarea #discard #playerHand').unbind("mouseup");
       });
 
     $(this).on("mouseup", function(e){
-        $("#played").css("background-color","gray");
 
         var centerX = e.pageX;
         var centerY = e.pageY;
+        var player1XL = $("#player1").offset().left;
+        var player1YT = $("#player1").offset().top;
+        var player1XR = $("#player1").offset().left + $("#player1").width();
+        var player1YB = $("#player1").offset().top + $("#player1").height();
         var discardXL = $("#discard").offset().left;
         var discardYT = $("#discard").offset().top;
         var discardXR = $("#discard").offset().left + $("#discard").width();
         var discardYB = $("#discard").offset().top + $("#discard").height();
-        
+        var northPlayedXL = $("#northPlayedUL").offset().left;
+        var northPlayedYT = $("#northPlayedUL").offset().top;
+        var northPlayedXR = $("#northPlayedUL").offset().left + $("#northPlayedUL").width();
+        var northPlayedYB = $("#northPlayedUL").offset().top + $("#northPlayedUL").height();
+        var eastPlayedXL = $("#eastPlayedUL").offset().left;
+        var eastPlayedYT = $("#eastPlayedUL").offset().top;
+        var eastPlayedXR = $("#eastPlayedUL").offset().left + $("#eastPlayedUL").width();
+        var eastPlayedYB = $("#eastPlayedUL").offset().top + $("#northPlayedUL").height();
+        var westPlayedXL = $("#westPlayedUL").offset().left;
+        var westPlayedYT = $("#westPlayedUL").offset().top;
+        var westPlayedXR = $("#westPlayedUL").offset().left + $("#westPlayedUL").width();
+        var westPlayedYB = $("#westPlayedUL").offset().top + $("#westPlayedUL").height();
 
         $(this).unbind("mouseup");
-        
+        $('#deckarea').unbind("mouseup");
+        $('#discard').unbind("mouseup");
+        $('#player1').unbind("mouseup");
+
         if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
             console.log('discard!');
             discardFromPlayed(rank, getSuit(suit));
+        } else if (centerX >= player1XL && centerX <= player1XR && 
+            centerY >= player1YT && centerY <= player1YB) {
+          takeFromPlayed(
+            $(cardList.parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= northPlayedXL && centerX <= northPlayedXR && 
+            centerY >= northPlayedYT && centerY <= northPlayedYB){
+            takeInPlayed(
+            $($("#northPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= westPlayedXL && centerX <= westPlayedXR && 
+            centerY >= westPlayedYT && centerY <= westPlayedYB){
+            takeInPlayed(
+            $($("#westPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= eastPlayedXL && centerX <= eastPlayedXR && 
+            centerY >= eastPlayedYT && centerY <= eastPlayedYB){
+            takeInPlayed(
+            $($("#eastPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
         }
-        
+
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("mousemove");
-        $('#deckarea #discard #playerHand').unbind("mouseup");
       });
 
     });
@@ -598,7 +653,6 @@ function populatePlayed(cards, cardList) {
 
       // When we release, have we dragged it to a part of the board?
       $("#discard").on("touchend", function(event){
-        $("#played").css("background-color","gray");
         var e = event.originalEvent;
         var touch = e.changedTouches[0];
         
@@ -628,32 +682,65 @@ function populatePlayed(cards, cardList) {
       });
 
       $(this).on("touchend", function(event){
-        $("#played").css("background-color","gray");
         var e = event.originalEvent;
         var touch = e.changedTouches[0];
-        var centerX = touch.pageX;
-        var centerY = touch.pageY;
+        var centerX = e.pageX;
+        var centerY = e.pageY;
+        var player1XL = $("#player1").offset().left;
+        var player1YT = $("#player1").offset().top;
+        var player1XR = $("#player1").offset().left + $("#player1").width();
+        var player1YB = $("#player1").offset().top + $("#player1").height();
         var discardXL = $("#discard").offset().left;
         var discardYT = $("#discard").offset().top;
         var discardXR = $("#discard").offset().left + $("#discard").width();
         var discardYB = $("#discard").offset().top + $("#discard").height();
-        
+        var northPlayedXL = $("#northPlayedUL").offset().left;
+        var northPlayedYT = $("#northPlayedUL").offset().top;
+        var northPlayedXR = $("#northPlayedUL").offset().left + $("#northPlayedUL").width();
+        var northPlayedYB = $("#northPlayedUL").offset().top + $("#northPlayedUL").height();
+        var eastPlayedXL = $("#eastPlayedUL").offset().left;
+        var eastPlayedYT = $("#eastPlayedUL").offset().top;
+        var eastPlayedXR = $("#eastPlayedUL").offset().left + $("#eastPlayedUL").width();
+        var eastPlayedYB = $("#eastPlayedUL").offset().top + $("#northPlayedUL").height();
+        var westPlayedXL = $("#westPlayedUL").offset().left;
+        var westPlayedYT = $("#westPlayedUL").offset().top;
+        var westPlayedXR = $("#westPlayedUL").offset().left + $("#westPlayedUL").width();
+        var westPlayedYB = $("#westPlayedUL").offset().top + $("#westPlayedUL").height();
 
         $(this).unbind("touchend");
-        console.log("MOUSEUP");
-        console.log("me", centerX, centerY);
-        console.log("it", discardXL, discardXR, discardYT, discardYB);
-        
+        $('#deckarea').unbind("touchend");
+        $('#discard').unbind("touchend");
+        $('#player1').unbind("touchend");
+
         if (centerX >= discardXL && centerX <= discardXR && 
             centerY >= discardYT && centerY <= discardYB) {
             console.log('discard!');
             discardFromPlayed(rank, getSuit(suit));
+        } else if (centerX >= player1XL && centerX <= player1XR && 
+            centerY >= player1YT && centerY <= player1YB) {
+          takeFromPlayed(
+            $(cardList.parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= northPlayedXL && centerX <= northPlayedXR && 
+            centerY >= northPlayedYT && centerY <= northPlayedYB){
+            takeInPlayed(
+            $($("#northPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= westPlayedXL && centerX <= westPlayedXR && 
+            centerY >= westPlayedYT && centerY <= westPlayedYB){
+            takeInPlayed(
+            $($("#westPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
+        } else if (centerX >= eastPlayedXL && centerX <= eastPlayedXR && 
+            centerY >= eastPlayedYT && centerY <= eastPlayedYB){
+            takeInPlayed(
+            $($("#eastPlayedUL").parent().children()[0]).html(),
+            rank, getSuit(suit));
         }
-        
+
         window.dragging.offset(origOffset);
         window.dragging = null;
         $(document.body).unbind("touchmove");
-        $('#deckarea #discard').unbind("touchend");
       });
 
     });
@@ -892,7 +979,6 @@ function sortHand() {
 
       // When we release, have we dragged it to a part of the board?
       $(this).on("mouseup", function(e){
-        $("#played").css("background-color","gray");
 
         var centerX = e.pageX;
         var centerY = e.pageY;
@@ -941,11 +1027,25 @@ function mapToNum(chr) {
 
 
 function takeFromPlayed(playerName, rank, suit) {
-  console.log("Took " + rank + " of " + suit +" from " + playerName);
   socket.emit("takeFromPlayed", {
     from: playerName,
     to: username,
     rank: rank,
     suit: suit
   });
+}
+
+function takeInPlayed(playerName, rank, suit) {
+  socket.emit("takeInPlayed", {
+    from: username,
+    to: playerName,
+    rank: rank,
+    suit: suit
+  });
+}
+
+function takeAll() {
+  socket.emit("takeAll", {
+    username: username
+  })
 }
