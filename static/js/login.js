@@ -10,7 +10,7 @@ $(document).ready(function(){
             onLoginSuccess: function(){
             },
             onRegisterSuccess: function(){
-                var username = usernameInput.value;
+                var username = usernameInput.value.replace(/\s+/g, ' ');
                 var password = passwordInput.value;
 
                 login(username, password);
@@ -53,16 +53,17 @@ $(document).ready(function(){
         var passwordInput = document.getElementById('passwordInput');
 
         loginButton.onclick = function(){
-            var username = usernameInput.value;
+            var username = usernameInput.value.replace(/\s+/g, ' ');
             var password = passwordInput.value;
 
             login(username, password);
+            
         }
         registerButton.onclick = function(){
-            var username = usernameInput.value;
+            var username = usernameInput.value.replace(/\s+/g, ' ');
             var password = passwordInput.value;
 
-            register(username, password);
+                register(username, password);
         }
 
         //==================
@@ -70,27 +71,35 @@ $(document).ready(function(){
         //==================
 
         function login(username, password, done){
-            window.username = username;
-            window.password = password;
-            post(
-                '/login', 
-                {   
-                    username: username, 
-                    password: password 
-                }, 
-                handleLoginResult
-            );
+            if (username !== "" && password !== "") {
+                window.username = username;
+                window.password = password;
+                post(
+                    '/login', 
+                    {   
+                        username: username, 
+                        password: password 
+                    }, 
+                    handleLoginResult
+                );
+            } else {
+                g.onLoginFail("");
+            }
         }
 
         function register(username, password, done){
-            post(
-                '/register', 
-                {   
-                    username: username, 
-                    password: password 
-                }, 
-                handleRegisterResult
-            );
+            if (username !== "" && password !== "") {
+                post(
+                    '/register', 
+                    {   
+                        username: username, 
+                        password: password 
+                    }, 
+                    handleRegisterResult
+                );
+            } else {
+                g.onRegisterFail("");
+            }
         }
 
         function handleRegisterResult(err, result){

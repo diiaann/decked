@@ -49,6 +49,7 @@
     			<div class="loginFields">
     				<input id="usernameInput" type="text" placeholder="username"/> 
     				<input id="passwordInput" type="password" placeholder="password"/> 
+                    <p class="errorP" id="authError"></p>
     				<div>
     					<button id="loginButton"> sign in </button>
     					<button id="registerButton"> sign up </button>
@@ -72,11 +73,9 @@
 	    	    <div id="hostGame">
                 <form id="gameForm" action="javascript:requestGame()">  
                     <h3>Host a game</h3>
-                    <div>
-                        <input id="groupName" type="text" placeholder="game name"></input>
-                    </div>
 
                     <div>
+                        <p class="errorP" id="hostError"></p>
                         <input class="numberForm" id="numPlayers" type="number" min="1" max="4" value="1"> 
                         	<span class="label">#players </span>
                         </input>
@@ -105,6 +104,7 @@
                 <form id="joinForm" action="javascript:joinGame()">
 
                     <h3>Join an existing one!</h3>
+                    <p class="errorP" id="joinError"></p>
                     <div>
                         <input id="joinGameName" type="text" placeholder="game name"></input>
                     </div>

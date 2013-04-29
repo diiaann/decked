@@ -75,7 +75,7 @@ h1{
 }
 
 h2{	
-	font-size: 36px;
+	font-size: 32px;
 	color: #314E57;
 }
 h3{
@@ -654,6 +654,9 @@ button:hover{
   font-weight: bold;
 }
 
+.errorP {
+	color: #c0392b;
+}
 
 
 /*
