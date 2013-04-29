@@ -6,6 +6,9 @@ module.exports = function(globals) {
   // Connection
   io.sockets.on('connection', function (socket) { 
 
+
+
+    socket.emit("gameUpdate", {games : globals.publicGames});
     /*
      * On disconnect, we need to remove the given player
      * from the game associated with that socket.
@@ -18,6 +21,8 @@ module.exports = function(globals) {
         var game = globals.socketsToGames[socket.id].game;
         var playerName = globals.socketsToGames[socket.id].user;
         var over = game.removePlayer(globals.socketsToGames[socket.id].user);
+        globals.publicGames[game.name].numPlayers--;
+        io.sockets.emit("gameUpdate", {games : globals.publicGames});
         globals.socketsToGames[socket.id] = undefined;
         if (over === true) {
           globals.games[game.getGameName()] = undefined;
@@ -68,9 +73,10 @@ module.exports = function(globals) {
                                 data.numDecks, data.startingSize);
         globals.games[data.name] = game;
         if (data.privy !== true) {
-          globals.publicGames.push({
+          globals.publicGames[data.name] = ({
             name: data.name,
-            numPlayers: data.numPlayers,
+            numPlayers: 0,
+            maxPlayers: data.numPlayers,
             startingSize: data.startingSize,
             host: data.username
           });
@@ -106,6 +112,10 @@ module.exports = function(globals) {
           user : data.username
         };
         game.updateAll("newPlayer", {players : game.getPlayers()});
+        globals.publicGames[data.gamename].numPlayers++;
+        io.sockets.emit("gameUpdate", {
+            games: globals.publicGames
+          });
         game.updateEach("update", function(player) {
             return { 
               msg : wrapInSpan(data.username, player.getName() === data.username) + " has joined the game."};
@@ -151,6 +161,7 @@ module.exports = function(globals) {
                 msg : wrapInSpan(data.username, player.getName() === data.username) + 
                 " has started the game."};
           });
+          globals.publicGames[game.name] = undefined;
         } else {
           console.log("HOW DID WE GET HERE?");
         }

@@ -46,14 +46,16 @@ $(document).ready(function(){
     table.append($("<th>").html("# Players"));
     table.append($("<th>").html("Starting Hand"));
 
-    for (var i = 0; i < data.games.length; i++) {
-      newTR = $("<tr>");
-      newTR.append($("<td>").html(data.games[i].name));
-      newTR.append($("<td>").html(data.games[i].host));
-      newTR.append($("<td>").html(data.games[i].numPlayers));
-      newTR.append($("<td>").html(data.games[i].startingSize));
-      data.games[i]
-      table.append(newTR);
+    for (var key in data.games) {
+      if (data.games.hasOwnProperty(key)) {
+        
+        newTR = $("<tr>");
+        newTR.append($("<td>").html(data.games[key].name));
+        newTR.append($("<td>").html(data.games[key].host));
+        newTR.append($("<td>").html(data.games[key].numPlayers + "/" + data.games[key].maxPlayers));
+        newTR.append($("<td>").html(data.games[key].startingSize));
+        table.append(newTR);
+      }
     };
 
   });
