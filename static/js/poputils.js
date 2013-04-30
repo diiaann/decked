@@ -1,4 +1,4 @@
-var POPULATE = (function() {
+POPULATE = (function() {
   var exports = {};
 
   exports.hand = function(cards) {
@@ -181,6 +181,9 @@ var POPULATE = (function() {
       
       newLI.bind('touchstart',function(event) {
 
+          if (event.originalEvent.targetTouches.length > 1) {
+            return;
+          }
           
           var that = $(this).children()[0];
           var origOffset = $(that).offset();
@@ -191,12 +194,15 @@ var POPULATE = (function() {
 
         // Drag it around
         $(document.body).on("touchmove", function(event) {
-           event.preventDefault();
-           var e = event.originalEvent;
-           var touch = e.targetTouches[0];
-           if (window.dragging !== undefined) {
-            window.dragging.offset({
-              top : touch.pageY - $(that).width()/2,
+          event.preventDefault();
+          var e = event.originalEvent;
+          var touch = e.targetTouches[0];
+          if (e.targetTouches.length > 1) {
+            return;
+          }
+          if (window.dragging !== undefined) {
+             window.dragging.offset({
+               top : touch.pageY - $(that).width()/2,
               left: touch.pageX - $(that).height()/2
             });
           }
@@ -207,6 +213,12 @@ var POPULATE = (function() {
           var e = event.originalEvent;
           var touch = e.changedTouches[0];
           
+          if (e.changedTouches.length > 1) {
+            $(this).unbind("touchend");
+            $(document.body).unbind("touchmove");
+            return;
+          }
+
           var centerX = touch.pageX;
           var centerY = touch.pageY;
           var discardXL = $("#discard").offset().left;
@@ -218,8 +230,6 @@ var POPULATE = (function() {
           var playedXR = $("#played").offset().left + $("#played").width();
           var playedYB = $("#played").offset().top + $("#played").height();
 
-          $(this).unbind("touchend");
-
           if (centerX >= playedXL && centerX <= playedXR && 
               centerY >= playedYT && centerY <= playedYB) {
             playCard(rank, getSuit(suit));
@@ -230,8 +240,7 @@ var POPULATE = (function() {
           
           window.dragging.offset(origOffset);
           window.dragging = null;
-          $(document.body).unbind("touchmove");
-          $('#deckarea #discard').unbind("touchend");
+          
         });
         
         
@@ -465,20 +474,28 @@ var POPULATE = (function() {
 
       newLI.bind('touchstart',function(event) {
       
+        if (event.originalEvent.targetTouches.length > 1) {
+            return;
+          }
+
         var that = $(this).children()[0];
         var origOffset = $(that).offset();
         var cardData = that.value.split("&");
         var rank = cardData[0];
         var suit = "&" + cardData[1];
 
-        $(this).css("z-index", 9);
+        $(that).css("z-index", 99);
         window.dragging = $(event.target);
 
         // Drag it around
         $(document.body).on("touchmove", function(event) {
+
           event.preventDefault();
           var e = event.originalEvent;
           var touch = e.targetTouches[0];
+          if (e.targetTouches.length > 1) {
+            return;
+          }
           if (window.dragging !== undefined) {
             window.dragging.offset({
               top : touch.pageY - $(that).width()/2,
@@ -487,41 +504,53 @@ var POPULATE = (function() {
           }
         });
 
-        // When we release, have we dragged it to a part of the board?
-        $("#discard").on("touchend", function(event){
+         $("#player1").on("touchend", function(e){
+
           var e = event.originalEvent;
-          var touch = e.changedTouches[0];
-          
+          var touch = e.targetTouches[0];
+
+          if (e.targetTouches.length > 1) {
+            $(this).unbind("touchend");
+            $('#deckarea').unbind("touchend");
+            $('#discard').unbind("touchend");
+            $('#player1').unbind("touchend");
+            return;
+          }
+
           var centerX = touch.pageX;
           var centerY = touch.pageY;
-          var discardXL = $("#discard").offset().left;
-          var discardYT = $("#discard").offset().top;
-          var discardXR = $("#discard").offset().left + $("#discard").width();
-          var discardYB = $("#discard").offset().top + $("#discard").height();
+          var player1XL = $("#player1").offset().left;
+          var player1YT = $("#player1").offset().top;
+          var player1XR = $("#player1").offset().left + $("#player1").width();
+          var player1YB = $("#player1").offset().top + $("#player1").height();
           
-
-          $(this).unbind("touchend");
-          console.log("MOUSEUP");
-          console.log("me", centerX, centerY);
-          console.log("it", discardXL, discardXR, discardYT, discardYB);
-          
-          if (centerX >= discardXL && centerX <= discardXR && 
-              centerY >= discardYT && centerY <= discardYB) {
-              console.log('discard!');
-              discardFromPlayed(rank, getSuit(suit));
+          if (centerX >= player1XL && centerX <= player1XR && 
+              centerY >= player1YT && centerY <= player1YB) {
+            takeFromPlayed(
+              $(cardList.parent().children()[0]).html(),
+              rank, getSuit(suit));
           }
           
           window.dragging.offset(origOffset);
           window.dragging = null;
-          $(document.body).unbind("touchmove");
-          $('#deckarea #discard').unbind("touchend");
+          $(that).removeAttr("z-index");
+
+          $(document.body).unbind("mousemove");
         });
 
+
         $(this).on("touchend", function(event){
+
+
           var e = event.originalEvent;
           var touch = e.changedTouches[0];
-          var centerX = e.pageX;
-          var centerY = e.pageY;
+
+          if (e.changedTouches.length > 1) {
+            return;
+          }
+
+          var centerX = touch.pageX;
+          var centerY = touch.pageY;
           var player1XL = $("#player1").offset().left;
           var player1YT = $("#player1").offset().top;
           var player1XR = $("#player1").offset().left + $("#player1").width();
@@ -542,41 +571,64 @@ var POPULATE = (function() {
           var westPlayedYT = $("#westPlayedUL").offset().top;
           var westPlayedXR = $("#westPlayedUL").offset().left + $("#westPlayedUL").width();
           var westPlayedYB = $("#westPlayedUL").offset().top + $("#westPlayedUL").height();
+          var southPlayedXL = $("#southPlayedUL").offset().left;
+          var southPlayedYT = $("#southPlayedUL").offset().top;
+          var southPlayedXR = $("#southPlayedUL").offset().left + $("#southPlayedUL").width();
+          var southPlayedYB = $("#southPlayedUL").offset().top + $("#southPlayedUL").height();
+          var discardXL = $("#discard").offset().left;
+          var discardYT = $("#discard").offset().top;
+          var discardXR = $("#discard").offset().left + $("#discard").width();
+          var discardYB = $("#discard").offset().top + $("#discard").height();
 
           $(this).unbind("touchend");
-          $('#deckarea').unbind("touchend");
-          $('#discard').unbind("touchend");
           $('#player1').unbind("touchend");
 
-          if (centerX >= discardXL && centerX <= discardXR && 
-              centerY >= discardYT && centerY <= discardYB) {
-              console.log('discard!');
-              discardFromPlayed(rank, getSuit(suit));
-          } else if (centerX >= player1XL && centerX <= player1XR && 
-              centerY >= player1YT && centerY <= player1YB) {
-            takeFromPlayed(
+          if (cardList.attr("id").indexOf("south") !== -1) {
+            if (centerX >= player1XL && centerX <= player1XR && 
+                centerY >= player1YT && centerY <= player1YB) {
+              takeFromPlayed(
+                $(cardList.parent().children()[0]).html(),
+                rank, getSuit(suit));
+            } else if (centerX >= northPlayedXL && centerX <= northPlayedXR && 
+                centerY >= northPlayedYT && centerY <= northPlayedYB){
+                takeInPlayed( username,
+                $($("#northPlayedUL").parent().children()[0]).html(),
+                rank, getSuit(suit));
+            } else if (centerX >= westPlayedXL && centerX <= westPlayedXR && 
+                centerY >= westPlayedYT && centerY <= westPlayedYB){
+                takeInPlayed( username,
+                $($("#westPlayedUL").parent().children()[0]).html(),
+                rank, getSuit(suit));
+            } else if (centerX >= eastPlayedXL && centerX <= eastPlayedXR && 
+                centerY >= eastPlayedYT && centerY <= eastPlayedYB){
+                takeInPlayed( username,
+                $($("#eastPlayedUL").parent().children()[0]).html(),
+                rank, getSuit(suit));
+            } else if (centerX >= discardXL && centerX <= discardXR && 
+                centerY >= discardYT && centerY <= discardYB) {
+                console.log('discard!');
+                discardFromPlayed(rank, getSuit(suit));
+            }
+          } else {
+            if (centerX >= southPlayedXL && centerX <= southPlayedXR && 
+                centerY >= southPlayedYT && centerY <= southPlayedYB){
+              takeInPlayed(
+              $(cardList.parent().children()[0]).html(), username,
+              rank, getSuit(suit));
+            } else if (centerX >= player1XL && centerX <= player1XR && 
+                centerY >= player1YT && centerY <= player1YB) {
+              console.log('into hand');
+              takeFromPlayed(
               $(cardList.parent().children()[0]).html(),
               rank, getSuit(suit));
-          } else if (centerX >= northPlayedXL && centerX <= northPlayedXR && 
-              centerY >= northPlayedYT && centerY <= northPlayedYB){
-              takeInPlayed(
-              $($("#northPlayedUL").parent().children()[0]).html(),
-              rank, getSuit(suit));
-          } else if (centerX >= westPlayedXL && centerX <= westPlayedXR && 
-              centerY >= westPlayedYT && centerY <= westPlayedYB){
-              takeInPlayed(
-              $($("#westPlayedUL").parent().children()[0]).html(),
-              rank, getSuit(suit));
-          } else if (centerX >= eastPlayedXL && centerX <= eastPlayedXR && 
-              centerY >= eastPlayedYT && centerY <= eastPlayedYB){
-              takeInPlayed(
-              $($("#eastPlayedUL").parent().children()[0]).html(),
-              rank, getSuit(suit));
+            } 
           }
-
+	
+          $(that).removeAttr("z-index");
           window.dragging.offset(origOffset);
           window.dragging = null;
-          $(document.body).unbind("touchmove");
+          $(document.body).unbind("mousemove");
+
         });
 
       });
@@ -588,11 +640,13 @@ var POPULATE = (function() {
   exports.discard = function (cards) {
   var index, suit;
   var discard = $("#discard");
+  discard.unbind("click");
   if (cards === undefined || 
     cards.length === 0 ) {
-    discard.html("<p>discard</p>");
+    discard.html("");
     discard.addClass("disClass");
     discard.css("font-size", "20px");
+    discard.removeClass("diamond");
     return;
   }
   
@@ -605,7 +659,9 @@ var POPULATE = (function() {
   discard.html(cards[index].rank + suit);
   discard.removeClass("disClass");
   discard.addClass("whiteText");
-  discard.css("font-size", "50px");
+  discard.css("font-size", "45px");
+  discard.removeClass("diamond");
+  discard.unbind("onClick");
   if (suit === heartUnicode || suit === diamondUnicode) {
     discard.addClass("diamond");
   } else {
@@ -618,3 +674,4 @@ var POPULATE = (function() {
   return exports;
 
 }());
+
