@@ -558,6 +558,19 @@ button:hover{
 	color: white;
 }
 
+.southName, .eastName{
+	position: absolute;
+	right: 2px;
+	bottom: 0px;
+}
+
+.westName, .northName {
+	position: absolute;
+	left: 2px;
+	bottom: 0px;
+}
+
+
 .chatName, .northName, .westName, .eastName {
 	color: #A12819;
 	font-style: italic;
@@ -589,7 +602,7 @@ button:hover{
 
 #northPlayed {
 	left: 40px;
-	left: 255px;
+	bottom: 255px;
 }
 
 #westPlayed {
@@ -761,6 +774,7 @@ table {
 	top: 2px;
 	right: 0px;
 }
+
 
 
 
