@@ -54,7 +54,7 @@ $(document).ready(function(){
 
   socket = io.connect("http://localhost:8888");
 
-  // Players in the game have changed.
+ // Players in the game have changed.
   socket.on("newPlayer", function(data) {
     var numPlayers = data.players.length;
     var players = data.players;
@@ -90,7 +90,7 @@ $(document).ready(function(){
       $("#startButton").removeClass("hidden");
       $("#startButton").click(doStart);
     } else if (data.allReady === false && (iAmHost === true)) {
-      $("#waiting").html("Waiting...");
+      $("#waiting").toggleClass("none");
       $("startButton").toggleClass("hidden");
       $("#startButton").unbind("click");
     }

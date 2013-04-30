@@ -36,11 +36,18 @@ ol, ul {
 	margin: 0px;
 }
 
+
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: black;
 	margin: 0px;
 }
+
+h2{	
+	font-size: 32px;
+	color: #314E57;
+}
+
 
 #playarea{
 	padding-top: 10px;
@@ -172,10 +179,10 @@ body{
 }
 
 .miniCard { 
-	color: white;
+	background-color: white; 
+	color: black;
 	text-align: center;
 	font-size: 50px;
-	background-color: #262F33; 
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px; 
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -204,9 +211,12 @@ button{
 }
 
 #playerHand{
-	position: absolute;
+	position: static;
 	left: 80px;
 	bottom: 0px;
+	float: right;
+	margin-right: 30px;
+	display: inline-block;
 }
 .invisible{
 	display: none;
@@ -268,7 +278,9 @@ button{
 }
 
 .chats {
-	overflow-y: auto;
+	margin-top: 2px;
+	max-height: 150px;
+	overflow-y: scroll;
 }
 
 #playedPile {
@@ -307,15 +319,18 @@ button{
 	visibility: hidden;
 }
 
+.none {
+	display: none;
+}
 
 .inline {
 	display: inline-block;
 }
 
 .microCard { 
-	color: white;
+	background-color: white; 
+	color: black;
 	text-align: center;
-	background-color: white;
 	font-size: 30px;
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px; 
@@ -374,4 +389,13 @@ button{
 .myName, .southName {
 	color: #36CAD4;
 	font-style: italic;
+}
+
+.diamond, .hearts{
+	color: #FF372F;
+}
+
+#chatText li{
+	word-wrap: break-word;
+
 }

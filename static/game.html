@@ -11,6 +11,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   </head>
 
     <body>
@@ -26,26 +28,13 @@
               <div id="deckarea">
               
                   <div id="playerList">
-                  	<h2 id="gameName">Game</h2>                        
-                  	<div id="beginButtons">
-	                	<button id="readyButton">ready</button>
-	                	<button class="none" id="startButton">Start!</button>        	
-	                </div>
-                  	<div class="hidden westDiv">
-                  		<div class="circle"><span class="image-wrap"></span></div>
-                  		<span id="westName">player 2 name</span>
-                  	</div>
-                  	
-                  	<div class="hidden northDiv">
-                  		<div class="circle"><span class="image-wrap"></span></div>
-                  		<span id="northName">player 3 name</span>
-                  	</div>
-                  	
-                  	<div class="hidden eastDiv">
-                  		<div class="circle"></d<span class="image-wrap"></span></div> 
-                  		<span id="eastName">player 4 name</span>
-                  	</div>
-                  	
+                  		<h2 id="gameName">Game</h2>                        
+	                	<button id="readyButton">I'm ready!</button> <br>
+	                	<button id="startButton" class="hidden">Start</button>
+	                	<p id="waiting" class="none">Waiting<p/>
+		                <button id="takeAll" class="hidden"> Take all cards </button>
+
+                                	
                   	<form action="javascript:doSend()">
 	                  	<input id="text" type="text" placeholder="send message"></input>
 	                </form>
@@ -105,18 +94,14 @@
        
         	<div id="menu">
 	        	<ul>
-	        		<li><button id="home">home</button></li>
+	        		<li><button id="home"><a href="http://dian.christianreyes.com"></a>home</button></li>
 	        		<li><button id="logoutButton">logout</button></li>
 	        	</ul>
         	</div>	
         	
         	<div id="bottom">
-        	    <div class="circle"></div>
-        	    <span class="southName">
-        	    	Player 1
-        		</span>
+
         		
-        	</div>
         	
         		
         	<ul id="playerHand" class="handHorizontal">
@@ -127,7 +112,11 @@
                       <li><div class="miniCard backPattern"></div></li>
                       <li><div class="miniCard backPattern"></div></li>
         	</ul>
-         
+        	
+        	 <span class="southName">
+        	    	Player 1
+        	</span>
+        	</div>
                  
        </div>
         
