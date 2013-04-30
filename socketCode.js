@@ -7,9 +7,9 @@ module.exports = function(globals) {
   // Connection
   io.sockets.on('connection', function (socket) { 
 
-
-
+    // Get public games.
     socket.emit("gameUpdate", {games : globals.publicGames});
+
     /*
      * On disconnect, we need to remove the given player
      * from the game associated with that socket.
@@ -73,33 +73,29 @@ module.exports = function(globals) {
     socket.on('requestGame', function(data) {
       var game = globals.games[data.name];
       var name = words.randomWord();
-      /*if (game !== undefined) {
-        socket.emit("requestGameFailed", 
-        {msg : "A game with that name already exists."});  
-      } else { */
 
-        game = new cards.Game(data.username, socket, 
-                                data.private, data.password, 
-                                data.numPlayers, name, 
-                                data.numDecks, data.startingSize);
-        globals.games[name] = game;
-        if (data.private !== true) {
-          globals.publicGames[name] = ({
-            name: name,
-            numPlayers: 0,
-            maxPlayers: data.numPlayers,
-            startingSize: data.startingSize,
-            host: data.username
-          });
-          io.sockets.emit("gameUpdate", {
-            games: globals.publicGames
-          });
-        }
-        socket.emit("gotoGame", 
-          {
-            gameName : name,
-            playerList : game.getPlayers()
-          });
+      game = new cards.Game(data.username, socket, 
+                              data.private, data.password, 
+                              data.numPlayers, name, 
+                              data.numDecks, data.startingSize);
+      globals.games[name] = game;
+      if (data.private !== true) {
+        globals.publicGames[name] = ({
+          name: name,
+          numPlayers: 0,
+          maxPlayers: data.numPlayers,
+          startingSize: data.startingSize,
+          host: data.username
+        });
+        io.sockets.emit("gameUpdate", {
+          games: globals.publicGames
+        });
+      }
+      socket.emit("gotoGame", 
+        {
+          gameName : name,
+          playerList : game.getPlayers()
+        });
     });
 
     /*
@@ -254,6 +250,8 @@ module.exports = function(globals) {
       }
     });
 
+
+    // Playing a card from the hand.
     socket.on("playCard", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -272,6 +270,7 @@ module.exports = function(globals) {
     });      
 
 
+    // Taking a card from the play area.
     socket.on("takeFromPlayed", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -290,6 +289,7 @@ module.exports = function(globals) {
       }
     });
 
+    // Move within the played area.
     socket.on("takeInPlayed", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -304,13 +304,14 @@ module.exports = function(globals) {
         });
         game.updateEach("update", function(player){
         return { 
-              msg : wrapInSpan(data.from, player.getName() === data.to) + 
-              " gives the " + data.rank + " of " + data.suit +" to " + data.from
+              msg : wrapInSpan(data.from, player.getName() === data.from) + 
+              " gives the " + data.rank + " of " + data.suit +" to " + data.to
                 };
         });
       }
     });
 
+    // Take every card.
     socket.on("takeAll", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -330,6 +331,7 @@ module.exports = function(globals) {
       }
     });
 
+    // Pick up from the discard pile.
     socket.on("pickupDiscard", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -349,6 +351,7 @@ module.exports = function(globals) {
 
     });
 
+    // Restart the game
     socket.on("restart", function(data) {
       if (globals.socketsToGames[socket.id] !== undefined) {
         var game = globals.socketsToGames[socket.id].game;
@@ -370,6 +373,7 @@ module.exports = function(globals) {
 }
 
 
+// Helper for chat.
 function wrapInSpan(text, bool) {
   var spanClass = bool ? "myName" : "chatName";
   return "<span class='"+ spanClass + "'>" + text + "</span>";

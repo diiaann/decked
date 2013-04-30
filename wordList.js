@@ -2,6 +2,7 @@ var wordList = ["totipalmate","swink","parachor","autonomous","intrencher","kall
 
 module.exports = function() {
 
+  // Shuffle the list
   var j, tmp;
   for (var i = 0; i < 2; i++) {
     for (var i = 0; i < wordList.length; i++) {
@@ -12,6 +13,7 @@ module.exports = function() {
     }
   }
 
+  // Get a random name
   exports.randomWord = function() {
     var word = wordList.splice(0,1);
     wordList.push(word);
