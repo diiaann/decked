@@ -499,6 +499,20 @@ button:hover{
 	z-index: 2; 
 }
 
+
+#westRight {
+	position: static;
+}
+
+#eastRight {
+	position: static;
+}
+
+#northRight {
+	position: static;
+}
+
+
 .microCard {
 	background-color: white; 
 	color: black;
@@ -561,13 +575,13 @@ button:hover{
 .southName, .eastName{
 	position: absolute;
 	right: 2px;
-	bottom: 0px;
+	bottom: 1px;
 }
 
 .westName, .northName {
 	position: absolute;
 	left: 2px;
-	bottom: 0px;
+	bottom: 1px;
 }
 
 
@@ -774,9 +788,15 @@ table {
 	top: 2px;
 	right: 0px;
 }
+#discard:hover{
+	background-color: #3d3c3c;
+}
 
 
 
+#southRight{
+	position: static;
+}
 
 /********************************* UNUSED *********************************/
 

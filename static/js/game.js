@@ -80,9 +80,7 @@ $(document).ready(function(){
       console.log(currentDiv);
       $(currentDiv + "Div").removeClass("hidden");
       $(currentDiv + "Name").html(players[i].userName);
-      console.log(players[i].numInHand);
       if (players[i].ready === true) {
-        console.log("DO WHATEVER!");
       }
     };
 
@@ -163,15 +161,22 @@ $(document).ready(function(){
     POPULATE.hand(data.cards);
     POPULATE.sortHand();
     POPULATE.clearPlayed();
+    POPULATE.discard([]);
+
+    $("#deck").unbind("click");
+    $("#takeAll").unbind("click");
+    $("#restart").unbind("click");
+    $("#sortBy").unbind("change");
+
     $("#waiting").addClass("none");
     $("#readyButton").addClass("none");
     $("#startButton").addClass("none");
-    $("#deck").on("mousedown", drawCard);
     $("#sortBy").change(POPULATE.sortHand);
     $("#takeAll").removeClass("hidden");
+    $("#deck").click(drawCard);
     $("#takeAll").click(takeAll);
-    $(".toggleBox").removeClass("hidden");
     $("#restart").click(restart);
+    $(".toggleBox").removeClass("hidden");
   })
 
   // If login is unsuccessful, go back to the homepage
@@ -427,6 +432,8 @@ function mapToNum(chr) {
       return "12";
     case "K":
       return "13";
+    case "A":
+      return "1";
     default:
       return chr;
   }
@@ -465,5 +472,5 @@ function takeAll() {
 
 function restart() {
   console.log("RESTART");
-  socket.emit("restart", {});
+  socket.emit("restart", {username: username});
 }

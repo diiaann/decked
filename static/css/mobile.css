@@ -55,11 +55,6 @@ h2{
 	position: static;
 }
 
-#player1{
-	position: absolute;
-	bottom: 0px;
-}
-
 #logoutButton{
 	color: gray;
 	background-color: #acefff;
@@ -116,7 +111,7 @@ h2{
 	color: #FF372F;
 }
 
-#bottom{
+#player1{
 	position: absolute;
 	padding: 10px;
 	bottom: 0px;
@@ -294,25 +289,27 @@ button{
 	text-align: center;
 }
 
+
 #eastPlayed {
 	right: 0px;
-	top: 80px;
+	bottom: 140px;
 }
 
 #northPlayed {
-	top: 5px;
-	left: 160px;
+	left: 40px;
+	bottom: 210px;
 }
 
 #westPlayed {
 	left: 40px;
-	top: 140px;
+	bottom: 70px;
 }
 
 #southPlayed {
 	bottom: 0px;
-	left: 240px;
+	right: 0px;
 }
+
 
 
 .hidden{
@@ -395,7 +392,23 @@ button{
 	color: #FF372F;
 }
 
+.whiteText {
+	color: white;
+}
+
 #chatText li{
 	word-wrap: break-word;
 
+}
+
+.southName, .eastName{
+	position: absolute;
+	right: 2px;
+	bottom: 1px;
+}
+
+.westName, .northName {
+	position: absolute;
+	left: 2px;
+	bottom: 1px;
 }

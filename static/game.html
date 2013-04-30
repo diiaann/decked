@@ -6,8 +6,9 @@
     <script src="../static/js/jquery-1.9.0.js"></script>
     <script src="../static/js/login.js"></script>
     <script src="../static/js/logout.js"></script>
-    
     <script src="../static/js/game.js"></script>
+    <script src="../static/js/poputils.js"></script>
+    <script src="../static/js/gameUtil.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="//use.typekit.net/wom6bbm.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -49,7 +50,7 @@
                   <div class="public" id="played">
                       <p class="label">Played cards</p>
                       
-                      <div class="playDiv hidden westDiv">
+                      <div class="playDiv hidden westDiv" id="westPlayed">
                           <span class="westName"> west </span>
                           <ul class="handHorizontal" id="westPlayedUL">
                               <li><div class="microCard"></div></li>
@@ -94,28 +95,25 @@
        
         	<div id="menu">
 	        	<ul>
-	        		<li><button id="home"><a href="http://dian.christianreyes.com"></a>home</button></li>
+	        		<li><button id="home"><a href="http://localhost:8889"></a>home</button></li>
 	        		<li><button id="logoutButton">logout</button></li>
 	        	</ul>
         	</div>	
         	
-        	<div id="bottom">
-
+        	<div id="player1">
         		
-        	
-        		
-        	<ul id="playerHand" class="handHorizontal">
-	        	      <li><div class="miniCard backPattern"></div></li>
-                      <li><div class="miniCard backPattern"></div></li>
-                      <li><div class="miniCard backPattern"></div></li>
-                      <li><div class="miniCard backPattern"></div></li>
-                      <li><div class="miniCard backPattern"></div></li>
-                      <li><div class="miniCard backPattern"></div></li>
-        	</ul>
-        	
-        	 <span class="southName">
-        	    	Player 1
-        	</span>
+            	<ul id="playerHand" class="handHorizontal">
+    	        	      <li><div class="miniCard backPattern"></div></li>
+                          <li><div class="miniCard backPattern"></div></li>
+                          <li><div class="miniCard backPattern"></div></li>
+                          <li><div class="miniCard backPattern"></div></li>
+                          <li><div class="miniCard backPattern"></div></li>
+                          <li><div class="miniCard backPattern"></div></li>
+            	</ul>
+            	
+            	<span class="southName">
+            	    	Player 1
+            	</span>
         	</div>
                  
        </div>
