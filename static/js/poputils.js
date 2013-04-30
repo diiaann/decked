@@ -1,6 +1,7 @@
 POPULATE = (function() {
   var exports = {};
 
+  // Populate your hand
   exports.hand = function(cards) {
     var cardList = $("#playerHand");
     // Clear the list
@@ -17,6 +18,7 @@ POPULATE = (function() {
       var res = rank + suit;
       var newLI = $("<li>")
       var newButton = $("<button>");
+      // New list element
       newButton.addClass("miniCard");
       if (suit === heartUnicode || suit === diamondUnicode) {
         newButton.addClass("diamond");
@@ -36,7 +38,6 @@ POPULATE = (function() {
         var rank = cardData[0];
         var suit = "&" + cardData[1];
         
-
 
         // Drag it around
         $(document.body).on("mousemove", function(e) {
@@ -61,6 +62,7 @@ POPULATE = (function() {
           var playedXR = $("#played").offset().left + $("#played").width();
           var playedYB = $("#played").offset().top + $("#played").height();
 
+          // Perform the correct action
           if (centerX >= playedXL && centerX <= playedXR && 
               centerY >= playedYT && centerY <= playedYB) {
             playCard(rank, getSuit(suit));
@@ -79,7 +81,7 @@ POPULATE = (function() {
     }
   }
 
-
+  // Clear the table
   exports.clearPlayed = function() {
     $("#southPlayedUL").html("");
     $("#eastPlayedUL").html("");
@@ -87,14 +89,12 @@ POPULATE = (function() {
     $("#northPlayedUL").html("");
   }
 
-
-
   // Sorts the hand according to the user specification.
   exports.sortHand = function() {
     // Controls how we sort.
     var type = parseInt($("input[type='radio'][name='view']:checked").val());
 
-    // 
+    // by rank
     var rankSort = function(a, b) { 
       var aVal = parseInt(mapToNum(encodeURI($(a).text()).split("%")[0]));
       var bVal = parseInt(mapToNum(encodeURI($(b).text()).split("%")[0]));
@@ -102,6 +102,7 @@ POPULATE = (function() {
       return  aVal - bVal;
     }
 
+    // by suit
     var suitSort = function(a, b) { 
       var aVal = mapToNum(encodeURI($(a).text()).split("%"));
       var bVal = mapToNum(encodeURI($(b).text()).split("%"));
@@ -112,6 +113,7 @@ POPULATE = (function() {
       return aVal.localeCompare(bVal);
     }
 
+    // helper
     var hasSuit = function(suitChar) {
       return function(elem) {
         return ($(elem).text().indexOf(suitChar) !== -1);
@@ -120,9 +122,7 @@ POPULATE = (function() {
 
 
     var cardList = $("#playerHand");
-
     var newHand;
-
     var finalHand = [];
     var tempArray = [];
     var pivots = [0];   
@@ -130,7 +130,8 @@ POPULATE = (function() {
     if (type === 2) {
 
 
-  // DO suitSort, then find indices of change. break into int subarray,s sort them, concat
+      // Do suitSort, then find indices of change. break into 
+      // subarrays sort them, concatenate them
       newHand = $("#playerHand").children().sort(suitSort);
       for (var i = 0; i < newHand.length - 1; i++) {
         if ($(newHand[i]).text().substr($(newHand[i]).text().length -1)!== 
@@ -139,7 +140,6 @@ POPULATE = (function() {
         }
       };
 
-      //console.log(pivots);
       pivots.push(newHand.length);
 
       for (var i = 0; i < pivots.length - 1; i++) {
@@ -151,6 +151,8 @@ POPULATE = (function() {
 
       newHand = finalHand;
     } else {
+
+      // Sort by rank, then suit.
       newHand = $("#playerHand").children().sort(rankSort);
       for (var i = 0; i < newHand.length - 1; i++) {
         if ($(newHand[i]).text().substr(0, $(newHand[i]).text().length - 1)!== 
@@ -159,7 +161,6 @@ POPULATE = (function() {
         }
       };
 
-      //console.log(pivots);
       pivots.push(newHand.length);
 
       for (var i = 0; i < pivots.length - 1; i++) {
@@ -173,14 +174,15 @@ POPULATE = (function() {
     }
 
 
+    // Populate hand and assign event listeners
     cardList.html("");
     for (var i = 0; i < newHand.length; i++) {
       var newLI = $(newHand[i]);
 
       cardList.append(newLI);
-      
+    
+      // For touch devices
       newLI.bind('touchstart',function(event) {
-
           if (event.originalEvent.targetTouches.length > 1) {
             return;
           }
@@ -219,6 +221,7 @@ POPULATE = (function() {
             return;
           }
 
+          // Need coordinates
           var centerX = touch.pageX;
           var centerY = touch.pageY;
           var discardXL = $("#discard").offset().left;
@@ -242,15 +245,10 @@ POPULATE = (function() {
           window.dragging = null;
           
         });
-        
-        
-      /*  if (event.targetTouches.length === 1) {
-          var touch = event.targetTouches[0];
-          console.log("left" + touch.pageX + "px");
-    }*/
     });
 
 
+      // For non-touch devices 
       newLI.mousedown(function(e) {
         var that = $(this).children()[0];
         var origOffset = $(that).offset();
@@ -276,7 +274,7 @@ POPULATE = (function() {
 
           $("#played").css("background-color", "");
 
-
+          // Need coordinates
           var centerX = e.pageX;
           var centerY = e.pageY;
           var discardXL = $("#discard").offset().left;
@@ -310,7 +308,7 @@ POPULATE = (function() {
     };
   }
 
-  // Populate the discard pile DOM element
+  // Populate the play area in teh given list of cards
   exports.played = function(cards, cardList) {
     cardList.html("");
     
@@ -356,6 +354,7 @@ POPULATE = (function() {
           }
         });
 
+        // Check the player's hand div.
         $("#player1").on("mouseup", function(e){
           var centerX = e.pageX;
           var centerY = e.pageY;
@@ -385,8 +384,10 @@ POPULATE = (function() {
           $(document.body).unbind("mousemove");
         });
 
+      // Check discard/play area
       $(this).on("mouseup", function(e){
 
+          // Coordinates
           var centerX = e.pageX;
           var centerY = e.pageY;
           var player1XL = $("#player1").offset().left;
@@ -418,12 +419,14 @@ POPULATE = (function() {
           var discardXR = $("#discard").offset().left + $("#discard").width();
           var discardYB = $("#discard").offset().top + $("#discard").height();
 
+          // Clean up listeners
           $(this).unbind("mouseup");
           $('#deckarea').unbind("mouseup");
           $('#discard').unbind("mouseup");
           $('#player1').unbind("mouseup");
           $(that).removeAttr("z-index");
 
+          // Have we done something?
           if (cardList.attr("id").indexOf("south") !== -1) {
             if (centerX >= player1XL && centerX <= player1XR && 
                 centerY >= player1YT && centerY <= player1YB) {
@@ -432,7 +435,7 @@ POPULATE = (function() {
                 rank, getSuit(suit));
             } else if (centerX >= northPlayedXL && centerX <= northPlayedXR && 
                 centerY >= northPlayedYT && centerY <= northPlayedYB){
-                takeInPlayed( username,
+                takeInPlayed(username,
                 $($("#northPlayedUL").parent().children()[0]).html(),
                 rank, getSuit(suit));
             } else if (centerX >= westPlayedXL && centerX <= westPlayedXR && 
@@ -464,6 +467,7 @@ POPULATE = (function() {
               rank, getSuit(suit));
             } 
           }
+
           window.dragging.offset(origOffset);
           window.dragging = null;
           $(document.body).unbind("mousemove");
@@ -472,6 +476,7 @@ POPULATE = (function() {
       });
 
 
+      // Mobile devices
       newLI.bind('touchstart',function(event) {
       
         if (event.originalEvent.targetTouches.length > 1) {
@@ -504,6 +509,7 @@ POPULATE = (function() {
           }
         });
 
+        // Player hand div
          $("#player1").on("touchend", function(e){
 
           var e = event.originalEvent;
@@ -539,8 +545,8 @@ POPULATE = (function() {
         });
 
 
+        // Play area and discard
         $(this).on("touchend", function(event){
-
 
           var e = event.originalEvent;
           var touch = e.changedTouches[0];
@@ -635,6 +641,7 @@ POPULATE = (function() {
 
     };
   }  
+
  
   // Populate the discard pile DOM element
   exports.discard = function (cards) {
@@ -668,7 +675,7 @@ POPULATE = (function() {
     discard.removeClass("diamond");
   }
   discard.click(pickupDiscard);
-}
+  }
 
 
   return exports;

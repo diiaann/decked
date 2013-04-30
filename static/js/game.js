@@ -77,7 +77,6 @@ $(document).ready(function(){
     // Unhide used divs
     for (var i = 0; i < playerDivs.length; i++) {
       currentDiv = playerDivs[i];
-      console.log(currentDiv);
       $(currentDiv + "Div").removeClass("hidden");
       $(currentDiv + "Name").html(players[i].userName);
       if (players[i].ready === true) {
@@ -156,7 +155,7 @@ $(document).ready(function(){
   })
 
 
-  // Game starts. Show my hand.
+  // Game starts. Show my hand and ready the DOM.
   socket.on("gameStart", function(data) {
     POPULATE.hand(data.cards);
     POPULATE.sortHand();
@@ -197,13 +196,13 @@ $(document).ready(function(){
     POPULATE.sortHand();
   });
 
+  // Someone discard a card from the paly area.
   socket.on("discardFromPlayed", function(data) {
     var numPlayers = data.players.length;
     var players = data.players;
     var playerDivs = getPlayerDivs(numPlayers);
     var myIndex = getIndexFromPlayers(username, players);
 
-    console.log(data.players);
     // Cycle player list
     for (var i = 0; i < myIndex; i++) {
       players.push(players.shift());
@@ -247,6 +246,7 @@ $(document).ready(function(){
     $('.chats').scrollTop($('#chatText').height());
   });
 
+  // If we're not logged in, go back to the homepage.
   if (window.username === undefined) {
     var splitLoc = location.href.split("/");
     window.location.assign(splitLoc[0] + "//" + splitLoc[2]);
@@ -261,7 +261,6 @@ $(document).ready(function(){
   $("#trashButton").click(trashCard);
   $("#southName").html(username);
   if (iAmHost === true) {
-    console.log("unhide");
     $("#startButton").removeClass("hidden");
   }
  
@@ -272,6 +271,7 @@ $(document).ready(function(){
 
 
 });
+
 
 // Take a card from the played pile
 function takeCard() {
@@ -294,7 +294,6 @@ function trashCard() {
     username: window.username
   });
 }
-
 
 // Toggles state of ready button
 function toggleReady() {
@@ -362,37 +361,6 @@ function getSuit(unicode){
 
 }
 
-// Draw a card
-function drawCard(e) {
-  socket.emit("drawCard", {username : username});
-}
-
-// discard a card
-function discard(rank, suit) {
-  socket.emit("discard", {
-    username: username,
-    rank : rank,
-    suit: suit
-  });
-}
-
-function discardFromPlayed(rank, suit) {
-  socket.emit("discardFromPlayed", {
-    username: username,
-    rank : rank,
-    suit: suit
-  });
-}
-
-// Plays the given card.
-function playCard(rank, suit) {
-  socket.emit("playCard", {
-    username: username,
-    rank : rank,
-    suit: suit
-  });  
-}
-
 // Gets the divs we're using given the number of player in our game.
 function getPlayerDivs(numPlayers) {
   switch(numPlayers) {
@@ -423,7 +391,7 @@ function getIndexFromPlayers(name, players) {
 }
 
 
-
+// Helper for sorting.
 function mapToNum(chr) {
   switch(chr) {
     case "J":
@@ -440,6 +408,41 @@ function mapToNum(chr) {
 }
 
 
+/* Socket helpers */
+
+// Draw a card
+function drawCard(e) {
+  socket.emit("drawCard", {username : username});
+}
+
+// discard a card
+function discard(rank, suit) {
+  socket.emit("discard", {
+    username: username,
+    rank : rank,
+    suit: suit
+  });
+}
+
+// Discard from the played area
+function discardFromPlayed(rank, suit) {
+  socket.emit("discardFromPlayed", {
+    username: username,
+    rank : rank,
+    suit: suit
+  });
+}
+
+// Plays the given card.
+function playCard(rank, suit) {
+  socket.emit("playCard", {
+    username: username,
+    rank : rank,
+    suit: suit
+  });  
+}
+
+// Take from the play area to your hand.
 function takeFromPlayed(playerName, rank, suit) {
   socket.emit("takeFromPlayed", {
     from: playerName,
@@ -449,6 +452,7 @@ function takeFromPlayed(playerName, rank, suit) {
   });
 }
 
+// Move from one play area to the other.
 function takeInPlayed(from, to, rank, suit) {
   socket.emit("takeInPlayed", {
     from: from,
@@ -458,19 +462,21 @@ function takeInPlayed(from, to, rank, suit) {
   });
 }
 
+// Pick up from discard
 function pickupDiscard() {
   socket.emit("pickupDiscard",{
     username: username
   });
 }
 
+// Take all cards from the play area
 function takeAll() {
   socket.emit("takeAll", {
     username: username
   });
 }
 
+// Restart the game
 function restart() {
-  console.log("RESTART");
   socket.emit("restart", {username: username});
 }

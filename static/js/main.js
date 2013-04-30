@@ -5,7 +5,6 @@ var gravatar = "http://www.gravatar.com/avatar/";
 
 $(document).ready(function(){
   socket = io.connect("http://localhost:8888");
-  // update chat message
 
   // Switch page to a game
   socket.on("gotoGame", function(data) {
@@ -33,13 +32,12 @@ $(document).ready(function(){
     window.location.assign(newLoc);
   });
 
-
+  // Update list of games
   socket.on("gameUpdate", function(data) {
     var table = $(".table");
     var newTR;
     var button;
 
-    
     table.html("");
 
     table.append($("<th>").html("Name"));
@@ -47,6 +45,7 @@ $(document).ready(function(){
     table.append($("<th>").html("# Players"));
     table.append($("<th>").html(" "));
 
+    // Show only existent games
     for (var key in data.games) {
       if (data.games.hasOwnProperty(key) && data.games[key].numPlayers !== 0) {
         
@@ -84,20 +83,22 @@ $(document).ready(function(){
 
 });
 
+// If registration fails
 function registerFail(msg) {
   if (msg.indexOf("username") !== -1) {
     $("#authError").html("The username that you provided is already taken.");
   } else { 
   $("#authError").html("Registration failed. Please reenter your " + 
                       "username and password, making sure to " + 
-                      "fill both fields.");
+                      "fill both fields with alphanumeric characters.");
   }
 }
+
 
 function loginFail(msg) {
   $("#authError").html("Login failed. Please reenter your " + 
                       "username and password, making sure to " + 
-                      "fill both fields.");
+                      "fill both fields with alphanumeric characters.");
 }
 
 // Hides login fields
@@ -168,8 +169,7 @@ function requestGame() {
     }    
   }
 
-  console.log(socket);
-
+  // Request a game.
   window.socket.emit("requestGame", 
     { 
       numPlayers: numPlayers,
