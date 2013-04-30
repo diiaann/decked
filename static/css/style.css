@@ -33,22 +33,13 @@ ol, ul {
 }
 
 
-/**************  basic ************* */
+/* *************  basic ************* */
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
 	color: #333;
 	min-width: 1070px;
 }
 
-#home{
-	/*background-image: url("../imgs/background.png");*/
-	background-repeat: no-repeat;
-
-
-}
-header{
-	color:gray;
-}
 
 textarea {
 	height: 60px;	
@@ -57,14 +48,8 @@ textarea {
 	box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-/* filtering input */
-input[type="checkbox"]{
-	margin-bottom: 15px;
-} 
 
-
-/************** general styles ************* */
-	/* text hierarchy */
+/* basic hierarchy */
 	
 	
 h1{
@@ -97,159 +82,13 @@ a:hover{
 	color: #eee;
 }
 
-
-#gameBar{
-	background-color: #ccc;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	text-align: center;
-	max-width: 200px;
-	float: left;
-	display: inline-block;
-	margin: 10px;
-	border: 5px
-}
-
-#chatText {
-	display: block;
-}
-
-.chats {
-	overflow-y: auto;
-}
-
-
-#chat {
-	padding-top: 20px;
-	width: 270px;
-	z-index: 900;
-	top: 0px;
-	float: left;
-	height: 100%;
-	background-color: #f7f7f7;
-	color: #464751;
-	font-size: 12px;
-	border-right: 1px solid #a9acb1;
-	display: inline-block;
-}
-
-
-.card { 
-	color: white;
-	text-align: center;
-	font-size: 32px;
-	background-color: white;
-	-moz-border-radius: 10px; 
-	-webkit-border-radius: 10px; 
-	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-	float: left; 
-	height: 140px; 
-	margin: 0 15px 15px 0; 
-	width: 100px; 
-	z-index: 2; 
-}
-
-
-.configSection {
-	float: left;
-	display: inline-block;	
-}
-
-
-.none {
-	display: none;
-}
-
-.hidden {
-	visibility: hidden;
-}
-
-#header{
-	padding: 15px;
+.label{
+	text-transform: uppercase;
 	color: gray;
-	background-color:rgba(0,0,0,0.2);
-
+	font-weight: 500;
+	font-size: 16px;
 }
 
-#hero{
-	padding: 20px;
-	
-	background: #76d1dd; /* Old browsers */
-	background: -moz-linear-gradient(top,  #76d1dd 0%, #edece5 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#76d1dd), color-stop(100%,#edece5)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #76d1dd 0%,#edece5 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d1dd', endColorstr='#edece5',GradientType=0 ); /* IE6-9 */
-
-	
-	text-align: center;
-	line-height: 2;
-	margin-bottom: 20px;
-}
-
-#formArea{
-	margin-top: 20px;
-	background-color: #76d1dd;
-	padding: 20px;
-
-}
-.invisible{
-	display: none;
-}
-
-#gameForm {
-
-}
-
-#joinForm {
-}
-
-#numPlayers {
-	width: 60px;
-}
-
-#numDecks,#startingSize {
-	width: 60px;
-}
-
-#startHand {
-	width: 60px;
-}
-
-#private {
-	width: 15px;
-	height: 15px;
-	margin: 5px;
-}
-
-#main{
-	padding-top: 30px; 
-	color: gray;
-}
-
-#text {
-	width: 260px;
-}
-
-input {
-	font-size: 20px;
-	font-family: "freight-sans-pro",arial,san-serif;
-	background: #FFF;
-	width: 280px;
-	height: 30px;
-	padding: 0 10px;
-	color: #0f1419;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	margin: 5px;
-}
 
 button{
 	border: none;
@@ -269,11 +108,123 @@ button:hover{
 	color: white;
 }
 
-#logo{
-	text-transform: uppercase;
-	letter-spacing: 15px;
-	font-size: 24px;
+.longText{
+	font-family: "ff-tisa-web-pro",serif;
+	color: black;
+	font-size: 26px;
+	line-height: 36px;
 }
+
+/* ************* home page specific ************* */
+
+#hero{
+	padding: 20px;
+	background: #76d1dd; /* Old browsers */
+	background: -moz-linear-gradient(top,  #76d1dd 0%, #edece5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#76d1dd), color-stop(100%,#edece5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #76d1dd 0%,#edece5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #76d1dd 0%,#edece5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d1dd', endColorstr='#edece5',GradientType=0 ); /* IE6-9 */
+	text-align: center;
+	line-height: 2;
+	margin-bottom: 20px;
+}
+
+
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+.table th {
+  font-weight: bold;
+}
+.table thead th {
+  vertical-align: bottom;
+}
+
+#formArea{
+	margin-top: 20px;
+	background-color: #76d1dd;
+	padding: 20px;
+}
+
+input {
+	font-size: 20px;
+	font-family: "freight-sans-pro",arial,san-serif;
+	background: #FFF;
+	width: 280px;
+	height: 30px;
+	padding: 0 10px;
+	color: #0f1419;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 5px;
+}
+
+
+#text {
+	width: 260px;
+}
+
+input[type="checkbox"]{
+	margin-bottom: 15px;
+} 
+
+#numDecks,#startingSize {
+	width: 60px;
+}
+
+#startHand {
+	width: 60px;
+}
+
+#numPlayers {
+	width: 60px;
+}
+
+#private {
+	width: 15px;
+	height: 15px;
+	margin: 5px;
+}
+
+.errorP {
+	color: #c0392b;
+}
+/* ************* game page specific ************* */
+
+/* general */
+
+.chatName, .northName, .westName, .eastName {
+	color: #A12819;
+	font-style: italic;
+}
+
+.myName, .southName {
+	color: #36CAD4;
+	font-style: italic;
+}
+
 .circle .image-wrap {
 	-webkit-border-radius: 50em;
 	-moz-border-radius: 50em;
@@ -287,190 +238,49 @@ button:hover{
 	height: 80px;
 }
 
-.text{
-	color: white;
-	font-family: "freight-sans-pro",arial,san-serif;
-	font-size: 165px;
-	font-weight: 300;
+/* header */
 
-}
-
-.text{
-	font-family: "ff-tisa-web-pro",serif;
-	color: black;
-	font-size: 26px;
-	line-height: 36px;
-}
-
-.before {
-	background: #228B22;
-}
-
-.before:hover {
-	background: #5793c5;
-}
-
-.after:hover {
-	background: #228B22;
-}
-
-.after {
-	background: #5793c5;
-}
-
-.leftSide{
-	display: inline-block;
-	clear: left;
-	left: 5px;
-}
-
-.rightSide{
-	display: inline-block;
-	clear: right;
-	right: 5px;
-}
-
-
-.handle{
-	padding-top: -20px;
-	position: inherit;
-}
-
-.player {
-	position: relative;
-	/*display: inline-block;*/
-	text-align: center;
-}
-
-.vert {
-	height: 100%;
-	display: inline-block;
-	top: 40px;
-}
 #home{
 	background-image: url('../imgs/house.png');
 	height: 36px;
 	padding-left: 40px;
 	padding-top: 20px;
+	background-repeat: no-repeat;
 }
 
-.horz {
-	height: 100px;
+.gameLogins {
+	background-color: #76d1dd;
+	vertical-align: middle;
+	padding: 4px;
 }
 
-.middleDiv {
+/* chats */
+
+#chat { /* contains the entire section */
+	padding-top: 20px;
+	width: 270px;
+	z-index: 900;
+	top: 0px;
+	float: left;
+	height: 100%;
+	background-color: #f7f7f7;
+	color: #464751;
+	font-size: 12px;
+	border-right: 1px solid #a9acb1;
+	display: inline-block;
+}
+
+.chatLabel{
+	margin-left: 5px;
+}
+
+.chats { /* specifically where the chat text goes */
+	overflow-y: auto;
+}
+
+#chatText {
 	display: block;
-	width: 800px;
 }
-
-#player1{
-	float: left;
-	width: 800px;
-	text-align: center;
-	margin-top: 10px;
-}
-
-#player2{
-	left: 5px;
-	float: left;
-}
-
-#player3{
-	top: 10px;
-}
-
-#player4{
-	right: 15px;
-	float: right;
-}
-
-#playarea {
-	width: 800px;
-	float: left;
-	padding: 20px;
-}
-
-#played{
-	width: 450px;
-	height: 400px;
-	background-color: rgb(200, 247, 202);
-	border-radius: 5px;
-	float: right;
-	margin-right: 20px;
-	position: relative;
-
-}
-
-#playedPile {
-	left: 10px;
-	top: 190px;
-	position: relative;
-}
-
-
-.clearfix:after {
-    visibility: hidden;
-    display: block;
-    content: "";
-    clear: both;
-    height: 0;
-    }
-
-#deckarea{
-	width: 700px;
-	height: 300px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-#playerList{
-	float:right;
-}
-
-.public:hover {
-	background: #4682b4;
-}
-
-.public {
-	text-align: bottom;
-}
-
-
-#deck {
-	border-style: solid;
-	border-width: 5px;
-	/*color: #333;*/
-	height: 130px; 
-	margin: 0 15px 15px 0; 
-	width: 90px;
-}
-
-#playButtons {
-	margin-left: auto;
-	text-align: center;
-	margin-right: auto;
-	margin-bottom: 10px
-}
-
-
-
-
-#discard {
-	border-color: gray;
-	background-color: gray;
-	border-style: solid;
-	border-width: 5px;
-	height: 130px; 
-	margin: 0 15px 15px 0; 
-	width: 90px; 
-	font-size: 20px;
-	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-
 
 #chatText li{
 	display: inline-block;
@@ -480,6 +290,24 @@ button:hover{
 	border-bottom: 1px solid #afafaf;
 	padding: 3px;
 	word-wrap: break-word;
+}
+
+/* card styles in order from largest to smallest */
+
+.card { 
+	color: white;
+	text-align: center;
+	font-size: 32px;
+	background-color: white;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+	float: left; 
+	height: 140px; 
+	margin: 0 15px 15px 0; 
+	width: 100px; 
+	z-index: 2; 
 }
 
 .miniCard {
@@ -497,19 +325,6 @@ button:hover{
 	position: relative; 
 	min-width: 60px; 
 	z-index: 2; 
-}
-
-
-#westRight {
-	position: static;
-}
-
-#eastRight {
-	position: static;
-}
-
-#northRight {
-	position: static;
 }
 
 
@@ -531,33 +346,20 @@ button:hover{
 	z-index: 2; 
 }
 
-
 .miniCard:hover, .microCard:hover{
 	background-color: black;
 	color: white;
 }
-.diamond:hover, hearts:hover{
-	background-color: #FF372F;
+
+.backPattern{
+	background-color: #e74c3c;
+}
+.backPattern:hover{
+	background-color: #e74c3c;
 }
 
-
-.vertHand{
-	width: 60px;
-}
-
-.handVertical li{
-	display: inline-block;
-	margin-top: -50px;
-}
-
-.handHorizontal{
-	list-style: none;
-	text-align: center;
-}
-
-.handHorizontal li{
-	display: inline-block;
-	margin-left: -30px;
+#deck.backPattern:hover{
+	background-color: #e47160;
 }
 
 .diamond, .hearts{
@@ -568,42 +370,121 @@ button:hover{
 	color: #262F33;
 }
 
+.diamond:hover, hearts:hover{
+	background-color: #FF372F;
+}
+
+/* gameplay area, comprised of playarea and personal area */
+
+#playarea { /* contains deckarea and playerlist */
+	width: 800px;
+	float: left;
+	padding: 20px;
+}
+
+/* player list, also contains some controls */
+#playerList{
+	float:right;
+}
+
+#southRight{
+	position: static;
+}
+
+#westRight {
+	position: static;
+}
+
+#eastRight {
+	position: static;
+}
+
+#northRight {
+	position: static;
+}
+/* modifies the appearances of buttons after players are ready */
+
+.before {
+	background: #228B22;
+}
+
+.before:hover {
+	background: #5793c5;
+}
+
+.after:hover {
+	background: #228B22;
+}
+
+.after {
+	background: #5793c5;
+}
+
+/* deck area */
+#deckarea{
+	width: 700px;
+	height: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+#deck {
+	border-style: solid;
+	border-width: 5px;
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px;
+}
+
+#discard {
+	border-color: gray;
+	background-color: gray;
+	border-style: solid;
+	border-width: 5px;
+	height: 130px; 
+	margin: 0 15px 15px 0; 
+	width: 90px; 
+	font-size: 20px;
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	 -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#discard:hover{
+	background-color: #3d3c3c;
+}
+
 .whiteText {
 	color: white;
 }
 
-.southName, .eastName{
+.public:hover {
+	background: #4682b4;
+}
+
+.public {
+	text-align: bottom;
+}
+
+#played{
+	width: 450px;
+	height: 400px;
+	background-color: rgb(200, 247, 202);
+	border-radius: 5px;
+	float: right;
+	margin-right: 20px;
+	position: relative;
+}
+
+#takeAll{
 	position: absolute;
-	right: 2px;
-	bottom: 1px;
+	top: 2px;
+	right: 0px;
 }
 
-.westName, .northName {
-	position: absolute;
-	left: 2px;
-	bottom: 1px;
-}
-
-
-.chatName, .northName, .westName, .eastName {
-	color: #A12819;
-	font-style: italic;
-}
-
-.myName, .southName {
-	color: #36CAD4;
-	font-style: italic;
-}
-
-.loginFields{
-}
-
-.gameLogins {
-	background-color: #76d1dd;
-	vertical-align: middle;
-	padding: 4px;
-}
-
+/* apportions each players area within played */
 .playDiv {
 	position: absolute;
 	text-align: center;
@@ -634,32 +515,96 @@ button:hover{
 	min-width: 50px;
 }
 
+#playedPile {
+	left: 10px;
+	top: 190px;
+	position: relative;
+}
+
+/* labels the apportioned area */
+.southName, .eastName{
+	position: absolute;
+	right: 2px;
+	bottom: 1px;
+}
+
+.westName, .northName {
+	position: absolute;
+	left: 2px;
+	bottom: 1px;
+}
+
+
+/* allows cards in li to be horizontal and look overlapped */
+
+.handHorizontal{
+	list-style: none;
+	text-align: center;
+}
+
+.handHorizontal li{
+	display: inline-block;
+	margin-left: -30px;
+}
+
+
+.horz {
+	height: 100px;
+}
+
+
+
+/* beneath deck area is personal area */
+
+#player1{
+	float: left;
+	width: 800px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.player {
+	position: relative;
+	text-align: center;
+}
+
+/* overriding classes */
+
+.none, .invisible {
+	display: none;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
 .inline {
 	display: inline-block;
 }
-
-.label{
-	text-transform: uppercase;
-	color: gray;
-	font-weight: 500;
-	font-size: 16px;
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
 }
 
-.backPattern{
-	background-color: #e74c3c;
-}
-.backPattern:hover{
-	background-color: #e74c3c;
+
+/* other */
+
+.configSection {
+	float: left;
+	display: inline-block;	
 }
 
-#deck.backPattern:hover{
-	background-color: #e47160;
-}
 
-.container {
-  margin: 60px auto;
-  width: 120px;
-}
+
+/*
+ * 
+ *       .
+ *  Code adapted from CSSdeck
+ *  http://cssdeck.com/labs/toggle-switches    
+ */
 
 .switch {
   position: relative;
@@ -688,18 +633,6 @@ button:hover{
 .switch-label:active {
   font-weight: bold;
 }
-
-.errorP {
-	color: #c0392b;
-}
-
-
-/*
- * Note: using adjacent or general sibling selectors combined with
- *       pseudo classes doesn't work in Safari 5.0 and Chrome 12.
- *       See this article for more info and a potential fix:
- *       http://css-tricks.com/webkit-sibling-bug/
- */
 
 .switch-input {
   display: none;
@@ -749,64 +682,7 @@ button:hover{
 	margin-top: 2px;
 }
 
-.gameList {
-	clear: both;
-	background-color: purple;
-}
-
-table {
-  max-width: 100%;
-  background-color: transparent;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-.table {
-  width: 100%;
-  margin-bottom: 20px;
-}
-.table th,
-.table td {
-  padding: 8px;
-  line-height: 20px;
-  text-align: left;
-  vertical-align: top;
-  border-top: 1px solid #dddddd;
-}
-.table th {
-  font-weight: bold;
-}
-.table thead th {
-  vertical-align: bottom;
-}
-
-.chatLabel{
-	margin-left: 5px;
-}
-
-#takeAll{
-	position: absolute;
-	top: 2px;
-	right: 0px;
-}
-#discard:hover{
-	background-color: #3d3c3c;
-}
-
-
-
-#southRight{
-	position: static;
-}
-
-/********************************* UNUSED *********************************/
 
 
 
 
-/*
-.chatBar {
-	margin: 10px;
-	float: right;
-	width: 40%;
-	display: inline-block;
-}*/

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<title>a decked game</title>
     <link rel="stylesheet" href="../static/css/style.css" type="text/css" media="screen">
-
     <script src="/socket.io/socket.io.js"></script>
     <script src="../static/js/jquery-1.9.0.js"></script>
     <script src="../static/js/login.js"></script>
@@ -60,13 +60,11 @@
 
                     <button id="readyButton">I'm ready!</button> <br>
                     <button id="startButton" class="hidden">Start</button>
-                    <p id="waiting" class="none">Waiting<p/>
+                    <p id="waiting" class="none">Waiting</p>
                   
                   </div>
                   <p class="label">deck</p> 
-                  <div class="card public backPattern" id="deck">
-                  </div>   
-
+                  <div class="card public backPattern" id="deck"></div>   
                   <div class="public" id="played">
 	                  <p class="label">Played cards</p>
                       <button id="takeAll" class="hidden"> Take all cards </button>
@@ -79,7 +77,6 @@
                               <li><div class="microCard"></div></li>
                           </ul>
                       </div>
-
 
                       <div class="playDiv hidden northDiv" id="northPlayed">
                           <span class="northName"> north </span>
@@ -110,11 +107,9 @@
 
                   </div>
                   <p class="label">discard</p>
-                  <div class="public disClass" id="discard">
-                  </div>
+                  <div class="public disClass" id="discard"></div>
                   <button id="restart">Restart game</button>
-              </div>
-                 
+              </div>                 
               <div id="player1" class="horz player">
                   <div class="circle inline"><span class="image-wrap"></span></div>
 
@@ -131,12 +126,12 @@
                   
                   <div class="toggleBox hidden">
                       <div id="sortBy" class="switch">
-	                      	  	<input type="radio" class="switch-input" name="view" value="1" id="rank" checked>
-	                      	  	<label for="rank" class="switch-label switch-label-off">Rank</label>
-	                      	  	<input type="radio" class="switch-input" name="view" value="2" id="suit">
-	                      	  	<label for="suit" class="switch-label switch-label-on">Suit</label>
-	                      	  	<span class="switch-selection"></span>
-	                      	  </div>
+	                      <input type="radio" class="switch-input" name="view" value="1" id="rank" checked>
+	                      <label for="rank" class="switch-label switch-label-off">Rank</label>
+	                      <input type="radio" class="switch-input" name="view" value="2" id="suit">
+	                      <label for="suit" class="switch-label switch-label-on">Suit</label>
+	                      <span class="switch-selection"></span>
+	                  </div>
                   </div>
               </div>   			
           </div>            	
