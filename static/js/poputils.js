@@ -40,7 +40,6 @@ var POPULATE = (function() {
 
         // Drag it around
         $(document.body).on("mousemove", function(e) {
-          $("#played").css("background-color","purple");
           if (window.dragging !== undefined) {
             window.dragging.offset({
               top : e.pageY - $(that).width()/2,
@@ -250,7 +249,7 @@ var POPULATE = (function() {
         var rank = cardData[0];
         var suit = "&" + cardData[1];
         window.dragging = $(e.target);
-       $("#played").css("background-color","#afafaf");
+        $("#played").css("background-color","#afafaf");
 
 
         // Drag it around
@@ -266,6 +265,9 @@ var POPULATE = (function() {
         // When we release, have we dragged it to a part of the board?
         $(this).on("mouseup", function(e){
 
+          $("#played").css("background-color", "");
+
+
           var centerX = e.pageX;
           var centerY = e.pageY;
           var discardXL = $("#discard").offset().left;
@@ -278,6 +280,8 @@ var POPULATE = (function() {
           var playedYB = $("#played").offset().top + $("#played").height();
 
           $(this).unbind("mouseup");
+          $(document.body).unbind("mousemove");
+          $('#deckarea #discard').unbind("mouseup");
 
           if (centerX >= playedXL && centerX <= playedXR && 
               centerY >= playedYT && centerY <= playedYB) {
@@ -289,8 +293,7 @@ var POPULATE = (function() {
           
           window.dragging.offset(origOffset);
           window.dragging = null;
-          $(document.body).unbind("mousemove");
-          $('#deckarea #discard').unbind("mouseup");
+
         });
 
       });

@@ -48,7 +48,7 @@ $(document).ready(function(){
     table.append($("<th>").html(" "));
 
     for (var key in data.games) {
-      if (data.games.hasOwnProperty(key)) {
+      if (data.games.hasOwnProperty(key) && data.games[key].numPlayers !== 0) {
         
         newTR = $("<tr>");
         newTR.append($("<td>").html(data.games[key].name));

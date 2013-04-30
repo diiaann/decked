@@ -77,6 +77,7 @@ $(document).ready(function(){
     // Unhide used divs
     for (var i = 0; i < playerDivs.length; i++) {
       currentDiv = playerDivs[i];
+      console.log(currentDiv);
       $(currentDiv + "Div").removeClass("hidden");
       $(currentDiv + "Name").html(players[i].userName);
       console.log(players[i].numInHand);
