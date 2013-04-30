@@ -332,6 +332,25 @@ Game.prototype.startGame = function() {
   };
 }
 
+
+Game.prototype.restartGame = function() {
+
+  this.deck = new Deck(this.numDecks);
+  this.discardPile = [];
+  this.playedPile = [];
+  if (this.privateGame) {
+    this.password = password;
+  }
+
+  this.start = true;
+  this.deck.shuffle(5);
+  for (var i = this.players.length - 1; i >= 0; i--) {
+    this.players[i].hand = [];
+    this.players[i].played = [];
+    this.drawCards(this.players[i].getName(), this.startingSize);
+  };
+}
+
 Game.prototype.getHand = function(playerName) {
   var hand;
   var result = [];
@@ -481,7 +500,7 @@ Game.prototype.isReady = function() {
 
 
 Game.prototype.toggleReady = function(playerName) {
-for (var i = this.players.length - 1; i >= 0; i--) {
+  for (var i = this.players.length - 1; i >= 0; i--) {
     if (this.players[i].getName() === playerName) {
       if (this.players[i].ready === true) {
         this.players[i].ready = false;
@@ -491,7 +510,7 @@ for (var i = this.players.length - 1; i >= 0; i--) {
         this.players[i].ready = true;
         this.numReady++;
 
-        if (this.numReady === this.playerLimit){
+        if (this.numReady === this.players.length){
           return true;
         } else {
           return false;

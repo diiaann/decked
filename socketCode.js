@@ -342,12 +342,28 @@ module.exports = function(globals) {
         return { 
               msg : wrapInSpan(data.username, player.getName() === data.username) + 
               " takes the " + result.rank + " of " + 
-                  result.suit.toLowerCase() + "from the discard pile."};
+                  result.suit.toLowerCase() + " from the discard pile."};
         });
 
       }
 
-    });  
+    });
+
+    socket.on("restart", function(data) {
+      if (globals.socketsToGames[socket.id] !== undefined) {
+        var game = globals.socketsToGames[socket.id].game;
+          game.restartGame();
+          game.updateEach("gameStart", function(player) {
+            return { cards : player.getHand() };
+          });
+          game.updateEach("update", function(player){
+              return { 
+                msg : wrapInSpan(data.username, player.getName() === data.username) + 
+                " has restarted the game."};
+          });
+          globals.publicGames[game.name] = undefined;
+      }
+    });
 
   });
   
@@ -358,3 +374,10 @@ function wrapInSpan(text, bool) {
   var spanClass = bool ? "myName" : "chatName";
   return "<span class='"+ spanClass + "'>" + text + "</span>";
 }
+
+
+
+
+
+
+
