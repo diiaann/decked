@@ -36,6 +36,7 @@ ol, ul {
 	margin: 0px;
 }
 
+/************** general ************* */
 
 body{
 	font-family: "freight-sans-pro",arial,san-serif;
@@ -48,11 +49,22 @@ h2{
 	color: #314E57;
 }
 
+/************** mobile menu ************* */
 
-#playarea{
-	padding-top: 10px;
-	float: left;
-	position: static;
+
+#menu ul{
+	position: absolute;
+	right: 0px;
+	margin: 0px;
+}
+
+#menu{
+	width: 65px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 100%;
+	background-color: #76d1dd;
 }
 
 #logoutButton{
@@ -68,18 +80,7 @@ h2{
 	border: gray 1px solid;
 }
 
-#undo{
-	color: gray;
-	background-color: #acefff;
-	border-radius: 0;
-	border: gray 1px solid;
-	height: 100px;
-	padding-top: 60px;
-	width: 65px;
-	background-position: center center;
-	background-image: url("../imgs/undo.png");
-	background-repeat: no-repeat;
-}
+
 
 #home{
 	color: gray;
@@ -94,22 +95,16 @@ h2{
 	border: gray 1px solid;
 }
 
-#undo{
-	color: gray;
-	background-color: #acefff;
+/************** general ************* */
+/* similar to style.css */
 
-	border-radius: 0;
-	border: gray 1px solid;
-	height: 100px;
-	padding-top: 60px;
-	width: 65px;
-	background-image: url("../imgs/undo.png");
-	background-repeat: no-repeat;
+
+#playarea{
+	padding-top: 10px;
+	float: left;
+	position: static;
 }
 
-.diamond, .hearts{
-	color: #FF372F;
-}
 
 #player1{
 	position: absolute;
@@ -138,14 +133,11 @@ h2{
 	z-index: 2; 
 }
 
-#menu{
-	width: 65px;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	height: 100%;
-	background-color: #76d1dd;
+.diamond, .hearts{
+	color: #FF372F;
 }
+
+
 
 .handHorizontal{
 	list-style: none;
@@ -167,11 +159,7 @@ h2{
 	display: inline-block;
 }
 
-#menu ul{
-	position: absolute;
-	right: 0px;
-	margin: 0px;
-}
+
 
 .miniCard { 
 	background-color: white; 
@@ -217,27 +205,6 @@ button{
 	display: none;
 }
 
-#p1{
-	height: 40px;
-}
-
-#p2, #p3, #p4{
-	position: absolute;
-}
-#p2{
-	left: 2%;
-}
-
-#p3{
-	left: 40%;
-}
-#p2, #p4{
-	top: 40%;
-}
-
-#p4{
-	right:10%;
-}
 
 
 #deck {

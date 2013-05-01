@@ -597,7 +597,22 @@ input[type="checkbox"]{
 	display: inline-block;	
 }
 
+#about{
+	font-family: "ff-tisa-web-pro",serif;
+	color: black;
+	font-size: 24px;
+	line-height: 36px;
+}
 
+#about h3{
+	font-family: "freight-sans-pro",arial,san-serif;
+	font-size: 32px;
+}
+
+
+#about ul{
+	list-style-type: disc;
+}
 
 /*
  * 

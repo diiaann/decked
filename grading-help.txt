@@ -1,0 +1,25 @@
+1. JavaScript
+See game.js, p1.js, poputils.js, etc.
+2. HTML
+see game.html, index.html, game2.html
+For example in index.html we use form elements as well as a table to list games
+3. CSS
+See style.css and mobile.css
+For exmaple in style and mobile css, we used css to create the cards. 
+See style.css starting at line 297
+4. DOM Manipulations
+When you hit draw a card, a new card is added to your hand by adding another element to the card hand ul.
+5. jQuery
+See game.js, p1.js, poputils.js, etc.
+example line 156, poputils.js
+newHand = $("#playerHand").children().sort(rankSort);
+6. AJAX, client
+We modified mongo-express-auth where the client makes requests. See logout.js and login.js
+7. AJAX, server
+For server requests see app.js starting line 32.
+8. node.js
+See app.js.
+9. websockets
+We use sockets for chat, to update the database, when users say they are ready, play cards, etc. See socketcode.js
+10. databases
+We use mongo to store usernames. See app.js starting at line 67.

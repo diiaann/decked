@@ -115,8 +115,6 @@ app.post('/register', function(req, res){
 
 app.use(express.static(__dirname + '/static/'));
 
-
-// Checks user agent.
 function checkMobile(userAgent) {
     if ((userAgent.indexOf("Android") !== -1) || 
         (userAgent.indexOf("iPad") !== -1) || 
